@@ -46,9 +46,38 @@ def get_movie_info(title):
         if(res['Response'] == "True"):
             return res
         else:  
-            return { 'Title': title, 'imdbRating':"N/A", 'Genre':'N/A',"Poster":"https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"}
+            return { 'Title': title, 'imdbRating':"N/A", 'Genre':'N/A'} #,"Poster":"https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"}
     else:
-        return  { 'Title': title, 'imdbRating':"N/A",'Genre':'N/A', "Poster":"https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"}
+        return  { 'Title': title, 'imdbRating':"N/A",'Genre':'N/A'} #, "Poster":"https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"}
+
+
+def get_poster(title):
+
+    new_title, year = clean_movie_title(title)
+
+    url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={new_title}&year={year}'
+
+    print(url)
+
+    response = requests.get(url)
+    movie_data = response.json()
+
+    if movie_data['results']:
+        
+        movie = movie_data['results'][0]   # get first result
+         
+        title = movie['title']
+        poster_path = movie.get('poster_path', '')
+        
+        poster_url = f'https://image.tmdb.org/t/p/w500{poster_path}' if poster_path else 'https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg'
+        
+        
+        print(f"Title: {title}")
+        print(f"Poster URL: {poster_url}")
+    else:
+        poster_url = "https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"
+    
+    return poster_url
 
 
 @app.route("/home")
@@ -167,7 +196,7 @@ def predict():
         if movie_info:
             movie_with_rating[movie+"-r"]=movie_info['imdbRating']
             movie_with_rating[movie+"-g"]=movie_info['Genre']
-            movie_with_rating[movie+"-p"]=movie_info['Poster']
+            movie_with_rating[movie+"-p"]=get_poster(movie) # movie_info['Poster']
             movie_with_rating[movie+"-u"]=url_vid
 
     resp = {"recommendations": recommendations, "rating":movie_with_rating}
