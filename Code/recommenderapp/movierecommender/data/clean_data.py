@@ -30,7 +30,7 @@ with open(input_file, mode='r', newline='', encoding='utf-8') as infile, open(ou
         genres = row[2]
 
         cleaned_title = clean_title(title)
-        print(title, cleaned_title)
+        # print(title, cleaned_title)
 
         writer.writerow([movie_id, f'{cleaned_title}', genres])
 

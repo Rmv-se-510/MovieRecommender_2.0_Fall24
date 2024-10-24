@@ -597,15 +597,15 @@ body {
                         var title = document.createElement('h3');
                         title.id = 'title';
                         title.className = 'card-title';
-                        title.textContent = element;
+                        title.textContent = response['rating'][element + "-t"];
 
                         var imdbRating = document.createElement('h6');
                         imdbRating.className = 'card-text';
-                        imdbRating.textContent = 'IMDb: ' + response['rating'][element + "-r"] + '/10';
+                        imdbRating.textContent = 'Rating: ' + response['rating'][element + "-r"] + '/10';
 
                         var genre = document.createElement('h6');
                         genre.className = 'card-text';
-                        genre.textContent = 'Genre: ' + response['rating'][element + "-g"];
+                        genre.textContent = 'Genres: ' + response['rating'][element + "-g"];
 
                         var radioButtons = document.createElement('div');
                         radioButtons.className = 'radio-buttons';

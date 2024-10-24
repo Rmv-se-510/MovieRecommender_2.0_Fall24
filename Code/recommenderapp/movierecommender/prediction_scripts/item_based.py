@@ -20,7 +20,7 @@ def find_title_match(input_titles):
     for i in range(len(input_titles)):
         user_movies.append(input_titles[i]['title'])
     
-    print(user_movies)
+    # print(user_movies)
 
     matched_movies = []
     training_data = []
@@ -36,7 +36,7 @@ def find_title_match(input_titles):
         else:
             matched_movies.append(movie)
     
-    print(matched_movies)
+    # print(matched_movies)
     
     for movie in matched_movies:
         movie_with_rating = {"title": movie, "rating": 5.0}

@@ -14,41 +14,103 @@ import requests
 from movierecommender.prediction_scripts.item_based import recommendForNewUser
 from movierecommender.search import Search
 from dotenv import load_dotenv
+
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+
 
 
 # Load the .env file
 load_dotenv()
 
 # Get API Keys from .env file
-OMDB_API_KEY = os.getenv("OMDB_API_KEY")
+# OMDB_API_KEY = os.getenv("OMDB_API_KEY")
 api_key = os.getenv("tmdb_api_key")
 
 
+# def clean_movie_title(title):
+#     year = re.search(r'\((\d{4})\)', title).group(1)
+#     new_title = re.sub(r'\(.*?\)', '', title)
+#     new_title = re.sub(r'[^A-Za-z0-9\s]', '', new_title).strip()
+    
+#     return new_title, year
+
 def clean_movie_title(title):
     year = re.search(r'\((\d{4})\)', title).group(1)
-
-    new_title = re.sub(r'[^A-Za-z0-9\s]', '', re.sub(r'\(.*?\)', '', title))
+    new_title = re.sub(r'\(.*?\)', '', title)
+    new_title = re.sub(r'[^A-Za-z0-9\s/]', '', new_title).strip()
     
     return new_title, year
 
+def get_genre_info():
+    genre_url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}&language=en-US'
+    response = requests.get(genre_url)
+    genres = response.json()['genres']
 
-def get_movie_info(title): 
+    genre_dict = {}
+    for genre in genres:
+        genre_dict[genre['id']] = genre['name']
 
-    new_title, year = clean_movie_title(title)   # removes special characters from title and returns title and year of release as 2 variables
+    return genre_dict
 
-    url = f"http://www.omdbapi.com/?t={new_title}&y={year}&apikey={OMDB_API_KEY}"   # make API call with year for better result
+
+def get_movie_info2(title):
+
+    genre_dict = get_genre_info()
+
+    new_title, year = clean_movie_title(title)
+
+    url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={new_title}&year={year}'
     print(url)
+
     response = requests.get(url)
-    if response.status_code == 200:
-        res=response.json()
-        print(res)
-        if(res['Response'] == "True"):
-            return res
-        else:  
-            return { 'Title': title, 'imdbRating':"N/A", 'Genre':'N/A'} #,"Poster":"https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"}
+    movie_data = response.json()
+
+    info = {}
+
+    if movie_data['results']:
+        movie = movie_data['results'][0]
+        
+        movie_id = movie['id']
+        # title = movie['title']
+        poster_path = movie.get('poster_path', '')
+        vote_average = movie.get('vote_average', 'N/A')
+        genres = movie.get('genre_ids', [])
+        
+        poster_url = f'https://image.tmdb.org/t/p/w500{poster_path}' if poster_path else 'No poster available'
+        
+        print(f"Movie ID: {movie_id}")
+        print(f"Title: {title}")
+        print(f"Rating: {vote_average}")
+        print(f"Poster URL: {poster_url}")
+        print(f"Genres: {genres}")
+        genre_names = [genre_dict[genres] for genres in genres]
+        vote_average = round(vote_average, 1) # round rating to 1 decimal pt
+        info = { 'MovieID': movie_id, 'Title': title, 'rating':vote_average, 'Genre':genre_names, 'Poster':poster_url}
+
     else:
-        return  { 'Title': title, 'imdbRating':"N/A",'Genre':'N/A'} #, "Poster":"https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"}
+        info = { 'MovieID': "N/A", 'Title': title, 'rating':"N/A",'Genre':'N/A', 'Poster':'https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg'}
+
+
+    return info
+
+# def get_movie_info(title): 
+
+#     new_title, year = clean_movie_title(title)   # removes special characters from title and returns title and year of release as 2 variables
+
+#     url = f"http://www.omdbapi.com/?t={new_title}&y={year}&apikey={OMDB_API_KEY}"   # make API call with year for better result
+
+#     print(url)
+#     response = requests.get(url)
+#     if response.status_code == 200:
+#         res=response.json()
+#         print(res)
+#         if(res['Response'] == "True"):
+#             return res
+#         else:  
+#             return { 'Title': title, 'imdbRating':"N/A", 'Genre':'N/A'} #,"Poster":"https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"}
+#     else:
+#         return  { 'Title': title, 'imdbRating':"N/A",'Genre':'N/A'} #, "Poster":"https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"}
 
 
 def get_poster(title):
@@ -150,53 +212,67 @@ def predict():
     for movie in data1:
         movie_with_rating = {"title": movie, "rating": 5.0}
         training_data.append(movie_with_rating)
+    print(training_data)
     recommendations = recommendForNewUser(training_data)
     recommendations = recommendations[:10] # Top 10 recommended
     print("recommendations Top 10", recommendations) #~
     for movie in recommendations:
-        movie_info = get_movie_info(movie)
+        movie_info = get_movie_info2(movie)
         #print("movie_info", movie_info) #~
 
-        if(movie_info.get('imdbID')): # IMDB ID
-            imdb_id = movie_info['imdbID'] #~
+        # if(movie_info.get('imdbID')): # IMDB ID
+        if(movie_info['MovieID']): # IMDB ID
+            # imdb_id = movie_info['imdbID'] #~
+            imdb_id = movie_info['MovieID'] #~
             #print("IMDB id = ", imdb_id)
-            url = f'https://api.themoviedb.org/3/find/{imdb_id}?external_source=imdb_id&api_key={api_key}'
+            # url = f'https://api.themoviedb.org/3/find/{imdb_id}?external_source=imdb_id&api_key={api_key}'
+            url = f'https://api.themoviedb.org/3/movie/{imdb_id}/videos?api_key={api_key}'
             resp = requests.get(url)
             if resp.status_code == 200:
                 res1=resp.json()
-                #print('res1', res1)
+                print('res1', res1)
 
-                if(res1["movie_results"]):
-                    movie_id = res1["movie_results"][0]['id']
-                    print('movie id', movie_id)
-                    url2 = f'https://api.themoviedb.org/3/movie/{movie_id}/videos?language=en-US&api_key={api_key}'
-                    res_vid = requests.get(url2)
-                    if res_vid.status_code == 200:
-                        res_vid=res_vid.json()
-                        #print("res_vid",res_vid)
-                        if(res_vid['results']):
-                            url_vid = f"https://www.youtube.com/watch?v={res_vid['results'][0]['key']}"
-                            #print('url_vid_________________',url_vid)
-                        else:
-                            #print('empty video')
-                            url_vid = None
-                    else:
-                        url_vid = None
+                trailer = next((video for video in res1['results'] if video['type'] == 'Trailer'), None)
+                if trailer:
+                    url_vid = f"https://www.youtube.com/watch?v={trailer['key']}"
+                    print(f"Trailer URL: {url_vid}")
                 else:
-                    movie_id = None
-                    print('Empty list')
-                    url_vid=None
+                    url_vid = None
+
+
+                # if(res1["movie_results"]):
+                #     movie_id = res1["movie_results"][0]['id']
+                #     print('movie id', movie_id)
+                #     url2 = f'https://api.themoviedb.org/3/movie/{movie_id}/videos?language=en-US&api_key={api_key}'
+                #     res_vid = requests.get(url2)
+                #     if res_vid.status_code == 200:
+                #         res_vid=res_vid.json()
+                #         #print("res_vid",res_vid)
+                #         if(res_vid['results']):
+                #             url_vid = f"https://www.youtube.com/watch?v={res_vid['results'][0]['key']}"
+                #             print('url_vid_________________',url_vid)
+                #         else:
+                #             print('empty video')
+                #             url_vid = None
+                #     else:
+                #         url_vid = None
+                # else:
+                #     movie_id = None
+                #     print('Empty list')
+                #     url_vid=None
             else:
                 url_vid = None
                 
         else:
             imdb_id = None #~
             url_vid = None
-        #print(movie_info['imdbRating']) 
+        # print(movie_info['imdbRating']) 
+        
         if movie_info:
-            movie_with_rating[movie+"-r"]=movie_info['imdbRating']
+            movie_with_rating[movie+"-t"]=movie_info['Title']
+            movie_with_rating[movie+"-r"]=movie_info['rating']
             movie_with_rating[movie+"-g"]=movie_info['Genre']
-            movie_with_rating[movie+"-p"]=get_poster(movie) # movie_info['Poster']
+            movie_with_rating[movie+"-p"]=movie_info['Poster']
             movie_with_rating[movie+"-u"]=url_vid
 
     resp = {"recommendations": recommendations, "rating":movie_with_rating}
