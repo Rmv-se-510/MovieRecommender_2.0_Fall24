@@ -11,7 +11,8 @@ warnings.filterwarnings("ignore")
 
 def recommendForNewUser(user_rating):
     ratings = pd.read_csv(code_dir + "/data/ratings.csv")
-    movies = pd.read_csv(code_dir + "/data/movies.csv")
+    # movies = pd.read_csv(code_dir + "/data/movies.csv")
+    movies = pd.read_csv(code_dir + "/data/cleaned_movies.csv")
     user = pd.DataFrame(user_rating)
     userMovieID = movies[movies["title"].isin(user["title"])]
     userRatings = pd.merge(userMovieID, user)

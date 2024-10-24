@@ -13,7 +13,8 @@ project_dir = os.path.dirname(code_dir)
 
 class Search:
 
-    df = pd.read_csv(code_dir + "/movierecommender/data/movies.csv")
+    # df = pd.read_csv(code_dir + "/movierecommender/data/movies.csv")
+    df = pd.read_csv(code_dir + "/movierecommender/data/cleaned_movies.csv")
 
     def __init__(self):
         pass

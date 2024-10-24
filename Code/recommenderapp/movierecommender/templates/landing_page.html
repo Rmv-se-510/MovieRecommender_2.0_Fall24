@@ -491,6 +491,30 @@ body {
         $(function () {
             $("#searchBox").autocomplete({
                 source: function (request, response) {
+                    // $.ajax({
+                    //     type: "GET",
+                    //     url: "https://api.themoviedb.org/3/search/movie",
+                    //     dataType: "json",
+                    //     data: {
+                    //         query: request.term,
+                    //         api_key: "ac43a832f0b2ad9b1fac50f785b3452d",
+                    //         include_adult: false //,
+                    //         // year: request.term.split(' ')[-1]  // Assuming the search term ends with the year
+                    //     },
+                    //     success: function(data) {
+                    //         var results = [];
+                    //         data.results.forEach(function(movie) {
+                    //             results.push({
+                    //                 label: movie.title + " (" + movie.release_date.split('-')[0] + ")",
+                    //                 value: movie.title
+                    //             });
+                    //         });
+                    //         response(results);
+                    //     }
+                    //     // success: function(data) {
+                    //     //     response(data.results.map(movie => movie.title));
+                    //     // }
+                    // });
                     $.ajax({
                         type: "POST",
                         url: "http://localhost:5001/search",
@@ -577,7 +601,7 @@ body {
 
                         var imdbRating = document.createElement('h6');
                         imdbRating.className = 'card-text';
-                        imdbRating.textContent = 'imdb: ' + response['rating'][element + "-r"];
+                        imdbRating.textContent = 'IMDb: ' + response['rating'][element + "-r"] + '/10';
 
                         var genre = document.createElement('h6');
                         genre.className = 'card-text';

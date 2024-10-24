@@ -8,25 +8,41 @@ import json
 import sys
 import csv
 import time
+import re
+import os
 import requests
 from movierecommender.prediction_scripts.item_based import recommendForNewUser
 from movierecommender.search import Search
+from dotenv import load_dotenv
 CORS(app, resources={r"/*": {"origins": "*"}})
- 
-# Replace 'YOUR_API_KEY' with your actual OMDB API key
-OMDB_API_KEY = 'b726fa05'
-
-with open('api_key.txt', 'r') as file: # Trailer API
-    api_key = file.read().strip()
 
 
-def get_movie_info(title):
-    index=len(title)-6
-    url = f"http://www.omdbapi.com/?t={title[0:index]}&apikey={OMDB_API_KEY}"
+# Load the .env file
+load_dotenv()
+
+# Get API Keys from .env file
+OMDB_API_KEY = os.getenv("OMDB_API_KEY")
+api_key = os.getenv("tmdb_api_key")
+
+
+def clean_movie_title(title):
+    year = re.search(r'\((\d{4})\)', title).group(1)
+
+    new_title = re.sub(r'[^A-Za-z0-9\s]', '', re.sub(r'\(.*?\)', '', title))
+    
+    return new_title, year
+
+
+def get_movie_info(title): 
+
+    new_title, year = clean_movie_title(title)   # removes special characters from title and returns title and year of release as 2 variables
+
+    url = f"http://www.omdbapi.com/?t={new_title}&y={year}&apikey={OMDB_API_KEY}"   # make API call with year for better result
     print(url)
     response = requests.get(url)
     if response.status_code == 200:
         res=response.json()
+        print(res)
         if(res['Response'] == "True"):
             return res
         else:  
