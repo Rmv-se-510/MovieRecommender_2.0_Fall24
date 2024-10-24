@@ -52,6 +52,7 @@ def recommendForNewUser(user_rating):
 
     user = pd.DataFrame(user_rating)
     userMovieID = movies[movies["title"].isin(user["title"])]
+    movie_list = list(userMovieID["title"])
     userRatings = pd.merge(userMovieID, user)
 
     moviesGenreFilled = movies.copy(deep=True)
@@ -71,6 +72,12 @@ def recommendForNewUser(user_rating):
 
     recommendations = (moviesGenreFilled.dot(userProfile)) / userProfile.sum()
     joinMoviesAndRecommendations = movies.copy(deep=True)
+
+    for movie in movie_list:               # drop movies just searched for from showing on recommended list
+        rows_to_drop = joinMoviesAndRecommendations[joinMoviesAndRecommendations['title'] == movie].index
+
+        joinMoviesAndRecommendations = joinMoviesAndRecommendations.drop(rows_to_drop)
+
     joinMoviesAndRecommendations["recommended"] = recommendations
     joinMoviesAndRecommendations.sort_values(
         by="recommended", ascending=False, inplace=True
