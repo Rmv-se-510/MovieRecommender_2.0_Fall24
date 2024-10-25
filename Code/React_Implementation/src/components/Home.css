@@ -1,0 +1,78 @@
+/* src/Home.css */
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: #333;
+}
+
+.home-container {
+    padding-top: 300px; /* Adjust to prevent overlap with navbar */
+}
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;
+    background-color: white;
+    height: calc(100vh - 80px);
+}
+
+.hero-content {
+    max-width: 500px;
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #6e8efb;
+}
+
+.hero-content p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.get-started-btn {
+    padding: 10px 20px;
+    background-color: #6e8efb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.get-started-btn:hover {
+    background-color: #a777e3;
+}
+
+.hero-images {
+    display: flex;
+    gap: 10px;
+}
+
+.hero-images img {
+    width: 150px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.about-section, .contact-section {
+    padding: 50px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.about-section h2, .contact-section h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #6e8efb;
+}
+
+.about-section p, .contact-section p {
+    font-size: 18px;
+    color: #555;
+}
