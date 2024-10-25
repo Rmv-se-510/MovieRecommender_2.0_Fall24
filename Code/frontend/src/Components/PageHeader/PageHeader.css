@@ -1,5 +1,6 @@
 .app-logo {
-    color: #e50914
+    position: absolute;
+    left: 45%;
 }
 
 .MuiToolbar-root .logout {

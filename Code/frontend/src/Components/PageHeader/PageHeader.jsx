@@ -37,10 +37,14 @@ export default function PageHeader(props) {
     }))
     return <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AppHeader >
-            <Typography variant="h5" noWrap component="div" className="app-logo">
-                Cineverse
+            <Typography variant="h5" noWrap component="div" className="app-logo" color="primary">
+                Cineflix
             </Typography>
-            <Button color="secondary" className="logout" endIcon={<LogoutOutlinedIcon />}>Logout</Button>
+            {props.loggedIn &&
+                <Button color="secondary"
+                    className="logout"
+                    endIcon={<LogoutOutlinedIcon />}
+                    onClick={() => { props.setLoggedIn(false) }}>Logout</Button>}
         </AppHeader>
-    </AppBar>
+    </AppBar >
 }

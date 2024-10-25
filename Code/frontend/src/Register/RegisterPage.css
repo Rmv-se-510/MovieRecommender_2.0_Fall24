@@ -1,0 +1,36 @@
+.register-form {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  * {
+    margin-top: 1rem;
+    width: 20rem;
+  }
+
+  #register-alert {
+    width: 20rem;
+    height: 4rem;
+
+    div.MuiAlert-icon {
+      margin-top: 0;
+      margin-right: 0;
+      width: 3rem;
+      padding: 0;
+    }
+
+    div.MuiAlert-message {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .submit {
+    margin-top: 1rem;
+    width: 20rem;
+  }
+}
+
+.register-section {
+  margin-left: 12rem;
+  margin-top: 1rem;
+}

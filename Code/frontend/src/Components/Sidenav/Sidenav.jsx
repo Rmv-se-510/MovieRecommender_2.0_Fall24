@@ -17,14 +17,14 @@ import SearchIcon from '@mui/icons-material/Search';
 export default function SideNav(props) {
     const theme = useTheme()
     const [open, setOpen] = useState(false)
-    const openedMixin = (theme) => ({
-        width: props.drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        overflowX: 'hidden',
-    });
+    // const openedMixin = (theme) => ({
+    //     width: props.drawerWidth,
+    //     transition: theme.transitions.create('width', {
+    //         easing: theme.transitions.easing.sharp,
+    //         duration: theme.transitions.duration.enteringScreen,
+    //     }),
+    //     overflowX: 'hidden',
+    // });
 
     const closedMixin = (theme) => ({
         transition: theme.transitions.create('width', {
@@ -54,13 +54,13 @@ export default function SideNav(props) {
             whiteSpace: 'nowrap',
             boxSizing: 'border-box',
             variants: [
-                {
-                    props: ({ open }) => open,
-                    style: {
-                        ...openedMixin(theme),
-                        '& .MuiDrawer-paper': openedMixin(theme),
-                    },
-                },
+                // {
+                //     props: ({ open }) => open,
+                //     style: {
+                //         ...openedMixin(theme),
+                //         '& .MuiDrawer-paper': openedMixin(theme),
+                //     },
+                // },
                 {
                     props: ({ open }) => !open,
                     style: {
@@ -72,7 +72,7 @@ export default function SideNav(props) {
         }),
     );
 
-    const toggleDrawer = () => setOpen(!open)
+    // const toggleDrawer = () => setOpen(!open)
     const items = ["Profile", "Movies", "Search"]
     const listItems = items.map((item) => {
         switch (item) {
@@ -113,7 +113,7 @@ export default function SideNav(props) {
     return (
         <Drawer variant="permanent" open={open}>
             <DrawerHeader>
-                <IconButton onClick={toggleDrawer}>
+                <IconButton onClick={() => { }}>
                     {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                 </IconButton>
             </DrawerHeader>

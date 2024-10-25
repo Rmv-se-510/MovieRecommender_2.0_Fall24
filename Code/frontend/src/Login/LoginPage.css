@@ -1,0 +1,52 @@
+.login-form {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  * {
+    margin-top: 1rem;
+    width: 20rem;
+  }
+
+  #login-alert {
+    width: 20rem;
+    height: 4rem;
+
+    div.MuiAlert-icon {
+      margin-top: 0;
+      margin-right: 0;
+      width: 3rem;
+      padding: 0;
+    }
+
+    div.MuiAlert-message {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .submit {
+    margin-top: 1rem;
+    width: 20rem;
+  }
+
+  .remember-checkbox-text {
+    margin-top: 1rem !important;
+  }
+
+  span.MuiButtonBase-root.MuiCheckbox-root.MuiCheckbox-colorPrimary.MuiCheckbox-sizeSmall {
+    padding: 0;
+    width: 2rem !important;
+  }
+}
+
+.login-section {
+  margin-top: 2.75rem;
+  margin-left: 15rem;
+}
+
+.remember-section {
+  display: flex;
+  width: 20rem;
+  flex-direction: row !important;
+  margin-top: 0.5rem;
+}
