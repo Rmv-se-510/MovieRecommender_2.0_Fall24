@@ -3,7 +3,7 @@ from flask_cors import CORS, cross_origin
 from movierecommender import app,db, bcrypt
 from movierecommender.forms import RegistrationForm, LoginForm
 from flask_login import login_user, current_user, logout_user, login_required
-from movierecommender.models import User, Post
+from movierecommender.models import User, Feedback
 import json
 import sys
 import csv
@@ -39,33 +39,46 @@ def get_movie_info(title):
 def landing_page():
     return render_template("landing_page.html")
 
-@app.route("/", methods=['GET','POST'])
+@app.route("/register", methods=['POST'])
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('landing_page'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+    payload = request.get_json()
+    username = payload["username"]
+    email = payload["email"]
+    password = payload["password"]
+    # print(username, email,password)
+    user = User()
+    user.username = username
+    user.email = email
+    user.password = password
+    try:
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
-        return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
-@app.route("/login", methods=['GET', 'POST'])
+        resp = {"message": "Account created successfully"}
+        return jsonify(resp),200
+    except Exception as e:
+        db.session.rollback()
+        db.session.flush()
+        print(e)
+        resp = {"error": "Registration failed, try again later"}
+        return jsonify(resp),400
+
+@app.route("/login", methods=['POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('landing_page'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('landing_page'))
-        else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+    payload = request.get_json()
+    email = payload["email"]
+    password = payload["password"]
+    user = User.query.filter_by(email = email).all()
+    if(len(user) > 1):
+        # This should not happen owing to the uniqueness constraints we have in our schema
+        print("This should not happen because of the uniqueness constraints of our User schema, more than one user cannot have the same email",user)
+        return jsonify({"error": "Something went wrong while trying to login"}),500
+    elif(len(user) == 0):
+        return jsonify({"error": "Invalid user email. Register first before logging in"}),404
+    elif(password != user[0].password):
+        return jsonify({"error": "Passwords do not match"}),404
+    # print(user[0].email, user[0].password, user[0].password == password)
+    return jsonify({"message": "Logged in successfully"}),200
+
 @app.route("/logout")
 def logout():
     logout_user()
@@ -75,7 +88,7 @@ def logout():
 def account():
     return render_template('account.html', title='Account')
 
-    
+
 
 
 @app.route("/predict", methods=["POST"])
@@ -175,16 +188,16 @@ def feedback():
         for key in data.keys():
             f.write(f"{key} - {data[key]}\n")
             stri+=key+":"+data[key]+" "
-            
 
-    post = Post(title="movieratings", content=stri, author=current_user)
+
+    post = Feedback(title="movieratings", content=stri, author=current_user)
     db.session.add(post)
     db.session.commit()
     print(data)
     return data
 @app.route("/movie")
 def movie():
-    posts=Post.query.all()
+    posts=Feedback.query.all()
     return render_template("movie.html",posts=posts)
 
 @app.route("/success")
