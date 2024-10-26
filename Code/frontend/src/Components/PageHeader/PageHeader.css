@@ -1,0 +1,9 @@
+.app-logo {
+    position: absolute;
+    left: 45%;
+}
+
+.MuiToolbar-root .logout {
+    position: absolute;
+    right: 5px;
+}
