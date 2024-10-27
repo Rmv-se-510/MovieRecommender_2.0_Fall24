@@ -35,3 +35,32 @@ function App() {
 }
 
 export default App;
+
+
+
+
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+
+// function App() {
+//     const [data, setData] = useState(null);
+
+//     useEffect(() => {
+//         axios.get('http://localhost:5001/home')
+//             .then(response => {
+//                 setData(response.data);
+//             })
+//             .catch(error => {
+//                 console.error('There was an error!', error);
+//             });
+//     }, []);
+
+//     return (
+//         <div className="App">
+//             <h1>React Frontend with Flask Backend</h1>
+//             {data && <p>{data.message}</p>}
+//         </div>
+//     );
+// }
+
+// export default App;

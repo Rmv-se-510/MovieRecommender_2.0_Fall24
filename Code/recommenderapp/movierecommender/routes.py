@@ -196,27 +196,15 @@ def account():
     return render_template('account.html', title='Account')
 
 
+@app.route("/testing")
+def test():
+    msg = "YOOOOOOOOO"
+    info = "HEYYYYYY"
+
+    return jsonify({'message': msg, 'info': info})
 
 
 @app.route("/predict", methods=["POST"])
-# def predict():
-#     data = json.loads(request.data)  # contains movies
-#     data1 = data["movie_list"]
-#     training_data = []
-#     for movie in data1:
-#         movie_with_rating = {"title": movie, "rating": 5.0}
-#         training_data.append(movie_with_rating)
-#     recommendations = recommendForNewUser(movie_with_rating)
-    
-#     for movie in data1:    
-#         movie_info = get_movie_info(movie)
-#         if movie_info:
-#             movie_with_rating["title"]=movie
-#             movie_with_rating["rating"]=movie_info["imdbRating"]
-    
-#     recommendations = recommendations[:10]
-#     resp = {"recommendations": recommendations}
-#     return resp
 def predict():
     data = json.loads(request.data)  # contains movies from the user
     print("data ",data) #~
@@ -289,7 +277,7 @@ def predict():
             movie_with_rating[movie+"-u"]=url_vid
 
     resp = {"recommendations": recommendations, "rating":movie_with_rating}
-    return resp
+    return jsonify(resp)
 
 @app.route("/search", methods=['GET','POST'])
 def search():

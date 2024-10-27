@@ -3,7 +3,7 @@ import warnings
 import sys
 
 sys.path.append("../")
-from Code.prediction_scripts.item_based import recommendForNewUser
+from Code.recommenderapp.movierecommender.prediction_scripts.item_based import recommendForNewUser
 
 warnings.filterwarnings("ignore")
 
@@ -25,7 +25,7 @@ class Tests(unittest.TestCase):
 
     def testHorrorWithCartoon(self):
         ts = [
-            {"title": "Strangers, The (2008)", "rating": 5.0},
+            {"title": "The Strangers (2008)", "rating": 5.0},
         ]
         recommendations = recommendForNewUser(ts)
         self.assertTrue(("Toy Story (1995)" in recommendations) == False)
@@ -49,7 +49,7 @@ class Tests(unittest.TestCase):
             {"title": "Inception (2010)", "rating": 5.0},
         ]
         recommendations = recommendForNewUser(ts)
-        self.assertTrue(("Dark Knight, The (2008)" in recommendations))
+        self.assertTrue(("The Dark Knight (2008)" in recommendations))
 
     def testDC(self):
         ts = [
@@ -112,7 +112,7 @@ class Tests(unittest.TestCase):
     def testMultipleMovies(self):
         ts = [
             {"title": "Harry Potter and the Goblet of Fire (2005)", "rating": 5.0},
-            {"title": "Twilight Saga: New Moon, The (2009)", "rating": 5.0},
+            {"title": "The Twilight Saga: New Moon (2009)", "rating": 5.0},
         ]
         recommendations = recommendForNewUser(ts)
         self.assertTrue(("Twilight (2008)" in recommendations))

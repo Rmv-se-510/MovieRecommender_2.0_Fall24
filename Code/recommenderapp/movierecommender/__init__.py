@@ -31,4 +31,4 @@ app.app_context().push()
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SQLALCHEMY_RECORD_QUERIES"] = True
 
-from movierecommender import routes
+# from movierecommender import routes

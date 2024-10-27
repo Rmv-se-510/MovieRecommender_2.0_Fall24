@@ -3,8 +3,9 @@ import warnings
 import sys
 import os
 
-sys.path.append("../")
-from Code.recommenderapp.search import Search
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from Code.recommenderapp.movierecommender.search import Search
 
 warnings.filterwarnings("ignore")
 
@@ -14,34 +15,14 @@ class Tests(unittest.TestCase):
         search_word = "toy"
         search = Search()
         filtered_dict = search.resultsTop10(search_word)
-        expected_resp = [
-            "Toy Story (1995)",
-            "Toys (1992)",
-            "Toy Story 2 (1999)",
-            "Toy, The (1982)",
-            "Toy Soldiers (1991)",
-            "Toy Story 3 (2010)",
-            "Babes in Toyland (1961)",
-            "Babes in Toyland (1934)",
-        ]
+        expected_resp = ['Toy Story (1995)', 'Toys (1992)', 'Toy Story 2 (1999)', 'Toy Soldiers (1991)', 'Toy Story 3 (2010)', 'Babes in Toyland (1961)', 'Babes in Toyland (1934)', 'The Toy (1982)']
         self.assertTrue(filtered_dict == expected_resp)
 
     def testSearchLove(self):
         search_word = "love"
         search = Search()
         filtered_dict = search.resultsTop10(search_word)
-        expected_resp = [
-            "Love & Human Remains (1993)",
-            "Love Affair (1994)",
-            "Love and a .45 (1994)",
-            "Love in the Afternoon (1957)",
-            "Love Bug, The (1969)",
-            "Love Jones (1997)",
-            "Love and Other Catastrophes (1996)",
-            "Love Serenade (1996)",
-            "Love and Death on Long Island (1997)",
-            "Love Is the Devil (1998)",
-        ]
+        expected_resp = ['Love & Human Remains (1993)', 'Love Affair (1994)', 'Love and a .45 (1994)', 'Love in the Afternoon (1957)', 'Love Jones (1997)', 'Love and Other Catastrophes (1996)', 'Love Serenade (1996)', 'Love and Death on Long Island (1997)', 'Love Is the Devil (1998)', 'Love Is a Many-Splendored Thing (1955)']
         self.assertTrue(filtered_dict == expected_resp)
 
     def testSearchGibberish(self):
