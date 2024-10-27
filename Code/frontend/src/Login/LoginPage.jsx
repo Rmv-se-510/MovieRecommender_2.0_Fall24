@@ -4,10 +4,12 @@ import './LoginPage.css';
 import hashPassword from "../utils/hash";
 import { login_api_call } from "../utils/api";
 import { generateAlert } from "../Register/RegisterPage";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage(props) {
   const [userData, setUserData] = useState({ email: { value: "", error: undefined }, password: { value: "", error: undefined }, rememberMe: false });
   const [alert, setAlert] = useState({ visible: false, success: "", error: "" })
+  const navigate = useNavigate();
 
   const loginUser = async () => {
     const hashedPassword = await hashPassword(userData.password.value);
@@ -24,6 +26,9 @@ export default function LoginPage(props) {
       setAlert({ ...alert, visible: true, success: resp.message })
       props.setLoggedIn(true)
       // console.log("Login user")
+
+      // Redirect to home page
+      navigate("/homepage");
     }
   }
 

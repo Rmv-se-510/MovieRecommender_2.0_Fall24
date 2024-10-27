@@ -22,12 +22,26 @@ export default function WorkspaceShell(props) {
     }
     return (
         <Container sx={(theme) => (themeProps)}>
-            {props.isLoginPage &&
-                <div className="login-bg" >
+            {props.isLoginPage ? (
+                <div className="login-bg">
                     {props.children}
                 </div>
-            }
-            {!props.isLoginPage && props.children}
-        </Container>)
+            ) : (
+                <div className="App">
+                    {props.children}
+                </div>
+            )}
+        </Container>
+    );
+    // return (
+    //     <Container sx={(theme) => (themeProps)}>
+    //         {props.isLoginPage &&
+    //             // <div className="login-bg" >
+    //             <div className="App" >
+    //                 {props.children}
+    //             </div>
+    //         }
+    //         {!props.isLoginPage && props.children}
+    //     </Container>)
 
 }
