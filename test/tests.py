@@ -1,14 +1,136 @@
 import unittest
 import warnings
 import sys
+import os
 
-sys.path.append("../")
-from Code.recommenderapp.movierecommender.prediction_scripts.item_based import recommendForNewUser
+# sys.path.append("../")
+# from Code.prediction_scripts.item_based import recommendForNewUser
+
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../Code/recommenderapp/"))
+)
+
+from movierecommender.prediction_scripts.item_based import recommendForNewUser
 
 warnings.filterwarnings("ignore")
 
 
 class Tests(unittest.TestCase):
+    
+    def testMultipleMovies1(self):
+        ts = [
+            {"title": "Harry Potter and the Goblet of Fire (2005)", "rating": 5.0},
+            {"title": "Twilight Saga: New Moon, The (2009)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Twilight (2008)" in recommendations))
+
+    def testMultipleMovies2(self):
+        ts = [
+            {"title": "Man of Steel (2013)", "rating": 5.0},
+            {"title": "Krull (1983)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Starcrash (1978)" in recommendations))
+
+    def testMultipleMovies3(self):
+        ts = [
+            {
+                "title": "Aqua Teen Hunger Force Colon Movie Film for Theaters (2007)",
+                "rating": 5.0,
+            },
+            {"title": "Marvel One-Shot: Agent Carter (2013)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Spider-Man 3 (2007)" in recommendations))
+
+    def testMultipleMovies4(self):
+        ts = [
+            {
+                "title": "Aqua Teen Hunger Force Colon Movie Film for Theaters (2007)",
+                "rating": 5.0,
+            },
+            {"title": "Marvel One-Shot: Agent Carter (2013)", "rating": 5.0},
+            {"title": "Madagascar: Escape 2 Africa (2008)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Antz (1998)" in recommendations))
+
+    def testMultipleMovies5(self):
+        ts = [
+            {"title": "Ratchet & Clank (2016)", "rating": 5.0},
+            {"title": "The Lego Movie (2014)", "rating": 5.0},
+            {"title": "Green Lantern: First Flight (2009)", "rating": 5.0},
+            {
+                "title": "Sword Art Online The Movie: Ordinal Scale (2017)",
+                "rating": 5.0,
+            },
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Moana (2016)" in recommendations))
+
+    def testMultipleMovies6(self):
+        ts = [
+            {"title": "The Twelve Tasks of Asterix (1976)", "rating": 5.0},
+            {"title": "TMNT (2007)", "rating": 5.0},
+            {"title": "Robots (2005)", "rating": 5.0},
+            {"title": "Super Mario Bros. (1993)", "rating": 5.0},
+            {"title": "Chicken Little (2005)", "rating": 5.0},
+            {"title": "Final Fantasy VII: Advent Children (2004)", "rating": 5.0},
+            {"title": "Justice League: The New Frontier (2008)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Home (2015)" in recommendations))
+
+    def testHome(self):
+        ts = [
+            {"title": "Home (2015)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("TMNT (2007)" in recommendations))
+
+    def testMTR(self):
+        ts = [
+            {"title": "Meet the Robinsons (2007)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Chicken Little (2005)" in recommendations))
+
+    def testSJ(self):
+        ts = [
+            {"title": "Space Jam (1996)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Transformers: The Movie (1986)" in recommendations))
+
+    def testRaC(self):
+        ts = [
+            {"title": "Ratchet & Clank (2016)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("The Incredibles (2004)" in recommendations))
+
+    def testPage(self):
+        ts = [
+            {"title": "The Pagemaster (1994)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Dragon Ball Z: Bojack Unbound (1993)" in recommendations))
+
+    def testIO(self):
+        ts = [
+            {"title": "Inside Out (2015)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Minions (2015)" in recommendations))
+
+    def testMG(self):
+        ts = [
+            {"title": "Mind Game (2004)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Futurama: Bender's Game (2008)" in recommendations))
+
     def testToyStory(self):
         ts = [
             {"title": "Toy Story (1995)", "rating": 5.0},
@@ -25,7 +147,7 @@ class Tests(unittest.TestCase):
 
     def testHorrorWithCartoon(self):
         ts = [
-            {"title": "The Strangers (2008)", "rating": 5.0},
+            {"title": "Strangers, The (2008)", "rating": 5.0},
         ]
         recommendations = recommendForNewUser(ts)
         self.assertTrue(("Toy Story (1995)" in recommendations) == False)
@@ -49,7 +171,7 @@ class Tests(unittest.TestCase):
             {"title": "Inception (2010)", "rating": 5.0},
         ]
         recommendations = recommendForNewUser(ts)
-        self.assertTrue(("The Dark Knight (2008)" in recommendations))
+        self.assertTrue(("Jack Reacher: Never Go Back (2016)" in recommendations))
 
     def testDC(self):
         ts = [
@@ -108,14 +230,6 @@ class Tests(unittest.TestCase):
         ]
         recommendations = recommendForNewUser(ts)
         self.assertTrue(("Monsters, Inc. (2001)" in recommendations))
-
-    def testMultipleMovies(self):
-        ts = [
-            {"title": "Harry Potter and the Goblet of Fire (2005)", "rating": 5.0},
-            {"title": "The Twilight Saga: New Moon (2009)", "rating": 5.0},
-        ]
-        recommendations = recommendForNewUser(ts)
-        self.assertTrue(("Twilight (2008)" in recommendations))
 
 
 if __name__ == "__main__":
