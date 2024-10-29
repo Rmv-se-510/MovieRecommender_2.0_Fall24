@@ -275,11 +275,32 @@ def predict():
                 #     url_vid=None
             else:
                 url_vid = None
+            
+            credits_url = f'https://api.themoviedb.org/3/movie/{imdb_id}/credits?api_key={api_key}'
+            credits_response = requests.get(credits_url)
+            credits_data = credits_response.json()
+            # print("CREDITS", credits_data)
+
+            cast = credits_data.get('cast', [])
+
+            top_cast = []
+            for actor in cast[:3]:    # get top 3 actors
+                top_cast.append(actor['name'])
+            actors = ', '.join(top_cast)
+            
+            crew = credits_data.get('crew', [])
+            director = ' '
+            for member in crew:
+                if member['job'] == 'Director':
+                    director = member['name']
+                    break
                 
         else:
-            imdb_id = None #~
+            imdb_id = None 
             url_vid = None
-        # print(movie_info['imdbRating']) 
+            top_cast = None
+            director = None
+
         
         if movie_info:
             movie_with_rating[movie+"-t"]=movie_info['Title']
@@ -287,6 +308,8 @@ def predict():
             movie_with_rating[movie+"-g"]=movie_info['Genre']
             movie_with_rating[movie+"-p"]=movie_info['Poster']
             movie_with_rating[movie+"-u"]=url_vid
+            movie_with_rating[movie+"-c"]=actors
+            movie_with_rating[movie+"-d"]=director
 
     resp = {"recommendations": recommendations, "rating":movie_with_rating}
     return resp

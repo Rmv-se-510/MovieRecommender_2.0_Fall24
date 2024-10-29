@@ -16,6 +16,7 @@ function HomePage() {
         const fetchHomeInfo = async () => {
             try {
                 const response = await fetch('/testing');           // just a testing route I made in routes.py 
+                console.log(response)
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
                 setHomeInfo(data);
@@ -31,12 +32,34 @@ function HomePage() {
     const handleSearch = async () => {
         try {
             const response = await axios.post('/predict', { movie_list: selectedMovies });
-            console.log("Recommendations data:", response.data);  // Debugging line to inspect response data
-            setRecommendations(response.data.recommendations);
+            console.log("Response", response)
+            const data = response.data;
+            console.log("Data", data)
+    
+            const transformedRecommendations = data.recommendations.map(title => {
+                const baseKey = title; 
+                console.log(baseKey)
+    
+                return {
+                    title: data.rating[`${baseKey}-t`] || "Title not available",
+                    genre: data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
+                    poster: data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
+                    rating: data.rating[`${baseKey}-r`] || "Rating not available",
+                    url: data.rating[`${baseKey}-u`] || null,
+                    cast: data.rating[`${baseKey}-c`] || " ",
+                    director: data.rating[`${baseKey}-d`] || " "
+                };
+            });
+    
+            setRecommendations(transformedRecommendations);
         } catch (error) {
             console.error("Error fetching recommendations:", error);
         }
     };
+    
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     const fetchSuggestions = async (query) => {
         if (!query) return;
@@ -127,13 +150,15 @@ function HomePage() {
                                 <CardMedia
                                     component="img"
                                     height="350"
-                                    image={movie.poster}  // Check if movie has poster property
+                                    image={movie.poster || "https://via.placeholder.com/250"}  // Check if movie has poster property
                                     alt={movie.title}     // Check if movie has title property
                                 />
                                 <CardContent>
                                     <Typography variant="h6">{movie.title || "Title not available"}</Typography>
-                                    <Typography variant="body2">Genre: {movie.genre || "Genre not available"}</Typography>
-                                    <Typography variant="body2">Rating: {movie.rating || "Rating not available"}</Typography>
+                                    <Typography variant="body2">Rating: {movie.rating || "N/A"}/10</Typography>
+                                    <Typography variant="body2">Director: {movie.director || " "}</Typography>
+                                    <Typography variant="body2">Cast: {movie.cast || " "}</Typography>
+                                    <Typography variant="body2">Genres: {movie.genre || "N/A"}</Typography>
                                     {movie.url && (
                                         <Button
                                             variant="contained"
