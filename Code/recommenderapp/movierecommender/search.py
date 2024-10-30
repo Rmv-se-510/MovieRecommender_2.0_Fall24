@@ -1,7 +1,10 @@
 import pandas as pd
 
 # from app import app
-from Code.recommenderapp import app
+# from Code.recommenderapp import app       
+from movierecommender import app
+
+
 from flask import jsonify, request, render_template
 import sys
 import os
