@@ -24,11 +24,19 @@ export default function AppRouter(props) {
     {
       "path": "/homepage",
       element:
-        !props.loggedIn ?
+        props.loggedIn ?
           (<div className="homepage">
             <HomePage/>
           </div>) : (<div />)
     }
+    // {
+    //   "path": "/homepage",
+    //   element:
+    //     !props.loggedIn ?
+    //       (<div className="homepage">
+    //         <HomePage/>
+    //       </div>) : (<div />)
+    // }
   ])
   return <RouterProvider router={router} />
 }

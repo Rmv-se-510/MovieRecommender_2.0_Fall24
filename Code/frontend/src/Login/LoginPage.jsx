@@ -4,12 +4,12 @@ import './LoginPage.css';
 import hashPassword from "../utils/hash";
 import { login_api_call } from "../utils/api";
 import { generateAlert } from "../Register/RegisterPage";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export default function LoginPage(props) {
   const [userData, setUserData] = useState({ email: { value: "", error: undefined }, password: { value: "", error: undefined }, rememberMe: false });
   const [alert, setAlert] = useState({ visible: false, success: "", error: "" })
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const loginUser = async () => {
     const hashedPassword = await hashPassword(userData.password.value);
@@ -28,13 +28,14 @@ export default function LoginPage(props) {
       // console.log("Login user")
 
       // Redirect to home page
-      navigate("/homepage");
+      // navigate("/homepage");
     }
   }
 
   return (
     <section className="login-section">
-      <Typography color="primary" variant="h6">Already binging with us? Login below</Typography>
+      <main style={{ paddingTop: '100px' }}></main>
+      <Typography color="primary" variant="h6">Already binging with us? Login below!</Typography>
       <form className="login-form">
         <InputLabel htmlFor="login-email">Email</InputLabel>
         <TextField id="login-email" aria-describedby="login-email-helper" type="text" required={true} onChange={(e) => {

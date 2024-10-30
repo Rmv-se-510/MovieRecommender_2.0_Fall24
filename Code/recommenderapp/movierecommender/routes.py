@@ -230,8 +230,8 @@ def predict():
         training_data.append(movie_with_rating)
     print(training_data)
     recommendations = recommendForNewUser(training_data)
-    recommendations = recommendations[:10] # Top 10 recommended
-    print("recommendations Top 10", recommendations) #~
+    recommendations = recommendations[:12] # Top 10 recommended
+    print("recommendations Top 12", recommendations) #~
     for movie in recommendations:
         movie_info = get_movie_info2(movie)
         #print("movie_info", movie_info) #~

@@ -17,7 +17,11 @@ function HomePage() {
             try {
                 const response = await fetch('/testing');           // just a testing route I made in routes.py 
                 console.log(response)
-                if (!response.ok) throw new Error('Network response was not ok');
+                // if (!response.ok) throw new Error('Network response was not ok');
+                if (!response.ok) {
+                    console.log('Network response was not ok');
+                    return;
+                }                
                 const data = await response.json();
                 setHomeInfo(data);
             } catch (error) {
@@ -89,10 +93,11 @@ function HomePage() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
+        <div className='App'>
+            <main>
             {/* <h1>{homeInfo?.message}</h1>
             <p>{homeInfo?.info}</p> */}
-
+            <div className="search-container">
             <Autocomplete
                 freeSolo
                 options={autocompleteOptions}
@@ -109,31 +114,34 @@ function HomePage() {
                     }
                 }}
                 renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Search Movies"
-                        variant="outlined"
-                        fullWidth
-                        InputProps={{
-                            ...params.InputProps,
-                            endAdornment: (
-                                <>
-                                    {loadingSuggestions ? <CircularProgress color="inherit" size={20} /> : null}
-                                    {params.InputProps.endAdornment}
-                                </>
-                            ),
-                        }}
-                        style={{ margin: "20px 0" }}
-                    />
+                    <div style={{ width: '100%'}}>
+                        <TextField
+                            {...params}
+                            label="Search Movies"
+                            variant="outlined"
+                            fullWidth
+                            InputProps={{
+                                ...params.InputProps,
+                                endAdornment: (
+                                    <>
+                                        {loadingSuggestions ? <CircularProgress color="inherit" size={20} /> : null}
+                                        {params.InputProps.endAdornment}
+                                    </>
+                                ),
+                            }}
+                            style={{ margin: "10px" }}
+                        />
+                    </div>
                 )}
             />
+            </div>
 
-            <Button variant="contained" color="primary" onClick={handleSearch} style={{ margin: "20px 0" }}>
+            <Button variant="contained" color="primary" onClick={handleSearch} style={{ margin: "10px" } }>
                 Get Recommendations
             </Button>
 
-            <div style={{ marginTop: "20px" }}>
-                <h3>Selected Movies:</h3>
+            <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+            <h3>Selected Movies:</h3>
                 <ul>
                     {selectedMovies.map((movie, index) => (
                         <li key={index}>{movie}</li>
@@ -142,7 +150,8 @@ function HomePage() {
             </div>
 
             {recommendations && (
-                <div style={{ marginTop: "20px" }}>
+                // <div style={{ marginTop: "20px" }}>
+                <div style={{ marginTop: "20px", marginBottom: "20px" }}>
                     <h3>Recommended Movies:</h3>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                         {recommendations.map((movie, index) => (
@@ -176,6 +185,7 @@ function HomePage() {
                     </div>
                 </div>
             )}
+            </main>
         </div>
     );
 }
