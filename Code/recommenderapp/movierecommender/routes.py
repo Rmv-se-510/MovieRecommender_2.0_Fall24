@@ -36,6 +36,9 @@ api_key = os.getenv("tmdb_api_key")
 #     return new_title, year
 
 def clean_movie_title(title):
+    if title == " ":
+        return "Blank title", 9999
+
     year = re.search(r'\((\d{4})\)', title).group(1)
     new_title = re.sub(r'\(.*?\)', '', title)
     new_title = re.sub(r'[^A-Za-z0-9\s/]', '', new_title).strip()
