@@ -231,6 +231,42 @@ class Tests(unittest.TestCase):
         recommendations = recommendForNewUser(ts)
         self.assertTrue(("Monsters, Inc. (2001)" in recommendations))
 
+    def testInception(self):
+        ts = [
+            {"title": "Inception (2010)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(('Watchmen (2009)' in recommendations))
+
+    def testDunkirk(self):
+        ts = [
+            {"title": "Dunkirk (2017)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(('The Hurt Locker (2008)' in recommendations))
+
+    def testInterstellar(self):
+        ts = [
+            {"title": "Interstellar (2014)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(('Star Trek Into Darkness (2013)' in recommendations))
+
+    def testStarTrek(self):
+        ts = [
+            {"title": "Star Trek Into Darkness (2013)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(('After Earth (2013)' in recommendations))
+
+    def testMultiple(self):
+        ts = [
+            {"title": "Star Trek Into Darkness (2013)", "rating": 5.0},
+            {"title": "After Earth (2013)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(('Tron: Legacy (2010)' in recommendations))
+
 
 if __name__ == "__main__":
     unittest.main()

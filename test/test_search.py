@@ -400,6 +400,40 @@ class Tests(unittest.TestCase):
         ]
         self.assertTrue(filtered_dict == expected_resp)
 
+    def testSearchInc(self):
+        search_word = "Inc"
+        search = Search()
+        filtered_dict = search.resultsTop10(search_word)
+        expected_resp = [ 'Incognito (1997)', 'Incident at Loch Ness (2004)', 'Inconvenient Truth, An (2006)', 'Inception (2010)', 'Incendies (2010)', 'Incredibles 2 (2018)', 'The Boys of St. Vincent (1992)', 'Little Princess, A (1995)', 'The Swan Princess (1994)', 'Fatal Instinct (1993)' ]
+        self.assertTrue(filtered_dict == expected_resp)
+
+    def testSearchBat(self):
+        search_word = "bat"
+        search = Search()
+        filtered_dict = search.resultsTop10(search_word)
+        expected_resp = [ 'Batman Forever (1995)', 'Batman (1989)', 'Batman Returns (1992)', 'Batman & Robin (1997)', 'Battle for the Planet of the Apes (1973)', 'Bats (1999)', 'Batman: Mask of the Phantasm (1993)', 'Battlefield Earth (2000)', 'Battleship Potemkin (1925)', 'Battle Beyond the Stars (1980)']
+        self.assertTrue(filtered_dict == expected_resp)
+
+    def testSearchDun(self):
+        search_word = "dun"
+        search = Search()
+        filtered_dict = search.resultsTop10(search_word)
+        expected_resp = ['Dunston Checks In (1996)', 'Dune (1984)', 'Dungeons & Dragons (2000)', 'Dune (2000)', 'Dunkirk (2017)', 'Kundun (1997)', 'Crocodile Dundee (1986)', 'Crocodile Dundee II (1988)', 'Woman in the Dunes (1964)', 'Crocodile Dundee in Los Angeles (2001)']
+        self.assertTrue(filtered_dict == expected_resp)
+
+    def testSearchSoc(self):
+        search_word = "social"
+        search = Search()
+        filtered_dict = search.resultsTop10(search_word)
+        expected_resp = ['Buena Vista Social Club (1999)', 'The Social Network (2010)', 'Anti-Social (2015)']
+        self.assertTrue(filtered_dict == expected_resp)
+
+    def testSearchPerc(self):
+        search_word = "percy"
+        search = Search()
+        filtered_dict = search.resultsTop10(search_word)
+        expected_resp = ['Percy Jackson & the Olympians: The Lightning Thief (2010)', 'Percy Jackson: Sea of Monsters (2013)']
+        self.assertTrue(filtered_dict == expected_resp)
 
 if __name__ == "__main__":
     unittest.main()
