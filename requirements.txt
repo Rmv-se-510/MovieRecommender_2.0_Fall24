@@ -10,3 +10,4 @@ flask-sqlalchemy==3.0.2
 Python-dotenv
 Flask-Bcrypt
 flask-login
+flask-wtf
