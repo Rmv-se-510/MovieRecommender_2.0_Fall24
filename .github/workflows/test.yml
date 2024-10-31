@@ -21,6 +21,7 @@ jobs:
         pip install pylint
         pip install -U Flask
         pip install -U flask-cors
+        pip install ./requirements.txt
     - name: Running test cases for searching
       run: python test/test_search.py
     - name: Running test cases for util
