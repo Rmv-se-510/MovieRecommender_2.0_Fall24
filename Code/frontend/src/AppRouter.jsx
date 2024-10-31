@@ -19,15 +19,15 @@ export default function AppRouter(props) {
             <RegisterPage />
             <LoginPage setLoggedIn={props.setLoggedIn} />
           </div>) : (
-        <Navigate to="/homepage"/>)
+            <Navigate to="/homepage" />)
     },
     {
       "path": "/homepage",
       element:
         props.loggedIn ?
           (<div className="homepage">
-            <HomePage/>
-          </div>) : (<div />)
+            <HomePage />
+          </div>) : (<Navigate to="/" />)
     }
     // {
     //   "path": "/homepage",

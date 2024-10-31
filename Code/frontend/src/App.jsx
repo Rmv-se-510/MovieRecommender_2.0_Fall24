@@ -23,15 +23,7 @@ const darkTheme = createTheme({
 const drawerWidth = 240;
 
 function App() {
-  let cached = JSON.parse(localStorage.getItem("loggedIn"));
-  const initialValue = cached === null ? false : cached;
-  const [loggedIn, setLoggedIn] = useState(initialValue);
-
-  useEffect(() => {
-    localStorage.setItem("loggedIn", JSON.stringify(loggedIn));
-  }, [loggedIn])
-
-  useEffect(() => (() => localStorage.clear("loggedIn")), [])
+  const [loggedIn, setLoggedIn] = useState(false);
 
   return (<ThemeProvider theme={darkTheme}>
     <CssBaseline />
