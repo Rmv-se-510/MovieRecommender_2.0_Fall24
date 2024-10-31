@@ -54,13 +54,13 @@ function HomePage() {
                     director: data.rating[`${baseKey}-d`] || " "
                 };
             });
-    
+            setSearchQuery("");
             setRecommendations(transformedRecommendations);
         } catch (error) {
             console.error("Error fetching recommendations:", error);
         }
     };
-    
+
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
