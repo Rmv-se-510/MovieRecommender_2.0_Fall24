@@ -24,7 +24,6 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 load_dotenv()
 
 # Get API Keys from .env file
-# OMDB_API_KEY = os.getenv("OMDB_API_KEY")
 api_key = os.getenv("tmdb_api_key")
 
 
