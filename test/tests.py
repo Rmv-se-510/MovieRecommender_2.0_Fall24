@@ -259,6 +259,39 @@ class Tests(unittest.TestCase):
         recommendations = recommendForNewUser(ts)
         self.assertTrue(('After Earth (2013)' in recommendations))
 
+    def testAvengers(self):
+        ts = [
+            {"title": "The Avengers (2012)", "rating": 5.0},
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(("Ender's Game (2013)" in recommendations))
+
+    def testMatrix(self):
+        ts = [
+            {"title": "The Matrix Revolutions (2003)", "rating": 5.0},
+            {"title": "The Matrix Reloaded (2003)", "rating": 4.0}
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(('G.I. Joe: Retaliation (2013)' in recommendations))
+
+    def testMatrix2(self):
+        ts = [
+            {"title": "The Matrix Revolutions (2003)", "rating": 3.0},
+            {"title": "The Matrix Reloaded (2003)", "rating": 4.0}
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(('Licence to Kill (1989)' in recommendations))
+
+    def testMatrix3(self):
+        ts = [
+            {"title": "The Matrix Revolutions (2003)", "rating": 5.0},
+            {"title": "The Matrix Reloaded (2003)", "rating": 4.0}
+        ]
+        recommendations = recommendForNewUser(ts)
+        self.assertTrue(('Iron Man 3 (2013)' in recommendations))
+
+
+
     def testMultiple(self):
         ts = [
             {"title": "Star Trek Into Darkness (2013)", "rating": 5.0},
