@@ -9,10 +9,10 @@ Discover Your Next Movie Night Gem!
 
 
 
- ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/A1231/MovieRecommender)
- ![GitHub issues](https://img.shields.io/github/issues/A1231/MovieRecommender)
- ![GitHub closed issues](https://img.shields.io/github/issues-closed/A1231/MovieRecommender)
- [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)  [![Code Coverage](https://github.com/MadhurDixit13/MovieRecommender/actions/workflows/codecov.yml/badge.svg)](https://github.com/MadhurDixit13/MovieRecommender/actions/workflows/codecov.yml) [![codecov](https://codecov.io/gh/MadhurDixit13/MovieRecommender/graph/badge.svg?token=9NGWAJ7BST)](https://codecov.io/gh/MadhurDixit13/MovieRecommender)  [![black](https://img.shields.io/badge/StyleChecker-black-purple.svg)](https://pypi.org/project/black/) [![DOI](https://zenodo.org/badge/721365396.svg)](https://zenodo.org/doi/10.5281/zenodo.10212435) ![GitHub release (with filter)](https://img.shields.io/github/v/release/A1231/MovieRecommender) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/A1231/MovieRecommender) 
+ ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/Joshi-Karan/MovieRecommender_Fall24/stableF24)
+ ![GitHub issues](https://img.shields.io/github/issues/Joshi-Karan/MovieRecommender_Fall24)
+ ![GitHub closed issues](https://img.shields.io/github/issues-closed/Joshi-Karan/MovieRecommender_Fall24)
+ [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)  [![Code Coverage](https://github.com/Joshi-Karan/MovieRecommender_Fall24/actions/workflows/codecov.yml/badge.svg)](https://github.com/Joshi-Karan/MovieRecommender_Fall24/actions/workflows/codecov.yml) [![codecov](https://codecov.io/gh/Joshi-Karan/MovieRecommender_Fall24/graph/badge.svg?token=9NGWAJ7BST)](https://codecov.io/gh/MadhurDixit13/MovieRecommender)  [![black](https://img.shields.io/badge/StyleChecker-black-purple.svg)](https://pypi.org/project/black/) [![DOI](https://zenodo.org/badge/72135396.svg)](https://zenodo.org/doi/10.521/zenodo.1021235) ![GitHub release (with filter)](https://img.shields.io/github/v/release/Joshi-Karan/MovieRecommender_Fall24) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Joshi-Karan/MovieRecommender_Fall24) 
 
 
 <!-- <br>
@@ -28,16 +28,17 @@ Tired of endless scrolling, trying to find the perfect movie? 🍿<br><br> -->
 
 # <b>Contents</b>
 
-- [Introduction](https://github.com/MadhurDixit13/MovieRecommender#introduction-%EF%B8%8F)<br>
-- [Future Project Plan](https://github.com/MadhurDixit13/MovieRecommender#future-project-plan-%F0%9F%94%AE)<br>
-- [Video](https://github.com/MadhurDixit13/MovieRecommender#video-%EF%B8%8F)<br>
-- [Working](https://github.com/MadhurDixit13/MovieRecommender#working-)<br>
-- [Tech Stack](https://github.com/MadhurDixit13/MovieRecommender#tech-stack-)<br>
-- [Requirements and Setup](https://github.com/MadhurDixit13/MovieRecommender#requirements-and-setup-%EF%B8%8F)<br>
-- [Usage](https://github.com/MadhurDixit13/MovieRecommender#usage)<br>
-- [Documentation](https://github.com/MadhurDixit13/MovieRecommender#documentation-)<br>
-- [Bug](https://github.com/MadhurDixit13/MovieRecommender#bug-)<br>
-- [License](https://github.com/MadhurDixit13/MovieRecommender#license-%F0%9F%93%83)
+- [Introduction](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#introduction-%EF%B8%8F)<br>
+- [What's New in Phase 4?](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#whats-new-in-phase-4)<br>
+- [Future Project Plan](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#future-project-plan-)<br>
+- [Video](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#video-%EF%B8%8F)<br>
+- [Working](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#working-)<br>
+- [Tech Stack](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#tech-stack-used-)<br>
+- [Requirements and Setup](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#requirements-and-setup-%EF%B8%8F)<br>
+- [Usage](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#usage)<br>
+- [Documentation](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#documentation-)<br>
+- [Bug](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#bug-)<br>
+- [License](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#bug-)
 
 
 
@@ -194,11 +195,16 @@ To run React frontend:
 
 
 ## Documentation 📚
-Refer to Wiki page [here](https://github.com/MadhurDixit13/MovieRecommender/wiki/Documentation)
+Refer to Wiki page [here](https://github.com/Joshi-Karan/MovieRecommender_Fall24/wiki)
 
 
 ## Bug? 🐛
 Raise a issue on this repository, we would love to look at it ❤️
+You also have the option of contacting us:
+- avchundi@ncsu.edu
+- kjoshi5@ncsu.edu
+- rhosadu@ncsu.edu
+
 
 ## License 📃
 This project is under MIT License.
