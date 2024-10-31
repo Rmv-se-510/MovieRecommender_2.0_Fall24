@@ -9,7 +9,10 @@ jobs:
       matrix:
         python-version: ["3.8"]
     steps:
-    - uses: actions/checkout@v3
+    - name: Codecov
+      uses: codecov/codecov-action@v4.6.0
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
