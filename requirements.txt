@@ -8,3 +8,6 @@ Werkzeug==2.2.0
 fuzzywuzzy
 flask-sqlalchemy==3.0.2
 Python-dotenv
+Flask-Bcrypt
+flask-login
+flask-wtf

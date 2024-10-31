@@ -1,0 +1,88 @@
+
+# name: Test
+
+# on:
+#   push:
+#     branches:
+#       - stableF24
+#   pull_request:
+#     branches:
+#       - stableF24
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: '3.11'
+      
+#       - name: Install dependencies
+#         run: |
+#           pip install -r requirements.txt
+#           pip install pytest pytest-cov codecov
+
+#       - name: Run tests with coverage
+#         run: |
+#           pytest --cov=Code --cov-report=xml tests/
+
+#       - name: Upload coverage to Codecov
+#         uses: codecov/codecov-action@v4
+#         with:
+#           token: ${{ secrets.CODECOV_TOKEN }}
+#           file: ./coverage.xml
+#           fail_ci_if_error: true
+
+name: Code Coverage
+
+on:
+  push:
+    branches:
+      - stableF24
+  pull_request:
+    branches:
+      - stableF24
+
+jobs:
+  upload-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8 
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pandas
+          pip install pylint
+          pip install -U Flask
+          pip install -U flask-cors
+          pip install pytest
+          pip install pytest-cov
+
+      - name: Run tests and generate coverage
+        run: |
+          # cd test
+          # coverage run -m -a test_search
+          # coverage run -m -a tests
+          # coverage run -m -a test_api
+          pytest --cov=Code --cov-report=xml tests/
+
+      - name: Upload coverage report to Codecov
+        run: |
+          bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+
+      codecov: 
+      token: afb15810-a995-4210-8dbc-017e93a19dae
