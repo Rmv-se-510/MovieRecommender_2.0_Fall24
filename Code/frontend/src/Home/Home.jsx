@@ -15,13 +15,13 @@ function HomePage() {
     useEffect(() => {
         const fetchHomeInfo = async () => {
             try {
-                const response = await fetch('/testing');           // just a testing route I made in routes.py 
+                const response = await fetch('/testing');           // just a testing route I made in routes.py
                 console.log(response)
                 // if (!response.ok) throw new Error('Network response was not ok');
                 if (!response.ok) {
                     console.log('Network response was not ok');
                     return;
-                }                
+                }
                 const data = await response.json();
                 setHomeInfo(data);
             } catch (error) {
@@ -39,12 +39,13 @@ function HomePage() {
             console.log("Response", response)
             const data = response.data;
             console.log("Data", data)
-    
+
             const transformedRecommendations = data.recommendations.map(title => {
-                const baseKey = title; 
+                const baseKey = title;
                 console.log(baseKey)
-    
+
                 return {
+                    id: data.rating[`${baseKey}-movieId`] || undefined,
                     title: data.rating[`${baseKey}-t`] || "Title not available",
                     genre: data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
                     poster: data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
@@ -54,8 +55,9 @@ function HomePage() {
                     director: data.rating[`${baseKey}-d`] || " "
                 };
             });
-            setSearchQuery("");
+
             setRecommendations(transformedRecommendations);
+            setSearchQuery("");
         } catch (error) {
             console.error("Error fetching recommendations:", error);
         }
@@ -93,55 +95,54 @@ function HomePage() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className='App'>
-            <main>
+        <main data-testid="home">
             {/* <h1>{homeInfo?.message}</h1>
             <p>{homeInfo?.info}</p> */}
             <div className="search-container">
-            <Autocomplete
-                freeSolo
-                options={autocompleteOptions}
-                getOptionLabel={(option) => option.label}
-                inputValue={searchQuery}
-                onInputChange={(event, newValue) => {
-                    setSearchQuery(newValue);
-                    fetchSuggestions(newValue);
-                }}
-                onChange={(event, newValue) => {
-                    if (newValue?.value) {
-                        setSelectedMovies(prevMovies => [...prevMovies, newValue.value]);
-                        setSearchQuery('');  // Clear search bar
-                    }
-                }}
-                renderInput={(params) => (
-                    <div style={{ width: '100%'}}>
-                        <TextField
-                            {...params}
-                            label="Search Movies"
-                            variant="outlined"
-                            fullWidth
-                            InputProps={{
-                                ...params.InputProps,
-                                endAdornment: (
-                                    <>
-                                        {loadingSuggestions ? <CircularProgress color="inherit" size={20} /> : null}
-                                        {params.InputProps.endAdornment}
-                                    </>
-                                ),
-                            }}
-                            style={{ margin: "10px" }}
-                        />
-                    </div>
-                )}
-            />
+                <Autocomplete
+                    freeSolo
+                    options={autocompleteOptions}
+                    getOptionLabel={(option) => option.label}
+                    inputValue={searchQuery}
+                    onInputChange={(event, newValue) => {
+                        setSearchQuery(newValue);
+                        fetchSuggestions(newValue);
+                    }}
+                    onChange={(event, newValue) => {
+                        if (newValue?.value) {
+                            setSelectedMovies(prevMovies => [...prevMovies, newValue.value]);
+                            setSearchQuery('');  // Clear search bar
+                        }
+                    }}
+                    renderInput={(params) => (
+                        <div style={{ width: '100%' }}>
+                            <TextField
+                                {...params}
+                                label="Search Movies"
+                                variant="outlined"
+                                fullWidth
+                                InputProps={{
+                                    ...params.InputProps,
+                                    endAdornment: (
+                                        <>
+                                            {loadingSuggestions ? <CircularProgress color="inherit" size={20} /> : null}
+                                            {params.InputProps.endAdornment}
+                                        </>
+                                    ),
+                                }}
+                                style={{ margin: "10px" }}
+                            />
+                        </div>
+                    )}
+                />
             </div>
 
-            <Button variant="contained" color="primary" onClick={handleSearch} style={{ margin: "10px" } }>
+            <Button variant="contained" color="primary" onClick={handleSearch} style={{ margin: "10px" }}>
                 Get Recommendations
             </Button>
 
             <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-            <h3>Selected Movies:</h3>
+                <h3>Selected Movies:</h3>
                 <ul>
                     {selectedMovies.map((movie, index) => (
                         <li key={index}>{movie}</li>
@@ -184,9 +185,9 @@ function HomePage() {
                         ))}
                     </div>
                 </div>
-            )}
-            </main>
-        </div>
+            )
+            }
+        </main >
     );
 }
 
