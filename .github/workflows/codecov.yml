@@ -1,36 +1,63 @@
-name: Code Coverage
+# name: Code Coverage
+
+# on: [push]
+
+# jobs:
+#   upload-coverage:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: 3.8 
+
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install pandas
+#           pip install pylint
+#           pip install -U Flask
+#           pip install -U flask-cors
+#           pip install pytest
+#           pip install pytest-cov
+
+#       - name: Run tests and generate coverage
+#         run: |
+#           cd test
+#           coverage run -m -a test_search
+#           coverage run -m -a tests
+
+#       - name: Upload coverage report to Codecov
+#         run: |
+#           bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+
+
+name: Pytest
 
 on: [push]
 
+permissions:
+  contents: read
+
 jobs:
-  upload-coverage:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: | 
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8 
+    - name: Run tests
+      run: pytest --cov test --cov-report=json
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pandas
-          pip install pylint
-          pip install -U Flask
-          pip install -U flask-cors
-          pip install pytest
-          pip install pytest-cov
-
-      - name: Run tests and generate coverage
-        run: |
-          cd test
-          coverage run -m -a test_search
-          coverage run -m -a tests
-
-      - name: Upload coverage report to Codecov
-        run: |
-          bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+    - name: Upload results to Codecov
+      uses: codecov/codecov-action@v4
+      if: always()
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
