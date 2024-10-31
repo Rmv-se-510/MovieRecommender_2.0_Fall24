@@ -78,12 +78,14 @@ export default function SideNav(props) {
         switch (item) {
             case "Profile": {
                 return (<ListItem key={item} disablePadding sx={{ display: 'block' }}>
-                    <ListItemButton>
-                        <ListItemIcon> <AccountBoxIcon /></ListItemIcon>
-                        <ListItemText primary={item}
-                            sx={[open ? { opacity: 1, } : { opacity: 0, },]}
-                        />
-                    </ListItemButton>
+                    <a href="/account">
+                        <ListItemButton>
+                            <ListItemIcon> <AccountBoxIcon /></ListItemIcon>
+                            <ListItemText primary={item}
+                                sx={[open ? { opacity: 1, } : { opacity: 0, },]}
+                            />
+                        </ListItemButton>
+                    </a>
                 </ListItem>)
             }
             case "Movies": {
@@ -98,12 +100,13 @@ export default function SideNav(props) {
 
             } case "Search": {
                 return (<ListItem key={item} disablePadding sx={{ display: 'block' }}>
-                    <ListItemButton>
-                        <ListItemIcon> <SearchIcon /></ListItemIcon>
-                        <ListItemText primary={item}
-                            sx={[open ? { opacity: 1, } : { opacity: 0, },]}
-                        />
-                    </ListItemButton>
+                    <a href="/homepage">
+                        <ListItemButton>
+                            <ListItemIcon> <SearchIcon /></ListItemIcon>
+                            <ListItemText primary={item}
+                                sx={[open ? { opacity: 1, } : { opacity: 0, },]}
+                            />
+                        </ListItemButton></a>
                 </ListItem>)
 
             }
@@ -111,16 +114,19 @@ export default function SideNav(props) {
     })
 
     return (
-        <Drawer variant="permanent" open={open}>
-            <DrawerHeader>
-                <IconButton onClick={() => { }}>
-                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                </IconButton>
-            </DrawerHeader>
-            <Divider />
+        <React.Fragment>
+            <Drawer variant="permanent" open={open}>
+                <DrawerHeader>
+                    <IconButton onClick={() => { }}>
+                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                    </IconButton>
+                </DrawerHeader>
+                <Divider />
 
-            <List>
-                {listItems}
-            </List>
-        </Drawer>)
+                <List>
+                    {listItems}
+                </List>
+            </Drawer>
+        </React.Fragment>
+    )
 }
