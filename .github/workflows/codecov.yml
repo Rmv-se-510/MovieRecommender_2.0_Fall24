@@ -82,3 +82,6 @@ jobs:
       - name: Upload coverage report to Codecov
         run: |
           bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+
+      codecov: 
+      token: afb15810-a995-4210-8dbc-017e93a19dae
