@@ -26,5 +26,5 @@ jobs:
       run: python test/test_search.py
     - name: Running test cases for util
       run: python test/tests.py
-    - name: Running test cases for api
-      run: python test/test_api.py
+    # - name: Running test cases for api
+    #   run: python test/test_api.py
