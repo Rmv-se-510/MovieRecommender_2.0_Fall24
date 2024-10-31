@@ -1,5 +1,4 @@
 export async function register_api_call(payload){
-  // console.log(payload)
   let resp = await fetch("/register", {
     method: 'POST',
     headers: {
@@ -9,7 +8,6 @@ export async function register_api_call(payload){
   })
 
   let data = await resp.json()
-  // console.log(data)
   return data
 }
 

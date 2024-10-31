@@ -6,6 +6,7 @@ import PageHeader from './Components/PageHeader/PageHeader';
 import WorkspaceShell from './Components/WorkspaceShell/WorkspaceShell';
 import AppRouter from './AppRouter';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 const darkTheme = createTheme({
   palette: {
@@ -22,7 +23,16 @@ const darkTheme = createTheme({
 const drawerWidth = 240;
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  let cached = JSON.parse(localStorage.getItem("loggedIn"));
+  const initialValue = cached === null ? false : cached;
+  const [loggedIn, setLoggedIn] = useState(initialValue);
+
+  useEffect(() => {
+    localStorage.setItem("loggedIn", JSON.stringify(loggedIn));
+  }, [loggedIn])
+
+  useEffect(() => (() => localStorage.clear("loggedIn")), [])
+
   return (<ThemeProvider theme={darkTheme}>
     <CssBaseline />
     <div className="App">

@@ -48,37 +48,39 @@ export default function RegisterPage() {
 
 
   return (
-    <section className="register-section">
-      <main style={{ paddingTop: '85px' }}></main>
-      <Typography color="primary" variant="h6"> New User? Sign up below and start binging!</Typography>
-      <form className="register-form">
-        <InputLabel htmlFor="username">Username</InputLabel>
-        <TextField id="username" aria-describedby="username-helper" type="text" required={true} error={userData.username.error != undefined} onChange={(e) => {
-          let data = userNameValidator(e.target.value)
-          setUserData({ ...userData, username: data });
-        }} />
-        {userData.username.error && <FormHelperText error={true}>{userData.username.error}</FormHelperText>}
-        <InputLabel htmlFor="email">Email</InputLabel>
-        <TextField id="email" aria-describedby="email-helper" type="email" required={true} onChange={(e) => {
-          let data = emailValidator(e.target.value)
-          setUserData({ ...userData, email: data });
-        }} value={userData.email.value} error={userData.email.error != undefined} />
-        {userData.email.error && <FormHelperText error={true}>{userData.email.error}</FormHelperText>}
-        <InputLabel htmlFor="pass">Password</InputLabel>
-        <TextField id="pass" aria-describedby="pass-helper" type="password" required={true} onChange={(e) => {
-          let data = passwordValidator(e.target.value, false)
-          setUserData({ ...userData, password: data });
-        }} value={userData.password.value} error={userData.password.error != undefined} />
-        {userData.password.error && <FormHelperText error={true}>{userData.password.error}</FormHelperText>}
-        <InputLabel htmlFor="confirm-pass">Confirm Password</InputLabel>
-        <TextField id="confirm-pass" aria-describedby="confirm-pass-helper" type="password" required={true} onChange={(e) => {
-          let data = confirmPasswordValidator(e.target.value, userData.password.value)
-          setUserData({ ...userData, confirmPassword: data });
-        }} value={userData.confirmPassword.value} error={userData.confirmPassword.error != undefined} />
-        {userData.confirmPassword.error && <FormHelperText error={true}>{userData.confirmPassword.error}</FormHelperText>}
-        <Button className="submit" variant="contained" onClick={registerUser} disableRipple={true}> Register</Button>
-        {alert.visible && generateAlert("register-alert", alert)}
-      </form>
-    </section>
+    <React.Fragment>
+      <section className="register-section" data-testid="register-section">
+        <main style={{ paddingTop: '85px' }}></main>
+        <Typography color="primary" variant="h6"> New User? Sign up below and start binging!</Typography>
+        <form className="register-form">
+          <InputLabel htmlFor="username">Username</InputLabel>
+          <TextField data-testid="username" aria-describedby="username-helper" type="text" required={true} error={userData.username.error != undefined} onChange={(e) => {
+            let data = userNameValidator(e.target.value)
+            setUserData({ ...userData, username: data });
+          }} />
+          {userData.username.error && <FormHelperText error={true}>{userData.username.error}</FormHelperText>}
+          <InputLabel htmlFor="email">Email</InputLabel>
+          <TextField data-testid="email" aria-describedby="email-helper" type="email" required={true} onChange={(e) => {
+            let data = emailValidator(e.target.value)
+            setUserData({ ...userData, email: data });
+          }} value={userData.email.value} error={userData.email.error != undefined} />
+          {userData.email.error && <FormHelperText error={true}>{userData.email.error}</FormHelperText>}
+          <InputLabel htmlFor="pass">Password</InputLabel>
+          <TextField data-testid="pass" aria-describedby="pass-helper" type="password" required={true} onChange={(e) => {
+            let data = passwordValidator(e.target.value, false)
+            setUserData({ ...userData, password: data });
+          }} value={userData.password.value} error={userData.password.error != undefined} />
+          {userData.password.error && <FormHelperText error={true}>{userData.password.error}</FormHelperText>}
+          <InputLabel htmlFor="confirm-pass">Confirm Password</InputLabel>
+          <TextField data-testid="confirm-pass" aria-describedby="confirm-pass-helper" type="password" required={true} onChange={(e) => {
+            let data = confirmPasswordValidator(e.target.value, userData.password.value)
+            setUserData({ ...userData, confirmPassword: data });
+          }} value={userData.confirmPassword.value} error={userData.confirmPassword.error != undefined} />
+          {userData.confirmPassword.error && <FormHelperText error={true}>{userData.confirmPassword.error}</FormHelperText>}
+          <Button className="submit" data-testid="register" variant="contained" onClick={registerUser} disableRipple={true}> Register</Button>
+          {alert.visible && generateAlert("register-alert", alert)}
+        </form>
+      </section>
+    </React.Fragment>
   )
 }
