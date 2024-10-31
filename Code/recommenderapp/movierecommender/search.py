@@ -1,7 +1,10 @@
 import pandas as pd
 
 # from app import app
+# from Code.recommenderapp import app       
 from movierecommender import app
+
+
 from flask import jsonify, request, render_template
 import sys
 import os
@@ -13,7 +16,8 @@ project_dir = os.path.dirname(code_dir)
 
 class Search:
 
-    df = pd.read_csv(code_dir + "/movierecommender/data/movies.csv")
+    # df = pd.read_csv(code_dir + "/movierecommender/data/movies.csv")
+    df = pd.read_csv(code_dir + "/movierecommender/data/cleaned_movies.csv")
 
     def __init__(self):
         pass

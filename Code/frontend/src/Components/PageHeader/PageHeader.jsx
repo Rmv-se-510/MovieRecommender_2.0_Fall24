@@ -37,8 +37,8 @@ export default function PageHeader(props) {
     }))
     return <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <AppHeader >
-            <Typography variant="h5" noWrap component="div" className="app-logo" color="primary">
-                Cineflix
+            <Typography variant="h5" noWrap component="div" className="app-logo" color="primary" sx={{ fontWeight: 'bold' }}>
+                CINEFLIX
             </Typography>
             {props.loggedIn &&
                 <Button color="secondary"

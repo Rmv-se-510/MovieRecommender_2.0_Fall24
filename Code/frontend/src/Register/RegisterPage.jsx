@@ -49,7 +49,8 @@ export default function RegisterPage() {
 
   return (
     <section className="register-section">
-      <Typography color="primary" variant="h6"> New User? Sign up below and start binging </Typography>
+      <main style={{ paddingTop: '85px' }}></main>
+      <Typography color="primary" variant="h6"> New User? Sign up below and start binging!</Typography>
       <form className="register-form">
         <InputLabel htmlFor="username">Username</InputLabel>
         <TextField id="username" aria-describedby="username-helper" type="text" required={true} error={userData.username.error != undefined} onChange={(e) => {

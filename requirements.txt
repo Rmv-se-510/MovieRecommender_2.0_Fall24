@@ -6,3 +6,4 @@ autopep8>=1.5.4,<=1.6
 requests>=2.22.0,<=2.25.0
 Werkzeug==2.2.0
 flask-sqlalchemy==3.0.3
+fuzzywuzzy

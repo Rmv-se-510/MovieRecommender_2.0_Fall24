@@ -27,6 +27,7 @@ function App() {
     <CssBaseline />
     <div className="App">
       <PageHeader drawerWidth={drawerWidth} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+      <main style={{ paddingTop: '64px' }}></main>
       {loggedIn && <SideNav drawerWidth={drawerWidth} />}
       <WorkspaceShell isLoginPage={!loggedIn} children={<AppRouter setLoggedIn={setLoggedIn} loggedIn={loggedIn} />} />
     </div>
