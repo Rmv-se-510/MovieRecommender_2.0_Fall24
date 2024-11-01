@@ -60,6 +60,7 @@ Your perfect movie is just a click away. Get started now and make every movie ni
 4. Cast and Director information shown for each movie.
 5. Cleaned CSV data files to produce better recommendations and results on the frontend.
 6. 60 new Test cases (previously just 19)!
+7. Tested expansion of movies and ratings database (see #4 in [Future Project Plan](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#future-project-plan-))
 
 
 <img width="500" height="250" alt="color picker" src="asset/giphy.gif" /><br><br>
@@ -71,10 +72,10 @@ Your perfect movie is just a click away. Get started now and make every movie ni
 The following changes can take this project to an even greater level:
 
 1. Create page to only display movies of each director, actor, or genre when the name is clicked on.
-2. Enhance the user profile page.
+2. Enhance the user profile page to display liked, disliked, and saved movies in a clean way.
 3. Remove search functionality and suggest recommendations on home page based off user likes and dislikes.
 4. Phase 4 tested an expansion of the movies.csv and ratings.csv file from 9k movies and 100k ratings to 87k movies and 32M ratings, but did not include because it would be a great opportunity for a future phase to pick up these files from [MovieLens](https://grouplens.org/datasets/movielens/32m/) and figure out the best sampling method to incorporate the new data into the existing code.
-
+5. Improve recommendations response speed.
 
 Note: Our system can be virtually tested through Github Actions inbuilt feature of build and test queries using python.
 
