@@ -8,6 +8,7 @@ import {
 import LoginPage from "./Login/LoginPage";
 import RegisterPage from "./Register/RegisterPage";
 import HomePage from "./Home/Home";
+// import AccountPage from "./Account/AccountPage";
 
 export default function AppRouter(props) {
   const router = createBrowserRouter([
@@ -28,14 +29,14 @@ export default function AppRouter(props) {
           (<div className="homepage">
             <HomePage />
           </div>) : (<Navigate to="/" />)
-    }
+    },
     // {
-    //   "path": "/homepage",
+    //   "path": "/account",
     //   element:
-    //     !props.loggedIn ?
-    //       (<div className="homepage">
-    //         <HomePage/>
-    //       </div>) : (<div />)
+    //     props.loggedIn ?
+    //       (<div className="account">
+    //         <AccountPage />
+    //       </div>) : (<Navigate to="/" />)
     // }
   ])
   return <RouterProvider router={router} />

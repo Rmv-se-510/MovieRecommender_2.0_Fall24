@@ -9,7 +9,6 @@ import { generateAlert } from "../Register/RegisterPage";
 export default function LoginPage(props) {
   const [userData, setUserData] = useState({ email: { value: "", error: undefined }, password: { value: "", error: undefined }, rememberMe: false });
   const [alert, setAlert] = useState({ visible: false, success: "", error: "" })
-  // const navigate = useNavigate();
 
   const loginUser = async () => {
     const hashedPassword = await hashPassword(userData.password.value, props.isTest);
@@ -21,6 +20,7 @@ export default function LoginPage(props) {
       if (userData.rememberMe) {
         //TODO persist state?
       }
+      localStorage.setItem("UID", resp.id)
       // setAlert({ ...alert, visible: true, success: resp.message })
       props.setLoggedIn(true)
     }

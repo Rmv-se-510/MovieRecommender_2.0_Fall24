@@ -44,7 +44,10 @@ export default function PageHeader(props) {
                 <Button color="secondary"
                     className="logout"
                     endIcon={<LogoutOutlinedIcon />}
-                    onClick={() => { props.setLoggedIn(false) }}>Logout</Button>}
+                    onClick={() => {
+                        props.setLoggedIn(false);
+                        localStorage.removeItem("UID")
+                    }}>Logout</Button>}
         </AppHeader>
     </AppBar >
 }

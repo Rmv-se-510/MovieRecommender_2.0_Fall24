@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, Button, CircularProgress, Autocomplete, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { TextField, Button, CircularProgress, Autocomplete, Card, CardContent, CardMedia, Typography, IconButton } from '@mui/material';
 import axios from 'axios';
+import './Home.css';
+import { FavoriteBorderOutlined, FavoriteBorderSharp, FavoriteTwoTone, SentimentDissatisfiedRounded, SentimentDissatisfiedSharp, WatchLaterSharp, WatchLaterTwoTone } from '@mui/icons-material';
+import { addMovieToList, deleteMovieFromList, getMovieInList as getMoviesInList } from '../utils/api';
 
 function HomePage() {
   const [homeInfo, setHomeInfo] = useState(null);
@@ -11,27 +14,45 @@ function HomePage() {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [selectedMovies, setSelectedMovies] = useState([]);
   const [recommendations, setRecommendations] = useState(null);
+  const [movieLists, setMovieLists] = useState({ 0: new Set(), 1: new Set(), 2: new Set() })
 
   useEffect(() => {
-    const fetchHomeInfo = async () => {
-      try {
-        const response = await fetch('/testing');           // just a testing route I made in routes.py
-        console.log(response)
-        // if (!response.ok) throw new Error('Network response was not ok');
-        if (!response.ok) {
-          console.log('Network response was not ok');
-          return;
-        }
-        const data = await response.json();
-        setHomeInfo(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchHomeInfo();
+    getMovieLists();
   }, []);
+
+  const fetchHomeInfo = async () => {
+    try {
+      const response = await fetch('/testing');           // just a testing route I made in routes.py
+      console.log(response)
+      // if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) {
+        console.log('Network response was not ok');
+        return;
+      }
+      const data = await response.json();
+      setHomeInfo(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getMovieLists = async () => {
+    const user = localStorage.getItem("UID");
+    let newState = { ...movieLists }
+    for (const type in Object.keys(movieLists)) {
+      const payload = { user, type }
+      const data = await getMoviesInList(payload)
+      const movieIds = data["movies"]
+      for (const idx in movieIds) {
+        newState[type].add(movieIds[idx]);
+      }
+    }
+    console.log(newState)
+    setMovieLists(newState)
+  }
 
   const handleSearch = async () => {
     try {
@@ -45,7 +66,7 @@ function HomePage() {
         console.log(baseKey)
 
         return {
-          id: data.rating[`${baseKey}-movieId`] || undefined,
+          id: data.rating[`${baseKey}-i`] || undefined,
           title: data.rating[`${baseKey}-t`] || "Title not available",
           genre: data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
           poster: data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
@@ -55,6 +76,7 @@ function HomePage() {
           director: data.rating[`${baseKey}-d`] || " "
         };
       });
+      console.log(transformedRecommendations)
 
       setRecommendations(transformedRecommendations);
       setSearchQuery("");
@@ -66,6 +88,27 @@ function HomePage() {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+
+  const actionButtonHandler = async (movieId, type) => {
+    const user = localStorage.getItem("UID");
+    console.log(user, movieId, type)
+    const payload = { user, movieId, type }
+    let resp
+    let newState = { ...movieLists }
+    if (movieLists[type].has(movieId)) {
+      resp = await deleteMovieFromList(payload)
+      let currentSet = new Set(movieLists[type])
+      currentSet.delete(movieId)
+      newState[type] = currentSet
+    } else {
+      resp = await addMovieToList(payload)
+      let currentSet = new Set(movieLists[type])
+      currentSet.add(movieId)
+      newState[type] = currentSet
+    }
+    setMovieLists(newState)
+    console.log(resp)
+  }
 
   const fetchSuggestions = async (query) => {
     if (!query) return;
@@ -157,13 +200,25 @@ function HomePage() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
             {recommendations.map((movie, index) => (
               <Card key={index} style={{ width: '250px' }}>
+                {console.log(movie.id, movieLists[0].has(movie.id))}
                 <CardMedia
                   component="img"
-                  height="350"
+                  height="350px"
                   image={movie.poster || "https://via.placeholder.com/250"}  // Check if movie has poster property
                   alt={movie.title}     // Check if movie has title property
                 />
                 <CardContent>
+                  <div className='actionButtons'>
+                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie.id, 0)}>
+                      {movieLists[0].has(movie.id) ? (<FavoriteBorderSharp color='primary' />) : (<FavoriteBorderSharp />)}
+                    </IconButton>}
+                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie.id, 1)}>
+                      {movieLists[1].has(movie.id) ? (<SentimentDissatisfiedSharp color='primary' />) : (<SentimentDissatisfiedSharp />)}
+                    </IconButton>}
+                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie.id, 2)}>
+                      {movieLists[2].has(movie.id) ? (<WatchLaterSharp color='primary' />) : (<WatchLaterSharp />)}
+                    </IconButton>}
+                  </div>
                   <Typography variant="h6">{movie.title || "Title not available"}</Typography>
                   <Typography variant="body2">Rating: {movie.rating || "N/A"}/10</Typography>
                   <Typography variant="body2">Director: {movie.director || " "}</Typography>

@@ -25,6 +25,12 @@ const drawerWidth = 240;
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem("UID")
+    }
+  }, [])
+
   return (<ThemeProvider theme={darkTheme}>
     <CssBaseline />
     <div className="App">
