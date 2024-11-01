@@ -27,6 +27,8 @@ jobs:
           pip install -r ./requirements.txt
 
       - name: Run tests and generate coverage
+        env:
+          api_key: ${{ secrets.api_key }}
         run: |
           cd test
           coverage run -m unittest test_search

@@ -27,4 +27,6 @@ jobs:
     - name: Running test cases for util
       run: python test/tests.py
     - name: Running test cases for api
+      env: 
+        api_key: ${{ secrets.api_key }}
       run: python test/test_api.py
