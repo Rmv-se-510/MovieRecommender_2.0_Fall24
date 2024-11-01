@@ -210,3 +210,6 @@ You also have the option of contacting us:
 This project is under MIT License.
 - The MIT license explicitly grants users the right to reuse code for various purposes,hence for improval of future scope of the code we have added MIT license.
 - They include the original MIT license when distributing it. Allowing users to customize or adapt the code to meet their specific requirements.
+
+## Need Help?
+Contact us at helpcineflix@gmail.com for any query.
