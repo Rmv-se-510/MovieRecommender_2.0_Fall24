@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { TextField, Button, CircularProgress, Autocomplete, Card, CardContent, CardMedia, Typography, IconButton } from '@mui/material';
 import axios from 'axios';
 import './Home.css';
-import { FavoriteBorderOutlined, FavoriteBorderSharp, FavoriteTwoTone, SentimentDissatisfiedRounded, SentimentDissatisfiedSharp, WatchLaterSharp, WatchLaterTwoTone } from '@mui/icons-material';
+import { FavoriteBorderSharp, SentimentDissatisfiedSharp, WatchLaterSharp } from '@mui/icons-material';
 import { addMovieToList, deleteMovieFromList, getMovieInList as getMoviesInList } from '../utils/api';
 
 function HomePage() {
   const [homeInfo, setHomeInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [autocompleteOptions, setAutocompleteOptions] = useState([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
@@ -109,7 +108,7 @@ function HomePage() {
       newState[type] = currentSet
     } else {
       resp = await addMovieToList(payload)
-      if(resp !== undefined){
+      if (resp !== undefined) {
         let currentSet = new Set(movieLists[type])
         currentSet.add(movieId)
         newState[type] = currentSet
@@ -123,14 +122,6 @@ function HomePage() {
     if (!query) return;
     setLoadingSuggestions(true);
     try {
-      const response = await axios.get(
-        "https://api.themoviedb.org/3/search/movie",
-        {
-          params: {
-            query,
-            api_key: "ac43a832f0b2ad9b1fac50f785b3452d",
-            include_adult: false,
-          },
       const response = await axios.get(
         "https://api.themoviedb.org/3/search/movie",
         {
@@ -177,7 +168,6 @@ function HomePage() {
           }}
           renderInput={(params) => (
             <div style={{ width: "100%" }}>
-            <div style={{ width: "100%" }}>
               <TextField
                 {...params}
                 label="Search Movies"
@@ -210,12 +200,6 @@ function HomePage() {
         onClick={handleSearch}
         style={{ margin: "10px" }}
       >
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSearch}
-        style={{ margin: "10px" }}
-      >
         Get Recommendations
       </Button>
 
@@ -231,7 +215,6 @@ function HomePage() {
       {recommendations && (
         <div style={{ marginTop: "20px", marginBottom: "20px" }}>
           <h3>Recommended Movies:</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
             {recommendations.map((movie, index) => (
               <Card key={index} style={{ width: '250px' }}>
@@ -269,35 +252,6 @@ function HomePage() {
                       Watch Trailer
                     </Button>
                   )}
-
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleWatchLater(movie)}
-                    style={{ marginTop: "10px" }}
-                  >
-                    Watch Later
-                  </Button>
-
-                  <RadioGroup
-                    row
-                    aria-label="movie-rating"
-                    name={`movie-rating-${movie.title}`}
-                    value={movieRatings[movie.title] || ""}
-                    onChange={(e) => handleRatingChange(movie, e.target.value)}
-                    style={{ marginTop: "10px" }}
-                  >
-                    <FormControlLabel
-                      value="like"
-                      control={<Radio color="primary" />}
-                      label="Like"
-                    />
-                    <FormControlLabel
-                      value="dislike"
-                      control={<Radio color="secondary" />}
-                      label="Dislike"
-                    />
-                  </RadioGroup>
                 </CardContent>
               </Card>
             ))}
