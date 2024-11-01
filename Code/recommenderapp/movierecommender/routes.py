@@ -369,7 +369,7 @@ def removeMovieFromList(user,listType,movieId):
         db.session.rollback()
         db.session.flush()
         print(e)
-        resp = {"error": "Adding movie to the list failed"}
+        resp = {"error": "Deleting movie from the list failed"}
         return jsonify(resp),400
 
 @app.route("/movie/<user>/<listType>/<movieId>", methods=["POST"])
@@ -379,6 +379,10 @@ def addMovieToList(user,listType,movieId):
     listType = int(listType)
     movieId = int(movieId)
     print(user,listType,movieId)
+    rows = db.session.query(MovieList).filter(and_(MovieList.userId == user , MovieList.movieId== movieId)).all()
+    if(len(rows) > 0):
+        resp = {"error": "Adding movie to the list failed"}
+        return jsonify(resp),400
     row = MovieList(userId=user, movieId= movieId, listType=listType)
     try:
         db.session.add(row)

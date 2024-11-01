@@ -103,9 +103,11 @@ function HomePage() {
       newState[type] = currentSet
     } else {
       resp = await addMovieToList(payload)
-      let currentSet = new Set(movieLists[type])
-      currentSet.add(movieId)
-      newState[type] = currentSet
+      if(resp !== undefined){
+        let currentSet = new Set(movieLists[type])
+        currentSet.add(movieId)
+        newState[type] = currentSet
+      }
     }
     setMovieLists(newState)
     console.log(resp)

@@ -42,6 +42,9 @@ export async function addMovieToList(payload){
     method: 'POST',
   })
 
+  if(resp.status !== 200){
+    return undefined
+  }
   let data = await resp.json()
   return data
 }
