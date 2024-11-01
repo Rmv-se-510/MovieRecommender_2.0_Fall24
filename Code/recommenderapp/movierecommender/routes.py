@@ -47,6 +47,7 @@ def clean_movie_title(title):
 def get_genre_info():
     genre_url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}&language=en-US'
     response = requests.get(genre_url)
+    print(response.json())
     genres = response.json()['genres']
 
     genre_dict = {}
