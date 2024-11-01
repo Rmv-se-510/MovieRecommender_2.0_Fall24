@@ -25,8 +25,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 load_dotenv()
 
 # Get API Keys from .env file
-# OMDB_API_KEY = os.getenv("OMDB_API_KEY")
-api_key = os.getenv("tmdb_api_key")
+api_key = os.getenv("api_key")
 
 
 # def clean_movie_title(title):

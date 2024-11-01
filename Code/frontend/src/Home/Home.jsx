@@ -9,7 +9,7 @@ function HomePage() {
   const [homeInfo, setHomeInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [autocompleteOptions, setAutocompleteOptions] = useState([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [selectedMovies, setSelectedMovies] = useState([]);
@@ -56,24 +56,28 @@ function HomePage() {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.post('/predict', { movie_list: selectedMovies });
-      console.log("Response", response)
+      const response = await axios.post("/predict", {
+        movie_list: selectedMovies,
+      });
+      console.log("Response", response);
       const data = response.data;
-      console.log("Data", data)
+      console.log("Data", data);
 
-      const transformedRecommendations = data.recommendations.map(title => {
+      const transformedRecommendations = data.recommendations.map((title) => {
         const baseKey = title;
-        console.log(baseKey)
+        console.log(baseKey);
 
         return {
           id: data.rating[`${baseKey}-i`] || undefined,
           title: data.rating[`${baseKey}-t`] || "Title not available",
-          genre: data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
-          poster: data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
+          genre:
+            data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
+          poster:
+            data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
           rating: data.rating[`${baseKey}-r`] || "Rating not available",
           url: data.rating[`${baseKey}-u`] || null,
           cast: data.rating[`${baseKey}-c`] || " ",
-          director: data.rating[`${baseKey}-d`] || " "
+          director: data.rating[`${baseKey}-d`] || " ",
         };
       });
       console.log(transformedRecommendations)
@@ -85,9 +89,6 @@ function HomePage() {
     }
   };
 
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
 
   const actionButtonHandler = async (movieId, type) => {
     const user = localStorage.getItem("UID");
@@ -114,17 +115,20 @@ function HomePage() {
     if (!query) return;
     setLoadingSuggestions(true);
     try {
-      const response = await axios.get('https://api.themoviedb.org/3/search/movie', {
-        params: {
-          query,
-          api_key: "ac43a832f0b2ad9b1fac50f785b3452d",
-          include_adult: false
+      const response = await axios.get(
+        "https://api.themoviedb.org/3/search/movie",
+        {
+          params: {
+            query,
+            api_key: "ac43a832f0b2ad9b1fac50f785b3452d",
+            include_adult: false,
+          },
         }
-      });
-      const suggestions = response.data.results.map(movie => ({
-        label: `${movie.title} (${movie.release_date?.split('-')[0] || 'N/A'})`,
+      );
+      const suggestions = response.data.results.map((movie) => ({
+        label: `${movie.title} (${movie.release_date?.split("-")[0] || "N/A"})`,
         id: movie.id,
-        value: movie.title
+        value: movie.title,
       }));
       setAutocompleteOptions(suggestions);
     } catch (error) {
@@ -139,8 +143,6 @@ function HomePage() {
 
   return (
     <main data-testid="home">
-      {/* <h1>{homeInfo?.message}</h1>
-            <p>{homeInfo?.info}</p> */}
       <div className="search-container">
         <Autocomplete
           freeSolo
@@ -154,11 +156,11 @@ function HomePage() {
           onChange={(event, newValue) => {
             if (newValue?.value) {
               setSelectedMovies(prevMovies => [...prevMovies, newValue.value]);
-              setSearchQuery('');  // Clear search bar
+              setSearchQuery(""); // Clear search bar
             }
           }}
           renderInput={(params) => (
-            <div style={{ width: '100%' }}>
+            <div style={{ width: "100%" }}>
               <TextField
                 {...params}
                 label="Search Movies"
@@ -168,7 +170,9 @@ function HomePage() {
                   ...params.InputProps,
                   endAdornment: (
                     <>
-                      {loadingSuggestions ? <CircularProgress color="inherit" size={20} /> : null}
+                      {loadingSuggestions ? (
+                        <CircularProgress color="inherit" size={20} />
+                      ) : null}
                       {params.InputProps.endAdornment}
                     </>
                   ),
@@ -180,7 +184,12 @@ function HomePage() {
         />
       </div>
 
-      <Button variant="contained" color="primary" onClick={handleSearch} style={{ margin: "10px" }}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSearch}
+        style={{ margin: "10px" }}
+      >
         Get Recommendations
       </Button>
 
@@ -194,10 +203,9 @@ function HomePage() {
       </div>
 
       {recommendations && (
-        // <div style={{ marginTop: "20px" }}>
         <div style={{ marginTop: "20px", marginBottom: "20px" }}>
           <h3>Recommended Movies:</h3>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
             {recommendations.map((movie, index) => (
               <Card key={index} style={{ width: '250px' }}>
                 {console.log(movie.id, movieLists[0].has(movie.id))}
@@ -230,7 +238,7 @@ function HomePage() {
                       color="secondary"
                       href={movie.url}
                       target="_blank"
-                      style={{ marginTop: '10px' }}
+                      style={{ marginTop: "10px", marginRight: "10px" }}
                     >
                       Watch Trailer
                     </Button>
@@ -240,9 +248,8 @@ function HomePage() {
             ))}
           </div>
         </div>
-      )
-      }
-    </main >
+      )}
+    </main>
   );
 }
 

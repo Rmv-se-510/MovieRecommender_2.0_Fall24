@@ -1,5 +1,4 @@
 name: Code Coverage
-
 on: [push]
 
 jobs:
@@ -13,7 +12,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8 
+          python-version: 3.12
 
       - name: Install dependencies
         run: |
@@ -24,13 +23,14 @@ jobs:
           pip install -U flask-cors
           pip install pytest
           pip install pytest-cov
+          pip install -r ./requirements.txt
 
       - name: Run tests and generate coverage
+        env:
+          api_key: ${{ secrets.api_key }}
         run: |
-          cd test
-          coverage run -m -a test_search
-          coverage run -m -a tests
+          coverage run -m unittest discover -s test
+          coverage report
 
       - name: Upload coverage report to Codecov
-        run: |
-          bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
