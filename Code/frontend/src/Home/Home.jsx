@@ -10,6 +10,7 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [autocompleteOptions, setAutocompleteOptions] = useState([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [selectedMovies, setSelectedMovies] = useState([]);
@@ -74,9 +75,14 @@ function HomePage() {
             data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
           poster:
             data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
+          genre:
+            data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
+          poster:
+            data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
           rating: data.rating[`${baseKey}-r`] || "Rating not available",
           url: data.rating[`${baseKey}-u`] || null,
           cast: data.rating[`${baseKey}-c`] || " ",
+          director: data.rating[`${baseKey}-d`] || " ",
           director: data.rating[`${baseKey}-d`] || " ",
         };
       });
@@ -125,6 +131,14 @@ function HomePage() {
             api_key: "ac43a832f0b2ad9b1fac50f785b3452d",
             include_adult: false,
           },
+      const response = await axios.get(
+        "https://api.themoviedb.org/3/search/movie",
+        {
+          params: {
+            query,
+            api_key: "ac43a832f0b2ad9b1fac50f785b3452d",
+            include_adult: false,
+          },
         }
       );
       const suggestions = response.data.results.map((movie) => ({
@@ -163,6 +177,7 @@ function HomePage() {
           }}
           renderInput={(params) => (
             <div style={{ width: "100%" }}>
+            <div style={{ width: "100%" }}>
               <TextField
                 {...params}
                 label="Search Movies"
@@ -172,6 +187,9 @@ function HomePage() {
                   ...params.InputProps,
                   endAdornment: (
                     <>
+                      {loadingSuggestions ? (
+                        <CircularProgress color="inherit" size={20} />
+                      ) : null}
                       {loadingSuggestions ? (
                         <CircularProgress color="inherit" size={20} />
                       ) : null}
@@ -186,6 +204,12 @@ function HomePage() {
         />
       </div>
 
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSearch}
+        style={{ margin: "10px" }}
+      >
       <Button
         variant="contained"
         color="primary"
@@ -208,9 +232,9 @@ function HomePage() {
         <div style={{ marginTop: "20px", marginBottom: "20px" }}>
           <h3>Recommended Movies:</h3>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
             {recommendations.map((movie, index) => (
               <Card key={index} style={{ width: '250px' }}>
-                {console.log(movie.id, movieLists[0].has(movie.id))}
                 <CardMedia
                   component="img"
                   height="350px"
@@ -245,6 +269,35 @@ function HomePage() {
                       Watch Trailer
                     </Button>
                   )}
+
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleWatchLater(movie)}
+                    style={{ marginTop: "10px" }}
+                  >
+                    Watch Later
+                  </Button>
+
+                  <RadioGroup
+                    row
+                    aria-label="movie-rating"
+                    name={`movie-rating-${movie.title}`}
+                    value={movieRatings[movie.title] || ""}
+                    onChange={(e) => handleRatingChange(movie, e.target.value)}
+                    style={{ marginTop: "10px" }}
+                  >
+                    <FormControlLabel
+                      value="like"
+                      control={<Radio color="primary" />}
+                      label="Like"
+                    />
+                    <FormControlLabel
+                      value="dislike"
+                      control={<Radio color="secondary" />}
+                      label="Dislike"
+                    />
+                  </RadioGroup>
                 </CardContent>
               </Card>
             ))}
