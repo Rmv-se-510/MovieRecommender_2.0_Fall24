@@ -28,3 +28,8 @@ class Feedback(db.Model):
 
     def __repr__(self):
         return f"Feedback('{self.title}','{self.content}')"
+
+class MovieList(db.Model):
+    userId = db.Column(db.Integer, primary_key=True)
+    movieId = db.Column(db.Integer, primary_key=True)
+    listType = db.Column(db.Integer, primary_key=True)

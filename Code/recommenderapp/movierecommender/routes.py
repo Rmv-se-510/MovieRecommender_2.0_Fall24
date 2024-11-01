@@ -3,7 +3,7 @@ from flask_cors import CORS, cross_origin
 from movierecommender import app,db, bcrypt
 from movierecommender.forms import RegistrationForm, LoginForm
 from flask_login import login_user, current_user, logout_user, login_required
-from movierecommender.models import User, Feedback
+from movierecommender.models import MovieList, User, Feedback
 import json
 import sys
 import csv
@@ -14,6 +14,7 @@ import requests
 from movierecommender.prediction_scripts.item_based import recommendForNewUser
 from movierecommender.search import Search
 from dotenv import load_dotenv
+from sqlalchemy import and_
 
 CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -32,7 +33,7 @@ api_key = os.getenv("tmdb_api_key")
 #     year = re.search(r'\((\d{4})\)', title).group(1)
 #     new_title = re.sub(r'\(.*?\)', '', title)
 #     new_title = re.sub(r'[^A-Za-z0-9\s]', '', new_title).strip()
-    
+
 #     return new_title, year
 
 def clean_movie_title(title):
@@ -42,7 +43,7 @@ def clean_movie_title(title):
     year = re.search(r'\((\d{4})\)', title).group(1)
     new_title = re.sub(r'\(.*?\)', '', title)
     new_title = re.sub(r'[^A-Za-z0-9\s/]', '', new_title).strip()
-    
+
     return new_title, year
 
 def get_genre_info():
@@ -73,15 +74,15 @@ def get_movie_info2(title):
 
     if movie_data['results']:
         movie = movie_data['results'][0]
-        
+
         movie_id = movie['id']
         # title = movie['title']
         poster_path = movie.get('poster_path', '')
         vote_average = movie.get('vote_average', 'N/A')
         genres = movie.get('genre_ids', [])
-        
+
         poster_url = f'https://image.tmdb.org/t/p/w500{poster_path}' if poster_path else 'No poster available'
-        
+
         print(f"Movie ID: {movie_id}")
         print(f"Title: {title}")
         print(f"Rating: {vote_average}")
@@ -97,7 +98,7 @@ def get_movie_info2(title):
 
     return info
 
-# def get_movie_info(title): 
+# def get_movie_info(title):
 
 #     new_title, year = clean_movie_title(title)   # removes special characters from title and returns title and year of release as 2 variables
 
@@ -110,7 +111,7 @@ def get_movie_info2(title):
 #         print(res)
 #         if(res['Response'] == "True"):
 #             return res
-#         else:  
+#         else:
 #             return { 'Title': title, 'imdbRating':"N/A", 'Genre':'N/A'} #,"Poster":"https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"}
 #     else:
 #         return  { 'Title': title, 'imdbRating':"N/A",'Genre':'N/A'} #, "Poster":"https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"}
@@ -128,20 +129,20 @@ def get_poster(title):
     movie_data = response.json()
 
     if movie_data['results']:
-        
+
         movie = movie_data['results'][0]   # get first result
-         
+
         title = movie['title']
         poster_path = movie.get('poster_path', '')
-        
+
         poster_url = f'https://image.tmdb.org/t/p/w500{poster_path}' if poster_path else 'https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg'
-        
-        
+
+
         print(f"Title: {title}")
         print(f"Poster URL: {poster_url}")
     else:
         poster_url = "https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"
-    
+
     return poster_url
 
 
@@ -187,7 +188,7 @@ def login():
     elif(password != user[0].password):
         return jsonify({"error": "Passwords do not match"}),404
     # print(user[0].email, user[0].password, user[0].password == password)
-    return jsonify({"message": "Logged in successfully"}),200
+    return jsonify({"message": "Logged in successfully", "id":user[0].id}),200
 
 @app.route("/logout")
 def logout():
@@ -210,13 +211,13 @@ def account():
 #         movie_with_rating = {"title": movie, "rating": 5.0}
 #         training_data.append(movie_with_rating)
 #     recommendations = recommendForNewUser(movie_with_rating)
-    
-#     for movie in data1:    
+
+#     for movie in data1:
 #         movie_info = get_movie_info(movie)
 #         if movie_info:
 #             movie_with_rating["title"]=movie
 #             movie_with_rating["rating"]=movie_info["imdbRating"]
-    
+
 #     recommendations = recommendations[:10]
 #     resp = {"recommendations": recommendations}
 #     return resp
@@ -278,7 +279,7 @@ def predict():
                 #     url_vid=None
             else:
                 url_vid = None
-            
+
             credits_url = f'https://api.themoviedb.org/3/movie/{imdb_id}/credits?api_key={api_key}'
             credits_response = requests.get(credits_url)
             credits_data = credits_response.json()
@@ -290,22 +291,23 @@ def predict():
             for actor in cast[:3]:    # get top 3 actors
                 top_cast.append(actor['name'])
             actors = ', '.join(top_cast)
-            
+
             crew = credits_data.get('crew', [])
             director = ' '
             for member in crew:
                 if member['job'] == 'Director':
                     director = member['name']
                     break
-                
+
         else:
-            imdb_id = None 
+            imdb_id = None
             url_vid = None
             top_cast = None
             director = None
 
-        
+
         if movie_info:
+            movie_with_rating[movie+"-i"]=imdb_id
             movie_with_rating[movie+"-t"]=movie_info['Title']
             movie_with_rating[movie+"-r"]=movie_info['rating']
             movie_with_rating[movie+"-g"]=movie_info['Genre']
@@ -342,6 +344,54 @@ def feedback():
     db.session.commit()
     print(data)
     return data
+
+@app.route("/movie/<user>/<listType>", methods=["GET"])
+def getMoviesInList(user,listType):
+    user = int(user)
+    listType = int(listType)
+    rows = MovieList.query.filter_by(userId = user, listType= listType).all()
+    movieIds = list()
+    for row in rows:
+        movieIds.append(row.movieId)
+    print(movieIds)
+    return jsonify({"movies":movieIds})
+
+@app.route("/movie/<user>/<listType>/<movieId>", methods=["DELETE"])
+def removeMovieFromList(user,listType,movieId):
+    user = int(user)
+    listType = int(listType)
+    movieId = int(movieId)
+    print(user,type,movieId)
+    try:
+        db.session.query(MovieList).filter(and_(MovieList.userId == user , MovieList.listType == listType , MovieList.movieId== movieId)).delete()
+        db.session.commit()
+        return jsonify({"message": "Deleted movie from the list"}),200
+    except Exception as e:
+        db.session.rollback()
+        db.session.flush()
+        print(e)
+        resp = {"error": "Adding movie to the list failed"}
+        return jsonify(resp),400
+
+@app.route("/movie/<user>/<listType>/<movieId>", methods=["POST"])
+def addMovieToList(user,listType,movieId):
+    print(user,listType,movieId)
+    user = int(user)
+    listType = int(listType)
+    movieId = int(movieId)
+    print(user,listType,movieId)
+    row = MovieList(userId=user, movieId= movieId, listType=listType)
+    try:
+        db.session.add(row)
+        db.session.commit()
+        return jsonify({"message": "Added movie to the list"}),200
+    except Exception as e:
+        db.session.rollback()
+        db.session.flush()
+        print(e)
+        resp = {"error": "Adding movie to the list failed"}
+        return jsonify(resp),400
+
 @app.route("/movie")
 def movie():
     posts=Feedback.query.all()
