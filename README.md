@@ -213,3 +213,7 @@ This project is under MIT License.
 
 ## Need Help?
 Contact us at helpcineflix@gmail.com for any query.
+
+## Preferred Citation
+Ajay, Karan, Ruthwik (2024, October 31). CINEFLIX: A movie recommendation system. GitHub. <https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24>
+
