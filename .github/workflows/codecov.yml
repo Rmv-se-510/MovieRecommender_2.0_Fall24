@@ -31,6 +31,7 @@ jobs:
           cd test
           coverage run -m unittest test_search
           coverage run -m unittest tests
+          coverage run -m unittest test_api
           coverage report
         
       # - name: Run tests and generate coverage
