@@ -82,7 +82,9 @@ Note: Our system can be virtually tested through Github Actions inbuilt feature 
 
 ## Video ▶️ 
 
-[![Watch the video](https://markdown-videos-api.jorgenkh.no/youtube/fKRjYqZlOTY)](https://www.youtube.com/watch?v=fKRjYqZlOTY)
+[Click here](https://youtu.be/FjBlkBwH2ss) Or click below:
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/FjBlkBwH2ss/0.jpg)](https://www.youtube.com/watch?v=FjBlkBwH2ss)
 
 
 
