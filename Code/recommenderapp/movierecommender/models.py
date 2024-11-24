@@ -33,3 +33,43 @@ class MovieList(db.Model):
     userId = db.Column(db.Integer, primary_key=True)
     movieId = db.Column(db.Integer, primary_key=True)
     listType = db.Column(db.Integer, primary_key=True)
+
+
+class LikedMovies(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    movie_id = db.Column(db.Integer, nullable=False)
+    movie_title = db.Column(db.String(100), nullable=False)
+
+    # Relationship backref (optional if you want to access liked movies from User object)
+    user = db.relationship('User', backref=db.backref('liked_movies', lazy=True))
+
+    def __repr__(self):
+        return f"LikedMovies('{self.user_id}', '{self.movie_id}', '{self.movie_title}')"
+
+
+class WatchLater(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    movie_id = db.Column(db.Integer, nullable=False)
+    movie_title = db.Column(db.String(100), nullable=False)
+
+    # Relationship backref (optional if you want to access watch later movies from User object)
+    user = db.relationship('User', backref=db.backref('watch_later', lazy=True))
+
+    def __repr__(self):
+        return f"WatchLater('{self.user_id}', '{self.movie_id}', '{self.movie_title}')"
+
+
+class DislikedMovies(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    movie_id = db.Column(db.Integer, nullable=False)
+    movie_title = db.Column(db.String(100), nullable=False)
+
+    # Relationship backref (optional if you want to access disliked movies from User object)
+    user = db.relationship('User', backref=db.backref('disliked_movies', lazy=True))
+
+    def __repr__(self):
+        return f"DislikedMovies('{self.user_id}', '{self.movie_id}', '{self.movie_title}')"
+
