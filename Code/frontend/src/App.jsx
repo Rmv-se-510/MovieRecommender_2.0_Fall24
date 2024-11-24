@@ -23,7 +23,17 @@ const darkTheme = createTheme({
 const drawerWidth = 240;
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  
+  // Initialize loggedIn state from localStorage
+  const [loggedIn, setLoggedIn] = useState(() => {
+    const savedState = localStorage.getItem("loggedIn");
+    return savedState === "true"; // Convert string to boolean
+  });
+
+  // Save loggedIn state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("loggedIn", loggedIn);
+  }, [loggedIn]);
 
   useEffect(() => {
     return () => {
