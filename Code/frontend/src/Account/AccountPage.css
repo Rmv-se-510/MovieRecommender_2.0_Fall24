@@ -1,0 +1,17 @@
+/* src/account/Account.css */
+
+.account-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .account-container h1 {
+    color: #333;
+    font-size: 2rem;
+  }
+  
+  .account-container p {
+    color: #666;
+    font-size: 1rem;
+  }
+  
