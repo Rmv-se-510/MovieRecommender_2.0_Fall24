@@ -35,11 +35,11 @@ function App() {
     localStorage.setItem("loggedIn", loggedIn);
   }, [loggedIn]);
 
-  useEffect(() => {
-    return () => {
-      localStorage.removeItem("UID")
-    }
-  }, [])
+  // useEffect(() => {
+  //   return () => {
+  //     localStorage.removeItem("UID")
+  //   }
+  // }, [])
 
   return (<ThemeProvider theme={darkTheme}>
     <CssBaseline />
