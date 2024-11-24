@@ -15,11 +15,14 @@ function HomePage() {
   const [selectedMovies, setSelectedMovies] = useState([]);
   const [recommendations, setRecommendations] = useState(null);
   const [movieLists, setMovieLists] = useState({ 0: new Set(), 1: new Set(), 2: new Set() })
+  const [loadingPersonDetails, setLoadingPersonDetails] = useState(false);
+  const [personDetails, setPersonDetails] = useState(null); // To store person details
 
   useEffect(() => {
     fetchHomeInfo();
     getMovieLists();
   }, []);
+ 
 
   const fetchHomeInfo = async () => {
     try {
@@ -81,7 +84,6 @@ function HomePage() {
           rating: data.rating[`${baseKey}-r`] || "Rating not available",
           url: data.rating[`${baseKey}-u`] || null,
           cast: data.rating[`${baseKey}-c`] || " ",
-          director: data.rating[`${baseKey}-d`] || " ",
           director: data.rating[`${baseKey}-d`] || " ",
         };
       });
@@ -145,6 +147,54 @@ function HomePage() {
     }
   };
 
+  const handlePersonClick = async (name) => {
+    if (!name) return;
+  
+    setRecommendations(null); // Clear recommendations
+    setSelectedMovies([]);
+    setLoadingPersonDetails(true);
+
+    try {
+      const response = await axios.get(
+        "https://api.themoviedb.org/3/search/person",
+        {
+          params: {
+            query: name,
+            api_key: "ac43a832f0b2ad9b1fac50f785b3452d",
+            include_adult: false,
+            language: "en-US",
+            page: 1,
+          },
+        }
+      );
+  
+      if (response.data.results && response.data.results.length > 0) {
+        const person = response.data.results[0]; // Get the first result
+        const personDetails = {
+          name: person.name,
+          knownFor: person.known_for.map((work) => ({
+            title: work.title || work.original_title || "N/A",
+            mediaType: work.media_type,
+            releaseDate: work.release_date || "N/A",
+            overview: work.overview || "No description available",
+            posterPath: work.poster_path
+              ? `https://image.tmdb.org/t/p/w500${work.poster_path}`
+              : "https://via.placeholder.com/500",
+            voteAverage: work.vote_average || "N/A",
+          })),
+        };
+        setPersonDetails(personDetails); // Store details for rendering
+      } else {
+        setPersonDetails(null); // Handle no results
+      }
+    } catch (error) {
+      console.error("Error fetching person details:", error);
+    } finally {
+      setLoadingPersonDetails(false); // Optional: Stop loading indicator
+    }
+  };
+  
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -203,14 +253,14 @@ function HomePage() {
         Get Recommendations
       </Button>
 
-      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+      {/* <div style={{ marginTop: "20px", marginBottom: "20px" }}>
         <h3>Selected Movies:</h3>
         <ul>
           {selectedMovies.map((movie, index) => (
             <li key={index}>{movie}</li>
           ))}
         </ul>
-      </div>
+      </div> */}
 
       {recommendations && (
         <div style={{ marginTop: "20px", marginBottom: "20px" }}>
@@ -238,8 +288,33 @@ function HomePage() {
                   </div>
                   <Typography variant="h6">{movie.title || "Title not available"}</Typography>
                   <Typography variant="body2">Rating: {movie.rating || "N/A"}/10</Typography>
-                  <Typography variant="body2">Director: {movie.director || " "}</Typography>
-                  <Typography variant="body2">Cast: {movie.cast || " "}</Typography>
+                  <Typography variant="body2">
+                    <strong>Director:</strong>{" "}
+                    {movie.director && (
+                      <Button
+                        size="small"
+                        onClick={() => handlePersonClick(movie.director)}
+                        style={{ textTransform: "none", padding: 0 }}
+                      >
+                        {movie.director}
+                      </Button>
+                    )}
+                  </Typography>
+                  <Typography variant="body2">
+                    <strong>Cast:</strong>{" "}
+                    {movie.cast.split(", ").map((actor, index) => (
+                      <React.Fragment key={index}>
+                        <Button
+                          size="small"
+                          onClick={() => handlePersonClick(actor)}
+                          style={{ textTransform: "none", padding: 0 }}
+                        >
+                          {actor}
+                        </Button>
+                        {index < movie.cast.split(", ").length - 1 && ", "}
+                      </React.Fragment>
+                    ))}
+                  </Typography>
                   <Typography variant="body2">Genres: {movie.genre || "N/A"}</Typography>
                   {movie.url && (
                     <Button
@@ -258,6 +333,38 @@ function HomePage() {
           </div>
         </div>
       )}
+
+      {personDetails && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>{personDetails.name}</h3>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+            {personDetails.knownFor.map((work, index) => (
+              <Card key={index} style={{ width: "250px" }}>
+                <CardMedia
+                  component="img"
+                  height="350px"
+                  image={work.posterPath}
+                  alt={work.title}
+                />
+                <CardContent>
+                  <Typography variant="h6">{work.title}</Typography>
+                  <Typography variant="body2">
+                    <strong>Type:</strong> {work.mediaType}
+                  </Typography>
+                  <Typography variant="body2">
+                    <strong>Release Date:</strong> {work.releaseDate}
+                  </Typography>
+                  <Typography variant="body2">
+                    <strong>Rating:</strong> {work.voteAverage}/10
+                  </Typography>
+                  <Typography variant="body2">{work.overview}</Typography>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }
