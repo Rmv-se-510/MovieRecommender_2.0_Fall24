@@ -59,8 +59,9 @@ function HomePage() {
 
   const handleSearch = async () => {
     try {
+      let selectedMovieIds = selectedMovies.map(movie=>movie.id);
       const response = await axios.post("/predict", {
-        movie_list: selectedMovies,
+        movie_list: selectedMovieIds,
       });
       console.log("Response", response);
       const data = response.data;
@@ -233,7 +234,7 @@ function HomePage() {
           }}
           onChange={(event, newValue) => {
             if (newValue?.value) {
-              setSelectedMovies(prevMovies => [...prevMovies, newValue.id]);
+              setSelectedMovies(prevMovies => [...prevMovies, newValue]);
               setSearchQuery(""); // Clear search bar
             }
           }}
@@ -274,14 +275,26 @@ function HomePage() {
         Get Recommendations
       </Button>
 
-      {/* <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-        <h3>Selected Movies:</h3>
-        <ul>
-          {selectedMovies.map((movie, index) => (
-            <li key={index}>{movie}</li>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={ ()=> {
+          setRecommendations(null);
+          setSelectedMovies([]);
+        }}
+        style={{ margin: "10px" }}
+      >
+        Reset Search
+      </Button>
+
+      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+      {recommendations && <h3>Recommendation based on Selected Movies:</h3>}
+        {/* <ul> */}
+          {selectedMovies.map((movie) => (
+            <li key={movie.id}>{movie.value}</li>
           ))}
-        </ul>
-      </div> */}
+        {/* </ul> */}
+      </div>
 
       {recommendations && (
         <div style={{ marginTop: "20px", marginBottom: "20px" }}>
