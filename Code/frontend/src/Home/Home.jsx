@@ -71,20 +71,21 @@ function HomePage() {
         console.log(baseKey);
 
         return {
-          id: data.rating[`${baseKey}-i`] || undefined,
-          title: data.rating[`${baseKey}-t`] || "Title not available",
-          genre:
-            data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
-          poster:
-            data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
-          genre:
-            data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
-          poster:
-            data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
-          rating: data.rating[`${baseKey}-r`] || "Rating not available",
-          url: data.rating[`${baseKey}-u`] || null,
-          cast: data.rating[`${baseKey}-c`] || " ",
-          director: data.rating[`${baseKey}-d`] || " ",
+          id: baseKey.id,
+          imdb_id: baseKey.imdb_id,
+          title: baseKey.title,
+          poster_path: baseKey.poster_path,
+          genres: baseKey.genres
+          // id: data.rating[`${baseKey}-i`] || undefined,
+          // title: data.rating[`${baseKey}-t`] || "Title not available",
+          // genre:
+          //   data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
+          // poster:
+          //   data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
+          // rating: data.rating[`${baseKey}-r`] || "Rating not available",
+          // url: data.rating[`${baseKey}-u`] || null,
+          // cast: data.rating[`${baseKey}-c`] || " ",
+          // director: data.rating[`${baseKey}-d`] || " ",
         };
       });
       console.log(transformedRecommendations)
@@ -232,7 +233,7 @@ function HomePage() {
           }}
           onChange={(event, newValue) => {
             if (newValue?.value) {
-              setSelectedMovies(prevMovies => [...prevMovies, newValue.value]);
+              setSelectedMovies(prevMovies => [...prevMovies, newValue.id]);
               setSearchQuery(""); // Clear search bar
             }
           }}
@@ -291,11 +292,11 @@ function HomePage() {
                 <CardMedia
                   component="img"
                   height="350px"
-                  image={movie.poster || "https://via.placeholder.com/250"}  // Check if movie has poster property
+                  image={ `https://image.tmdb.org/t/p/original/${movie.poster_path}` || "https://via.placeholder.com/250"}  // Check if movie has poster property
                   alt={movie.title}     // Check if movie has title property
                 />
                 <CardContent>
-                  <div className='actionButtons'>
+                  {/* <div className='actionButtons'>
                     {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 0)}>
                       {movieLists[0].has(movie.id) ? (<FavoriteBorderSharp color='primary' />) : (<FavoriteBorderSharp />)}
                     </IconButton>}
@@ -305,9 +306,9 @@ function HomePage() {
                     {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 2)}>
                       {movieLists[2].has(movie.id) ? (<WatchLaterSharp color='primary' />) : (<WatchLaterSharp />)}
                     </IconButton>}
-                  </div>
+                  </div> */}
                   <Typography variant="h6">{movie.title || "Title not available"}</Typography>
-                  <Typography variant="body2">Rating: {movie.rating || "N/A"}/10</Typography>
+                  {/* <Typography variant="body2">Rating: {movie.rating || "N/A"}/10</Typography> */}
                   <Typography variant="body2">
                     <strong>Director:</strong>{" "}
                     {movie.director && (
@@ -320,7 +321,7 @@ function HomePage() {
                       </Button>
                     )}
                   </Typography>
-                  <Typography variant="body2">
+                  {/* <Typography variant="body2">
                     <strong>Cast:</strong>{" "}
                     {movie.cast.split(", ").map((actor, index) => (
                       <React.Fragment key={index}>
@@ -334,8 +335,8 @@ function HomePage() {
                         {index < movie.cast.split(", ").length - 1 && ", "}
                       </React.Fragment>
                     ))}
-                  </Typography>
-                  <Typography variant="body2">Genres: {movie.genre || "N/A"}</Typography>
+                  </Typography> */}
+                  {/* <Typography variant="body2">Genres: {movie.genres || "N/A"}</Typography> */}
                   {movie.url && (
                     <Button
                       variant="contained"
