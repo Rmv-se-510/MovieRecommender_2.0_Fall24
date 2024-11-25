@@ -347,21 +347,30 @@ def predict():
     # getting the details of all the movies from movie api
     
     for movie_id in set(fetched_movies):
-
-        url = f"https://api.themoviedb.org/3/movie/{movie_id}?language=en-US"
-
-        headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer "+ access_token
-        }
-
-        response = requests.get(url, headers=headers)
-        movieData.append(response.json())
+        response = fetch_movie_details(movie_id)
+        movieData.append(response)
                     
     resp = {"recommendations": movieData}
     return resp
 
-        
+@app.route("/movie_details",methods=['POST'])
+def movie_details():
+    movie_id = request.json['movie_id']
+    result = fetch_movie_details(movie_id)  # Use the function for the route
+    return jsonify(result)
+
+
+
+def fetch_movie_details(movie_id):
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?language=en-US"
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer "+ access_token
+    }
+
+    response = requests.get(url, headers=headers)
+    return response.json()
 
 
 @app.route("/search", methods=['GET','POST'])
