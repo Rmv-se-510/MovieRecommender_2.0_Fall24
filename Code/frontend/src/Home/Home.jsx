@@ -30,7 +30,7 @@ function HomePage() {
       console.log(response)
       // if (!response.ok) throw new Error('Network response was not ok');
       if (!response.ok) {
-        console.log('Network response was not ok');
+        console.log(':( Network response was not ok');
         return;
       }
       const data = await response.json();
@@ -44,18 +44,22 @@ function HomePage() {
 
   const getMovieLists = async () => {
     const user = localStorage.getItem("UID");
-    let newState = { ...movieLists }
-    for (const type in Object.keys(movieLists)) {
-      const payload = { user, type }
-      const data = await getMoviesInList(payload)
-      const movieIds = data["movies"]
-      for (const idx in movieIds) {
-        newState[type].add(movieIds[idx]);
-      }
+    let newState = { ...movieLists };
+    //console.log(newState)
+    for (const type in movieLists) {
+      const payload = { user, type };
+      const data = await getMoviesInList(payload);
+      //console.log(data)
+      const movies = data["movies"];
+      //console.log(movieIds)
+      // movieIds.forEach(id => newState[type].add(id));
+      newState[type].add(movies)
     }
-    console.log(newState)
-    setMovieLists(newState)
-  }
+    // console.log("Here bro")
+    // console.log(newState)
+    setMovieLists(newState);
+  };
+  
 
   const handleSearch = async () => {
     try {
@@ -97,28 +101,48 @@ function HomePage() {
   };
 
 
-  const actionButtonHandler = async (movieId, type) => {
+  const actionButtonHandler = async (movie, type) => {
     const user = localStorage.getItem("UID");
-    console.log(user, movieId, type)
-    const payload = { user, movieId, type }
-    let resp
-    let newState = { ...movieLists }
-    if (movieLists[type].has(movieId)) {
-      resp = await deleteMovieFromList(payload)
-      let currentSet = new Set(movieLists[type])
-      currentSet.delete(movieId)
-      newState[type] = currentSet
+  
+    const payload = {
+      user,
+      movieId: movie.id,
+      type,
+      details: {
+        title: movie.title,
+        poster: movie.poster,
+        cast: movie.cast,
+        director: movie.director,
+        genre: movie.genre,
+        rating: movie.rating,
+      },
+    };
+  
+    let resp;
+    let newState = { ...movieLists };
+    console.log("action handler")
+    console.log(movieLists)
+
+    if (Array.from(movieLists[type]).some(m => m.id === movie.id)) {
+      console.log("del")
+      resp = await deleteMovieFromList(payload);
+      const updatedSet = new Set(movieLists[type]);
+      updatedSet.delete(movie.id);
+      newState[type] = updatedSet;
     } else {
-      resp = await addMovieToList(payload)
-      if (resp !== undefined) {
-        let currentSet = new Set(movieLists[type])
-        currentSet.add(movieId)
-        newState[type] = currentSet
+      resp = await addMovieToList(payload);
+      if (resp) {
+        console.log("add")
+        const updatedSet = new Set(movieLists[type]);
+        updatedSet.add(movie.id);
+        newState[type] = updatedSet;
       }
     }
-    setMovieLists(newState)
-    console.log(resp)
-  }
+  
+    setMovieLists(newState);
+  };
+  
+  
 
   const fetchSuggestions = async (query) => {
     if (!query) return;
@@ -276,14 +300,14 @@ function HomePage() {
                 />
                 <CardContent>
                   <div className='actionButtons'>
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie.id, 0)}>
-                      {movieLists[0].has(movie.id) ? (<FavoriteBorderSharp color='primary' />) : (<FavoriteBorderSharp />)}
+                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 0)}>
+                      {Array.from(movieLists[0]).some(m => m.id === movie.id) ? (<FavoriteBorderSharp color='primary' />) : (<FavoriteBorderSharp />)}
                     </IconButton>}
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie.id, 1)}>
-                      {movieLists[1].has(movie.id) ? (<SentimentDissatisfiedSharp color='primary' />) : (<SentimentDissatisfiedSharp />)}
+                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 1)}>
+                      {Array.from(movieLists[1]).some(m => m.id === movie.id) ? (<SentimentDissatisfiedSharp color='primary' />) : (<SentimentDissatisfiedSharp />)}
                     </IconButton>}
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie.id, 2)}>
-                      {movieLists[2].has(movie.id) ? (<WatchLaterSharp color='primary' />) : (<WatchLaterSharp />)}
+                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 2)}>
+                      {Array.from(movieLists[2]).some(m => m.id === movie.id) ? (<WatchLaterSharp color='primary' />) : (<WatchLaterSharp />)}
                     </IconButton>}
                   </div>
                   <Typography variant="h6">{movie.title || "Title not available"}</Typography>
