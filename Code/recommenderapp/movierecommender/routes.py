@@ -345,16 +345,31 @@ def feedback():
     print(data)
     return data
 
+
 @app.route("/movie/<user>/<listType>", methods=["GET"])
-def getMoviesInList(user,listType):
+def getMoviesInList(user, listType):
     user = int(user)
     listType = int(listType)
-    rows = MovieList.query.filter_by(userId = user, listType= listType).all()
-    movieIds = list()
-    for row in rows:
-        movieIds.append(row.movieId)
-    print(movieIds)
-    return jsonify({"movies":movieIds})
+
+    # Fetch all movie details from the MovieList for the given user and listType
+    rows = MovieList.query.filter_by(userId=user, listType=listType).all()
+
+    # Format response with detailed movie information
+    movieData = [
+        {
+            "id": row.movieId,
+            "title": row.title,         # Movie title
+            "poster": row.poster,       # Movie poster URL
+            "rating": row.rating,       # Movie rating
+            "genre": row.genre,         # e.g., "Action, Sci-Fi"
+            "cast": row.cast,           # e.g., "Leonardo DiCaprio, Joseph Gordon-Levitt"
+            "director": row.director    # e.g., "Christopher Nolan"
+        }
+        for row in rows
+    ]
+    print(movieData)
+    return jsonify({"movies": movieData}), 200
+
 
 @app.route("/movie/<user>/<listType>/<movieId>", methods=["DELETE"])
 def removeMovieFromList(user,listType,movieId):

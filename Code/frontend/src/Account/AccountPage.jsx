@@ -15,14 +15,12 @@ const Account = () => {
   const fetchMovieLists = async () => {
     const user = localStorage.getItem('UID');
     const newState = { 0: [], 1: [], 2: [] };
-
     try {
       for (let type of [0, 1, 2]) {
         const payload = { user, type };
         const data = await getMovieInList(payload);
-        if (data && Array.isArray(data)) {
-          newState[type] = data;
-        }
+        const movies = data['movies'];
+        newState[type] = movies;
       }
       setMovieLists(newState);
     } catch (error) {
@@ -38,14 +36,14 @@ const Account = () => {
     let updatedList = [...movieLists[type]];
 
     try {
-      if (updatedList.some(movie => movie.id === movieId)) {
+      if (updatedList.some((movie) => movie.id === movieId)) {
         await deleteMovieFromList(payload);
-        updatedList = updatedList.filter(movie => movie.id !== movieId);
+        updatedList = updatedList.filter((movie) => movie.id !== movieId);
       } else {
         await addMovieToList(payload);
         updatedList.push({ id: movieId }); // Add a new movie placeholder with id
       }
-      setMovieLists(prevState => ({ ...prevState, [type]: updatedList }));
+      setMovieLists((prevState) => ({ ...prevState, [type]: updatedList }));
     } catch (error) {
       console.error('Error updating movie list:', error);
     }
@@ -53,20 +51,20 @@ const Account = () => {
 
   const renderMovieRow = (movies, rowTitle, type) => (
     <div className="movie-row">
-      <h2>{rowTitle}</h2>
+      <h2 className="row-title">{rowTitle}</h2>
       <div className="movie-list">
         {movies.map((movie, index) => (
-          <Card key={index} style={{ width: '250px', margin: '10px' }}>
+          <Card key={index} className="movie-card">
             <CardMedia
               component="img"
-              height="350px"
+              className="movie-poster"
               image={movie.poster || 'https://via.placeholder.com/250'}
               alt={movie.title || 'Movie Poster'}
             />
             <CardContent>
               <Typography variant="h6">{movie.title || 'Title not available'}</Typography>
               <Typography variant="body2">Rating: {movie.rating || 'N/A'}/10</Typography>
-              <div className="actionButtons">
+              <div className="action-buttons">
                 <IconButton
                   size="medium"
                   onClick={() => handleAction(movie.id, 0)}

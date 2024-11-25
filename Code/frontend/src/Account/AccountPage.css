@@ -1,17 +1,54 @@
-/* src/account/Account.css */
-
 .account-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .account-container h1 {
-    color: #333;
-    font-size: 2rem;
-  }
-  
-  .account-container p {
-    color: #666;
-    font-size: 1rem;
-  }
-  
+  padding: 20px;
+  color: #fff;
+  background-color: #141414;
+}
+
+.row-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.movie-row {
+  margin-bottom: 30px;
+}
+
+.movie-list {
+  display: flex;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  gap: 15px; /* Adds spacing between cards */
+  padding: 10px 0;
+}
+
+.movie-list::-webkit-scrollbar {
+  height: 8px; /* Scrollbar height for horizontal scrolling */
+}
+
+.movie-list::-webkit-scrollbar-thumb {
+  background: #555; /* Scrollbar color */
+  border-radius: 4px;
+}
+
+.movie-list::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+.movie-card {
+  flex: 0 0 auto; /* Prevents shrinking of cards */
+  width: 250px;
+  background-color: #222;
+  border-radius: 8px;
+}
+
+.movie-poster {
+  height: 350px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
