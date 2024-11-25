@@ -374,27 +374,57 @@ def removeMovieFromList(user,listType,movieId):
         return jsonify(resp),400
 
 @app.route("/movie/<user>/<listType>/<movieId>", methods=["POST"])
-def addMovieToList(user,listType,movieId):
-    print(user,listType,movieId)
+def addMovieToList(user, listType, movieId):
+    print(user, listType, movieId)
     user = int(user)
     listType = int(listType)
     movieId = int(movieId)
-    print(user,listType,movieId)
-    rows = db.session.query(MovieList).filter(and_(MovieList.userId == user , MovieList.movieId== movieId)).all()
-    if(len(rows) > 0):
+
+    # Extract additional movie details from the request body
+    details = request.get_json()
+    title = details.get("title")
+    poster = details.get("poster")
+    director = details.get("director")
+    cast = details.get("cast")
+    genre = details.get("genre")
+    rating = details.get("rating")
+
+    print(user, listType, movieId, title)
+
+    rows = db.session.query(MovieList).filter(
+        and_(
+            MovieList.userId == user,
+            MovieList.movieId == movieId,
+        )
+    ).all()
+
+    if len(rows) > 0:
         resp = {"error": "Adding movie to the list failed"}
-        return jsonify(resp),400
-    row = MovieList(userId=user, movieId= movieId, listType=listType)
+        return jsonify(resp), 400
+
+    # Create a new row with additional details
+    row = MovieList(
+        userId=user,
+        movieId=movieId,
+        listType=listType,
+        title=title,
+        poster=poster,
+        director=director,
+        cast=cast,
+        genre=genre,
+        rating=rating,
+    )
     try:
         db.session.add(row)
         db.session.commit()
-        return jsonify({"message": "Added movie to the list"}),200
+        return jsonify({"message": "Added movie to the list"}), 200
     except Exception as e:
         db.session.rollback()
         db.session.flush()
         print(e)
         resp = {"error": "Adding movie to the list failed"}
-        return jsonify(resp),400
+        return jsonify(resp), 400
+
 
 @app.route("/movie")
 def movie():
