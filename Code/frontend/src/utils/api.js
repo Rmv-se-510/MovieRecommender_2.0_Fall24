@@ -35,19 +35,26 @@ export async function getMovieInList(payload){
   return data
 }
 
-export async function addMovieToList(payload){
+export async function addMovieToList(payload) {
   const url = `/movie/${payload.user}/${payload.type}/${payload.movieId}`;
-  console.log(url)
+  console.log(url);
+
   let resp = await fetch(url, {
     method: 'POST',
-  })
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload.details), // Send the additional movie details
+  });
 
-  if(resp.status !== 200){
-    return undefined
+  if (resp.status !== 200) {
+    return undefined;
   }
-  let data = await resp.json()
-  return data
+
+  let data = await resp.json();
+  return data;
 }
+
 
 export async function deleteMovieFromList(payload){
   const url = `/movie/${payload.user}/${payload.type}/${payload.movieId}`;

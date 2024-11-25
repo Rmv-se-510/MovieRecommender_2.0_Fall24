@@ -97,28 +97,48 @@ function HomePage() {
   };
 
 
-  const actionButtonHandler = async (movieId, type) => {
+  const actionButtonHandler = async (movie, type) => {
     const user = localStorage.getItem("UID");
-    console.log(user, movieId, type)
-    const payload = { user, movieId, type }
-    let resp
-    let newState = { ...movieLists }
-    if (movieLists[type].has(movieId)) {
-      resp = await deleteMovieFromList(payload)
-      let currentSet = new Set(movieLists[type])
-      currentSet.delete(movieId)
-      newState[type] = currentSet
+    console.log(user, movie, type);
+  
+    // Prepare the payload with additional movie details
+    const payload = { 
+      user, 
+      movieId: movie.id, 
+      type, 
+      details: { 
+        title: movie.title,
+        poster: movie.poster,
+        cast: movie.cast,
+        director: movie.director,
+        genre: movie.genre,
+        rating: movie.rating,
+      }
+    };
+  
+    let resp;
+    let newState = { ...movieLists };
+  
+    if (movieLists[type].has(movie.id)) {
+      // Remove movie from the list
+      resp = await deleteMovieFromList(payload);
+      let currentSet = new Set(movieLists[type]);
+      currentSet.delete(movie.id);
+      newState[type] = currentSet;
     } else {
-      resp = await addMovieToList(payload)
+      // Add movie to the list
+      resp = await addMovieToList(payload);
       if (resp !== undefined) {
-        let currentSet = new Set(movieLists[type])
-        currentSet.add(movieId)
-        newState[type] = currentSet
+        let currentSet = new Set(movieLists[type]);
+        currentSet.add(movie.id);
+        newState[type] = currentSet;
       }
     }
-    setMovieLists(newState)
-    console.log(resp)
-  }
+    
+    setMovieLists(newState);
+    console.log(resp);
+  };  
+  
 
   const fetchSuggestions = async (query) => {
     if (!query) return;
@@ -276,13 +296,13 @@ function HomePage() {
                 />
                 <CardContent>
                   <div className='actionButtons'>
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie.id, 0)}>
+                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 0)}>
                       {movieLists[0].has(movie.id) ? (<FavoriteBorderSharp color='primary' />) : (<FavoriteBorderSharp />)}
                     </IconButton>}
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie.id, 1)}>
+                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 1)}>
                       {movieLists[1].has(movie.id) ? (<SentimentDissatisfiedSharp color='primary' />) : (<SentimentDissatisfiedSharp />)}
                     </IconButton>}
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie.id, 2)}>
+                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 2)}>
                       {movieLists[2].has(movie.id) ? (<WatchLaterSharp color='primary' />) : (<WatchLaterSharp />)}
                     </IconButton>}
                   </div>
