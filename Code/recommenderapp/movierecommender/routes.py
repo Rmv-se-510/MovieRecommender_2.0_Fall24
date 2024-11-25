@@ -1,17 +1,17 @@
 from flask import render_template,url_for,flash,redirect,jsonify,request
 from flask_cors import CORS, cross_origin
 from movierecommender import app,db, bcrypt
-from movierecommender.forms import RegistrationForm, LoginForm
+# from movierecommender.forms import RegistrationForm, LoginForm
 from flask_login import login_user, current_user, logout_user, login_required
 from movierecommender.models import MovieList, User, Feedback
 import json
 import sys
-import csv
+# import csv
 import time
 import re
 import os
 import requests
-from movierecommender.prediction_scripts.item_based import recommendForNewUser
+# from movierecommender.prediction_scripts.item_based import recommendForNewUser
 from movierecommender.search import Search
 from dotenv import load_dotenv
 from sqlalchemy import and_
@@ -26,6 +26,7 @@ load_dotenv()
 
 # Get API Keys from .env file
 api_key = os.getenv("api_key")
+access_token = os.getenv("access_token")
 
 
 # def clean_movie_title(title):
@@ -202,26 +203,26 @@ def account():
 
 
 
-@app.route("/predict", methods=["POST"])
+# @app.route("/predict", methods=["POST"])
+# # def predict():
+# #     data = json.loads(request.data)  # contains movies
+# #     data1 = data["movie_list"]
+# #     training_data = []
+# #     for movie in data1:
+# #         movie_with_rating = {"title": movie, "rating": 5.0}
+# #         training_data.append(movie_with_rating)
+# #     recommendations = recommendForNewUser(movie_with_rating)
+
+# #     for movie in data1:
+# #         movie_info = get_movie_info(movie)
+# #         if movie_info:
+# #             movie_with_rating["title"]=movie
+# #             movie_with_rating["rating"]=movie_info["imdbRating"]
+
+# #     recommendations = recommendations[:10]
+# #     resp = {"recommendations": recommendations}
+# #     return resp
 # def predict():
-#     data = json.loads(request.data)  # contains movies
-#     data1 = data["movie_list"]
-#     training_data = []
-#     for movie in data1:
-#         movie_with_rating = {"title": movie, "rating": 5.0}
-#         training_data.append(movie_with_rating)
-#     recommendations = recommendForNewUser(movie_with_rating)
-
-#     for movie in data1:
-#         movie_info = get_movie_info(movie)
-#         if movie_info:
-#             movie_with_rating["title"]=movie
-#             movie_with_rating["rating"]=movie_info["imdbRating"]
-
-#     recommendations = recommendations[:10]
-#     resp = {"recommendations": recommendations}
-#     return resp
-def predict():
     data = json.loads(request.data)  # contains movies from the user
     print("data ",data) #~
     data1 = data["movie_list"]
@@ -319,6 +320,50 @@ def predict():
     resp = {"recommendations": recommendations, "rating":movie_with_rating}
     return resp
 
+
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    data = json.loads(request.data)  # contains movies from the user
+    print("data ",data) 
+    fetched_movies = []
+    movieData = []
+    
+    for movie_id in data['movie_list']:
+        fetched_movies.append(movie_id)
+        url = f"https://api.themoviedb.org/3/movie/{movie_id}/recommendations?language=en-US&page=1"
+
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer "+access_token
+        }
+
+        response = requests.get(url, headers=headers)
+
+        response = response.json()['results'][:3]
+        for result in response:    
+            fetched_movies.append(result['id'])
+        
+    # print(fetched_movies)
+    for movie_id in fetched_movies:
+
+        url = f"https://api.themoviedb.org/3/movie/{movie_id}?language=en-US"
+
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer "+ access_token
+        }
+
+        response = requests.get(url, headers=headers)
+        movieData.append(response.json())
+          
+    
+    resp = {"recommendations": movieData}
+    return resp
+
+        
+
+
 @app.route("/search", methods=['GET','POST'])
 def search():
     term = request.form["q"]
@@ -329,21 +374,21 @@ def search():
     resp.status_code = 200
     return resp
 
-@app.route("/feedback", methods=["POST"])
-def feedback():
-    data = json.loads(request.data)
-    stri=""
-    with open(f"experiment_results/feedback_{int(time.time())}.csv", "w") as f:
-        for key in data.keys():
-            f.write(f"{key} - {data[key]}\n")
-            stri+=key+":"+data[key]+" "
+# @app.route("/feedback", methods=["POST"])
+# def feedback():
+#     data = json.loads(request.data)
+#     stri=""
+#     with open(f"experiment_results/feedback_{int(time.time())}.csv", "w") as f:
+#         for key in data.keys():
+#             f.write(f"{key} - {data[key]}\n")
+#             stri+=key+":"+data[key]+" "
 
 
-    post = Feedback(title="movieratings", content=stri, author=current_user)
-    db.session.add(post)
-    db.session.commit()
-    print(data)
-    return data
+#     post = Feedback(title="movieratings", content=stri, author=current_user)
+#     db.session.add(post)
+#     db.session.commit()
+#     print(data)
+#     return data
 
 
 @app.route("/movie/<user>/<listType>", methods=["GET"])
