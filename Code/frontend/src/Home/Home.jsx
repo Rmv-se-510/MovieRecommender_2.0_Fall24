@@ -1,9 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { TextField, Button, CircularProgress, Autocomplete, Card, CardContent, CardMedia, Typography, IconButton } from '@mui/material';
-import axios from 'axios';
-import './Home.css';
-import { FavoriteBorderSharp, SentimentDissatisfiedSharp, WatchLaterSharp } from '@mui/icons-material';
-import { addMovieToList, deleteMovieFromList, getMovieInList as getMoviesInList } from '../utils/api';
+import React, { useEffect, useState } from "react";
+import {
+  TextField,
+  Button,
+  CircularProgress,
+  Autocomplete,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import axios from "axios";
+import "./Home.css";
+import {
+  FavoriteBorderSharp,
+  SentimentDissatisfiedSharp,
+  WatchLaterSharp,
+} from "@mui/icons-material";
+import {
+  addMovieToList,
+  deleteMovieFromList,
+  getMovieInList as getMoviesInList,
+} from "../utils/api";
 
 function HomePage() {
   const [homeInfo, setHomeInfo] = useState(null);
@@ -14,23 +32,27 @@ function HomePage() {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [selectedMovies, setSelectedMovies] = useState([]);
   const [recommendations, setRecommendations] = useState(null);
-  const [movieLists, setMovieLists] = useState({ 0: new Set(), 1: new Set(), 2: new Set() })
+  const [movieLists, setMovieLists] = useState({
+    0: new Set(),
+    1: new Set(),
+    2: new Set(),
+  });
   const [loadingPersonDetails, setLoadingPersonDetails] = useState(false);
   const [personDetails, setPersonDetails] = useState(null); // To store person details
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
     fetchHomeInfo();
     getMovieLists();
   }, []);
- 
 
   const fetchHomeInfo = async () => {
     try {
-      const response = await fetch('/testing');           // just a testing route I made in routes.py
-      console.log(response)
+      const response = await fetch("/testing"); // just a testing route I made in routes.py
+      console.log(response);
       // if (!response.ok) throw new Error('Network response was not ok');
       if (!response.ok) {
-        console.log('Network response was not ok');
+        console.log("Network response was not ok");
         return;
       }
       const data = await response.json();
@@ -44,24 +66,30 @@ function HomePage() {
 
   const getMovieLists = async () => {
     const user = localStorage.getItem("UID");
-    let newState = { ...movieLists }
+    let newState = { ...movieLists };
     for (const type in Object.keys(movieLists)) {
-      const payload = { user, type }
-      const data = await getMoviesInList(payload)
-      const movieIds = data["movies"]
+      const payload = { user, type };
+      const data = await getMoviesInList(payload);
+      const movieIds = data["movies"];
       for (const idx in movieIds) {
         newState[type].add(movieIds[idx]);
       }
     }
-    console.log(newState)
-    setMovieLists(newState)
-  }
+    console.log(newState);
+    setMovieLists(newState);
+  };
 
   const handleSearch = async () => {
+    if (selectedMovies.length === 0) {
+      alert("Please select atleast one movie!!");
+      return;
+    }
+    setButtonDisabled(true);
+    setLoadingSuggestions(true);
     try {
-      let selectedMovieIds = selectedMovies.map(movie=>movie.id);
+      let selectedMovieIds = selectedMovies.map((movie) => movie.id);
       const response = await axios.post("/predict", {
-        movie_list: selectedMovieIds,
+        movie_id_list: selectedMovieIds,
       });
       console.log("Response", response);
       const data = response.data;
@@ -76,7 +104,7 @@ function HomePage() {
           imdb_id: baseKey.imdb_id,
           title: baseKey.title,
           poster_path: baseKey.poster_path,
-          genres: baseKey.genres
+          genres: baseKey.genres,
           // id: data.rating[`${baseKey}-i`] || undefined,
           // title: data.rating[`${baseKey}-t`] || "Title not available",
           // genre:
@@ -89,38 +117,39 @@ function HomePage() {
           // director: data.rating[`${baseKey}-d`] || " ",
         };
       });
-      console.log(transformedRecommendations)
+      console.log(transformedRecommendations);
 
       setRecommendations(transformedRecommendations);
       setSearchQuery("");
+      setLoadingSuggestions(false);
+      setButtonDisabled(false);
     } catch (error) {
       console.error("Error fetching recommendations:", error);
     }
   };
 
-
   const actionButtonHandler = async (movie, type) => {
     const user = localStorage.getItem("UID");
     console.log(user, movie, type);
-  
+
     // Prepare the payload with additional movie details
-    const payload = { 
-      user, 
-      movieId: movie.id, 
-      type, 
-      details: { 
+    const payload = {
+      user,
+      movieId: movie.id,
+      type,
+      details: {
         title: movie.title,
         poster: movie.poster,
         cast: movie.cast,
         director: movie.director,
         genre: movie.genre,
         rating: movie.rating,
-      }
+      },
     };
-  
+
     let resp;
     let newState = { ...movieLists };
-  
+
     if (movieLists[type].has(movie.id)) {
       // Remove movie from the list
       resp = await deleteMovieFromList(payload);
@@ -136,11 +165,10 @@ function HomePage() {
         newState[type] = currentSet;
       }
     }
-    
+
     setMovieLists(newState);
     console.log(resp);
-  };  
-  
+  };
 
   const fetchSuggestions = async (query) => {
     if (!query) return;
@@ -171,7 +199,7 @@ function HomePage() {
 
   const handlePersonClick = async (name) => {
     if (!name) return;
-  
+
     setRecommendations(null); // Clear recommendations
     setSelectedMovies([]);
     setLoadingPersonDetails(true);
@@ -189,7 +217,7 @@ function HomePage() {
           },
         }
       );
-  
+
       if (response.data.results && response.data.results.length > 0) {
         const person = response.data.results[0]; // Get the first result
         const personDetails = {
@@ -215,7 +243,6 @@ function HomePage() {
       setLoadingPersonDetails(false); // Optional: Stop loading indicator
     }
   };
-  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -234,7 +261,7 @@ function HomePage() {
           }}
           onChange={(event, newValue) => {
             if (newValue?.value) {
-              setSelectedMovies(prevMovies => [...prevMovies, newValue]);
+              setSelectedMovies((prevMovies) => [...prevMovies, newValue]);
               setSearchQuery(""); // Clear search bar
             }
           }}
@@ -271,6 +298,7 @@ function HomePage() {
         color="primary"
         onClick={handleSearch}
         style={{ margin: "10px" }}
+        disabled={buttonDisabled}
       >
         Get Recommendations
       </Button>
@@ -278,9 +306,11 @@ function HomePage() {
       <Button
         variant="contained"
         color="primary"
-        onClick={ ()=> {
+        onClick={() => {
           setRecommendations(null);
           setSelectedMovies([]);
+          setButtonDisabled(false);
+          setLoadingSuggestions(false);
         }}
         style={{ margin: "10px" }}
       >
@@ -288,28 +318,32 @@ function HomePage() {
       </Button>
 
       <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-      {recommendations && <h3>Recommendation based on Selected Movies:</h3>}
-        {/* <ul> */}
+        {recommendations && <h3>Recommendation based on Selected Movies:</h3>}
+        <ul>
           {selectedMovies.map((movie) => (
             <li key={movie.id}>{movie.value}</li>
           ))}
-        {/* </ul> */}
+        </ul>
       </div>
 
-      {recommendations && (
-        <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-          <h3>Recommended Movies:</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-            {recommendations.map((movie, index) => (
-              <Card key={index} style={{ width: '250px' }}>
-                <CardMedia
-                  component="img"
-                  height="350px"
-                  image={ `https://image.tmdb.org/t/p/original/${movie.poster_path}` || "https://via.placeholder.com/250"}  // Check if movie has poster property
-                  alt={movie.title}     // Check if movie has title property
-                />
-                <CardContent>
-                  {/* <div className='actionButtons'>
+      {!loadingSuggestions ? (
+        recommendations && (
+          <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+            <h3>Recommended Movies:</h3>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+              {recommendations.map((movie, index) => (
+                <Card key={index} style={{ width: "250px" }}>
+                  <CardMedia
+                    component="img"
+                    height="350px"
+                    image={
+                      `https://image.tmdb.org/t/p/original/${movie.poster_path}` ||
+                      "https://via.placeholder.com/250"
+                    } // Check if movie has poster property
+                    alt={movie.title} // Check if movie has title property
+                  />
+                  <CardContent>
+                    {/* <div className='actionButtons'>
                     {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 0)}>
                       {movieLists[0].has(movie.id) ? (<FavoriteBorderSharp color='primary' />) : (<FavoriteBorderSharp />)}
                     </IconButton>}
@@ -320,21 +354,23 @@ function HomePage() {
                       {movieLists[2].has(movie.id) ? (<WatchLaterSharp color='primary' />) : (<WatchLaterSharp />)}
                     </IconButton>}
                   </div> */}
-                  <Typography variant="h6">{movie.title || "Title not available"}</Typography>
-                  {/* <Typography variant="body2">Rating: {movie.rating || "N/A"}/10</Typography> */}
-                  <Typography variant="body2">
-                    <strong>Director:</strong>{" "}
-                    {movie.director && (
-                      <Button
-                        size="small"
-                        onClick={() => handlePersonClick(movie.director)}
-                        style={{ textTransform: "none", padding: 0 }}
-                      >
-                        {movie.director}
-                      </Button>
-                    )}
-                  </Typography>
-                  {/* <Typography variant="body2">
+                    <Typography variant="h6">
+                      {movie.title || "Title not available"}
+                    </Typography>
+                    {/* <Typography variant="body2">Rating: {movie.rating || "N/A"}/10</Typography> */}
+                    <Typography variant="body2">
+                      <strong>Director:</strong>{" "}
+                      {movie.director && (
+                        <Button
+                          size="small"
+                          onClick={() => handlePersonClick(movie.director)}
+                          style={{ textTransform: "none", padding: 0 }}
+                        >
+                          {movie.director}
+                        </Button>
+                      )}
+                    </Typography>
+                    {/* <Typography variant="body2">
                     <strong>Cast:</strong>{" "}
                     {movie.cast.split(", ").map((actor, index) => (
                       <React.Fragment key={index}>
@@ -349,22 +385,31 @@ function HomePage() {
                       </React.Fragment>
                     ))}
                   </Typography> */}
-                  {/* <Typography variant="body2">Genres: {movie.genres || "N/A"}</Typography> */}
-                  {movie.url && (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      href={movie.url}
-                      target="_blank"
-                      style={{ marginTop: "10px", marginRight: "10px" }}
-                    >
-                      Watch Trailer
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+                    {/* <Typography variant="body2">Genres: {movie.genres || "N/A"}</Typography> */}
+                    {movie.url && (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        href={movie.url}
+                        target="_blank"
+                        style={{ marginTop: "10px", marginRight: "10px" }}
+                      >
+                        Watch Trailer
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
+        )
+      ) : (
+        <div>
+          <h1>
+            {" "}
+            Hold tight!! We are searching for recommendations!! Thanks for being
+            patient..
+          </h1>
         </div>
       )}
 
@@ -398,7 +443,6 @@ function HomePage() {
           </div>
         </div>
       )}
-
     </main>
   );
 }

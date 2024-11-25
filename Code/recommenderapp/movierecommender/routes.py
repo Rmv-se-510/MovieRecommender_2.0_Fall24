@@ -329,7 +329,8 @@ def predict():
     fetched_movies = []
     movieData = []
     
-    for movie_id in data['movie_list']:
+    # getting the recommendations out of each movie user entered by calling recommendations api for every movie
+    for movie_id in data['movie_id_list']:
         fetched_movies.append(movie_id)
         url = f"https://api.themoviedb.org/3/movie/{movie_id}/recommendations?language=en-US&page=1"
 
@@ -344,8 +345,9 @@ def predict():
         for result in response:    
             fetched_movies.append(result['id'])
         
-    # print(fetched_movies)
-    for movie_id in fetched_movies:
+    # getting the details of all the movies from movie api
+    
+    for movie_id in set(fetched_movies):
 
         url = f"https://api.themoviedb.org/3/movie/{movie_id}?language=en-US"
 
@@ -356,8 +358,7 @@ def predict():
 
         response = requests.get(url, headers=headers)
         movieData.append(response.json())
-          
-    
+                    
     resp = {"recommendations": movieData}
     return resp
 
