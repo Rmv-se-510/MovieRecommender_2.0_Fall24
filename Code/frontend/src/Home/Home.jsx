@@ -22,6 +22,7 @@ import {
   deleteMovieFromList,
   getMovieInList as getMoviesInList,
 } from "../utils/api";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const [homeInfo, setHomeInfo] = useState(null);
@@ -328,7 +329,13 @@ function HomePage() {
 
       {!loadingSuggestions ? (
         recommendations && (
-          <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+          <div
+            style={{
+              marginTop: "20px",
+              marginBottom: "20px",
+              paddingBottom: "20px",
+            }}
+          >
             <h3>Recommended Movies:</h3>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
               {recommendations.map((movie, index) => (
@@ -343,22 +350,60 @@ function HomePage() {
                     alt={movie.title} // Check if movie has title property
                   />
                   <CardContent>
-                    {/* <div className='actionButtons'>
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 0)}>
-                      {movieLists[0].has(movie.id) ? (<FavoriteBorderSharp color='primary' />) : (<FavoriteBorderSharp />)}
-                    </IconButton>}
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 1)}>
-                      {movieLists[1].has(movie.id) ? (<SentimentDissatisfiedSharp color='primary' />) : (<SentimentDissatisfiedSharp />)}
-                    </IconButton>}
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 2)}>
-                      {movieLists[2].has(movie.id) ? (<WatchLaterSharp color='primary' />) : (<WatchLaterSharp />)}
-                    </IconButton>}
-                  </div> */}
+                    <div className="actionButtons">
+                      {
+                        <IconButton
+                          size="medium"
+                          onClick={async () =>
+                            await actionButtonHandler(movie, 0)
+                          }
+                        >
+                          {movieLists[0].has(movie.id) ? (
+                            <FavoriteBorderSharp color="primary" />
+                          ) : (
+                            <FavoriteBorderSharp />
+                          )}
+                        </IconButton>
+                      }
+                      {
+                        <IconButton
+                          size="medium"
+                          onClick={async () =>
+                            await actionButtonHandler(movie, 1)
+                          }
+                        >
+                          {movieLists[1].has(movie.id) ? (
+                            <SentimentDissatisfiedSharp color="primary" />
+                          ) : (
+                            <SentimentDissatisfiedSharp />
+                          )}
+                        </IconButton>
+                      }
+                      {
+                        <IconButton
+                          size="medium"
+                          onClick={async () =>
+                            await actionButtonHandler(movie, 2)
+                          }
+                        >
+                          {movieLists[2].has(movie.id) ? (
+                            <WatchLaterSharp color="primary" />
+                          ) : (
+                            <WatchLaterSharp />
+                          )}
+                        </IconButton>
+                      }
+                    </div>
                     <Typography variant="h6">
-                      {movie.title || "Title not available"}
+                      <Link
+                        to={`/movie/${movie.id}`}
+                        className="hover:underline"
+                      >
+                        {movie.title || "Title not available"}
+                      </Link>
                     </Typography>
                     {/* <Typography variant="body2">Rating: {movie.rating || "N/A"}/10</Typography> */}
-                    <Typography variant="body2">
+                    {/* <Typography variant="body2">
                       <strong>Director:</strong>{" "}
                       {movie.director && (
                         <Button
@@ -369,7 +414,7 @@ function HomePage() {
                           {movie.director}
                         </Button>
                       )}
-                    </Typography>
+                    </Typography> */}
                     {/* <Typography variant="body2">
                     <strong>Cast:</strong>{" "}
                     {movie.cast.split(", ").map((actor, index) => (
@@ -406,41 +451,9 @@ function HomePage() {
       ) : (
         <div>
           <h1>
-            {" "}
             Hold tight!! We are searching for recommendations!! Thanks for being
             patient..
           </h1>
-        </div>
-      )}
-
-      {personDetails && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>{personDetails.name}</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-            {personDetails.knownFor.map((work, index) => (
-              <Card key={index} style={{ width: "250px" }}>
-                <CardMedia
-                  component="img"
-                  height="350px"
-                  image={work.posterPath}
-                  alt={work.title}
-                />
-                <CardContent>
-                  <Typography variant="h6">{work.title}</Typography>
-                  <Typography variant="body2">
-                    <strong>Type:</strong> {work.mediaType}
-                  </Typography>
-                  <Typography variant="body2">
-                    <strong>Release Date:</strong> {work.releaseDate}
-                  </Typography>
-                  <Typography variant="body2">
-                    <strong>Rating:</strong> {work.voteAverage}/10
-                  </Typography>
-                  <Typography variant="body2">{work.overview}</Typography>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
         </div>
       )}
     </main>
