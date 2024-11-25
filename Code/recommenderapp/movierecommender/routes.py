@@ -344,8 +344,9 @@ def predict():
         for result in response:    
             fetched_movies.append(result['id'])
         
-    # print(fetched_movies)
-    for movie_id in fetched_movies:
+    # getting the details of all the movies from movie api
+    
+    for movie_id in set(fetched_movies):
 
         url = f"https://api.themoviedb.org/3/movie/{movie_id}?language=en-US"
 
@@ -356,8 +357,7 @@ def predict():
 
         response = requests.get(url, headers=headers)
         movieData.append(response.json())
-          
-    
+                    
     resp = {"recommendations": movieData}
     return resp
 
