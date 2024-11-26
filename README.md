@@ -4,8 +4,8 @@ Cineflix 2.0 🎥: An AI powered movie recommender system!
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Rmv-se-510/MovieRecommender_2.0_Fall24/blob/feature/readme-badges/app/static/cineflix.png">
-    <img alt="cineflix" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/blob/feature/readme-badges/app/static/cineflix.png" height=30% width=50%>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Rmv-se-510/MovieRecommender_2.0_Fall24/blob/release/Code/frontend/cineflix.png?raw=true">
+    <img alt="cineflix" src="https://github.com/Rmv-se-510/MovieRecommender_2.0_Fall24/blob/release/Code/frontend/cineflix.png?raw=true" height=30% width=50%>
   </picture>
 </p>
 
@@ -20,14 +20,14 @@ Cineflix 2.0 🎥: An AI powered movie recommender system!
 
 <div align="center">
 
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/Joshi-Karan/MovieRecommender_Fall24/stableF24)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/Rmv-se-510/MovieRecommender_2.0_Fall24/release)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![cov](https://img.shields.io/badge/coverage-98.6900%25-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
-  [![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/main/LICENSE)
-  [![Collaborators](https://img.shields.io/badge/Collaborators-3-orange.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/graphs/contributors)
-  [![Language](https://img.shields.io/badge/Language-Python-blue.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/search?l=python)
-  [![Open Issues](https://img.shields.io/github/issues/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/issues)
-  [![GitHub Repo Size](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
+  [![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](https://github.com/Rmv-se-510/MovieRecommender_2.0_Fall24/release/LICENSE)
+  [![Collaborators](https://img.shields.io/badge/Collaborators-3-orange.svg?style=flat)](https://github.com/Rmv-se-510/MovieRecommender_2.0_Fall24/graphs/contributors)
+  [![Language](https://img.shields.io/badge/Language-Python-blue.svg?style=flat)](https://github.com/Rmv-se-510/MovieRecommender_2.0_Fall24/search?l=python)
+  [![Open Issues](https://img.shields.io/github/issues/Rmv-se-510/MovieRecommender_2.0_Fall24)](https://github.com/Rmv-se-510/MovieRecommender_2.0_Fall24/issues)
+  [![GitHub Repo Size](https://img.shields.io/github/repo-size/Rmv-se-510/MovieRecommender_2.0_Fall24.svg)](https://img.shields.io/github/repo-size/Rmv-se-510/MovieRecommender_2.0_Fall24.svg)
 [![Tests](https://img.shields.io/badge/tests-passing-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
 [![Radon](https://img.shields.io/badge/radon_cc-2.03-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/radon)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/Rmv-se-510/MovieRecommender_2.0_Fall24)
