@@ -2,6 +2,7 @@
 Cineflix 2.0 🎥: An AI powered movie recommender system!
 </h3>
 
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Rmv-se-510/MovieRecommender_2.0_Fall24/blob/release/Code/frontend/cineflix.png?raw=true">
