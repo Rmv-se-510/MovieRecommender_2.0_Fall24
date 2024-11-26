@@ -359,7 +359,7 @@ function HomePage() {
                           }
                         >
                           {movieLists[0].has(movie.id) ? (
-                            <FavoriteBorderSharp color="primary" />
+                            <FavoriteBorderSharp color={"primary"} />
                           ) : (
                             <FavoriteBorderSharp />
                           )}

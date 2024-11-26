@@ -1,8 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardMedia, Typography, IconButton } from '@mui/material';
-import './AccountPage.css';
-import { FavoriteBorderSharp, SentimentDissatisfiedSharp, WatchLaterSharp } from '@mui/icons-material';
-import { getMovieInList, addMovieToList, deleteMovieFromList } from '../utils/api';
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import "./AccountPage.css";
+import {
+  FavoriteBorderSharp,
+  SentimentDissatisfiedSharp,
+  WatchLaterSharp,
+} from "@mui/icons-material";
+import {
+  getMovieInList,
+  addMovieToList,
+  deleteMovieFromList,
+} from "../utils/api";
+import { Link } from "react-router-dom";
 
 const Account = () => {
   const [movieLists, setMovieLists] = useState({ 0: [], 1: [], 2: [] }); // { 0: liked, 1: disliked, 2: watch later }
@@ -13,26 +28,26 @@ const Account = () => {
   }, []);
 
   const fetchMovieLists = async () => {
-    const user = localStorage.getItem('UID');
+    const user = localStorage.getItem("UID");
     const newState = { 0: [], 1: [], 2: [] };
     try {
       for (let type of [0, 1, 2]) {
         const payload = { user, type };
         const data = await getMovieInList(payload);
-        const movies = data['movies'];
+        const movies = data["movies"];
         console.log(movies);
         newState[type] = movies;
       }
       setMovieLists(newState);
     } catch (error) {
-      console.error('Error fetching movie lists:', error);
+      console.error("Error fetching movie lists:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleAction = async (movieId, type) => {
-    const user = localStorage.getItem('UID');
+    const user = localStorage.getItem("UID");
     const payload = { user, movieId, type };
     let updatedList = [...movieLists[type]];
 
@@ -46,7 +61,7 @@ const Account = () => {
       }
       setMovieLists((prevState) => ({ ...prevState, [type]: updatedList }));
     } catch (error) {
-      console.error('Error updating movie list:', error);
+      console.error("Error updating movie list:", error);
     }
   };
 
@@ -59,31 +74,40 @@ const Account = () => {
             <CardMedia
               component="img"
               className="movie-poster"
-              image={`https://image.tmdb.org/t/p/w500/${movie.poster}` || 'https://via.placeholder.com/250'}
-              alt={movie.title || 'Movie Poster'}
+              image={
+                `https://image.tmdb.org/t/p/w500/${movie.poster}` ||
+                "https://via.placeholder.com/250"
+              }
+              alt={movie.title || "Movie Poster"}
             />
             <CardContent>
-              <Typography variant="h6">{movie.title || 'Title not available'}</Typography>
-              <Typography variant="body2">Rating: {movie.rating || 'N/A'}/10</Typography>
+              <Typography variant="h6">
+                <Link to={"/movie/" + movie.id} className="hover:underline">
+                  {movie.title || "Title not available"}
+                </Link>
+              </Typography>
+              <Typography variant="body2">
+                Rating: {movie.rating || "N/A"}/10
+              </Typography>
               <div className="action-buttons">
                 <IconButton
                   size="medium"
                   onClick={() => handleAction(movie.id, 0)}
-                  color={type === 0 ? 'primary' : 'default'}
+                  color={type === 0 ? "primary" : "default"}
                 >
                   <FavoriteBorderSharp />
                 </IconButton>
                 <IconButton
                   size="medium"
                   onClick={() => handleAction(movie.id, 1)}
-                  color={type === 1 ? 'primary' : 'default'}
+                  color={type === 1 ? "primary" : "default"}
                 >
                   <SentimentDissatisfiedSharp />
                 </IconButton>
                 <IconButton
                   size="medium"
                   onClick={() => handleAction(movie.id, 2)}
-                  color={type === 2 ? 'primary' : 'default'}
+                  color={type === 2 ? "primary" : "default"}
                 >
                   <WatchLaterSharp />
                 </IconButton>
@@ -100,9 +124,9 @@ const Account = () => {
   return (
     <div className="account-container">
       <h1>Your Movie Lists</h1>
-      {renderMovieRow(movieLists[0], 'Liked Movies', 0)}
-      {renderMovieRow(movieLists[2], 'Watch Later Movies', 2)}
-      {renderMovieRow(movieLists[1], 'Disliked Movies', 1)}
+      {renderMovieRow(movieLists[0], "Liked Movies", 0)}
+      {renderMovieRow(movieLists[2], "Watch Later Movies", 2)}
+      {renderMovieRow(movieLists[1], "Disliked Movies", 1)}
     </div>
   );
 };
