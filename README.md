@@ -33,7 +33,7 @@ Cineflix 2.0 🎥: An AI powered movie recommender system!
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/Rmv-se-510/MovieRecommender_2.0_Fall24)
 [![Pylint](https://img.shields.io/badge/pylint-9.66-orange?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/pylint)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
   ![Autopep8](https://img.shields.io/badge/autopep8-passing-brightgreen)
-  [![DOI](https://zenodo.org/badge/865713529.svg)](https://doi.org/10.5281/zenodo.14026618)
+  [![DOI](https://zenodo.org/badge/888202351.svg)](https://doi.org/10.5281/zenodo.14226356)
   ![GitHub forks](https://img.shields.io/github/forks/Rmv-se-510/MovieRecommender_2.0_Fall24.svg)
 
 
