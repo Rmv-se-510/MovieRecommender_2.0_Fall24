@@ -72,13 +72,16 @@ function HomePage() {
     let newMovies = [];
     for (const type in Object.keys(movieLists)) {
       const payload = { user, type };
+      if(type!=='1'){
       const data = await getMoviesInList(payload);
       const movies = data["movies"];
       newState[type] = movies;
+      console.log(movies);
       for (const idx in movies) {
         newMovies.push(movies[idx]);
         //newState[type].add(movieIds[idx]);
       }
+    }
     }
     console.log("new state ");
     console.log(newState);
@@ -187,7 +190,9 @@ function HomePage() {
         newState[type] = updatedSet;
       }
     }
-    setSelectedMovies(newState[0].concat(newState[2]));
+    console.log(newState[0].concat(newState[2]));
+    let updatedMovies = newState[0].concat(newState[2]);
+    setSelectedMovies(updatedMovies);
     setMovieLists(newState);
   };
 
