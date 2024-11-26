@@ -8,12 +8,20 @@ const MovieDetails = () => {
   let navigate = useNavigate();
 
   const [movieInfo, setMovieInfo] = useState(null);
+  const [cast, setCast] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.post("/movie_details", {
         movie_id: movieId,
       });
+
+      const cast = await axios.post("/cast", {
+        movie_id: movieId,
+      });
+
+      console.log(cast.data);
+      setCast(cast.data);
       setMovieInfo(response.data);
     };
     fetchData();
@@ -57,6 +65,12 @@ const MovieDetails = () => {
                 {release_date && <span>({release_date.slice(0, -6)})</span>}
               </h1>
               <p className="text-lg text-slate-400 py-2">{overview}</p>
+              <p className="text-slate-400">
+                Cast details: {cast && cast.cast}
+              </p>
+              <p className="text-slate-400">
+                Director: {cast && cast.director}
+              </p>
               <Link
                 to={"https://m.imdb.com/title/" + imdb_id}
                 className="flex hover:underline text-slate-400"
