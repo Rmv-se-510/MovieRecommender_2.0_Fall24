@@ -74,17 +74,17 @@ function HomePage() {
       const payload = { user, type };
       const data = await getMoviesInList(payload);
       const movies = data["movies"];
-      newState[type] = movies
+      newState[type] = movies;
       for (const idx in movies) {
         newMovies.push(movies[idx]);
         //newState[type].add(movieIds[idx]);
       }
     }
-    console.log("new state ")
-    console.log(newState)
+    console.log("new state ");
+    console.log(newState);
 
-    console.log("movies")
-    console.log(newMovies)
+    console.log("movies");
+    console.log(newMovies);
 
     setSelectedMovies(newMovies);
     setMovieLists(newState);
@@ -92,7 +92,6 @@ function HomePage() {
 
   const handleSearch = async () => {
     //console.log("here my friend")
-    console.log(selectedMovies)
     console.log(selectedMovies);
     if (selectedMovies.length === 0) {
       alert("Please select atleast one movie!!");
@@ -101,6 +100,7 @@ function HomePage() {
     setButtonDisabled(true);
     setLoadingSuggestions(true);
     try {
+      console.log(selectedMovies);
       let selectedMovieIds = selectedMovies.map((movie) => movie.id);
       const response = await axios.post("/predict", {
         movie_id_list: selectedMovieIds,
@@ -187,6 +187,7 @@ function HomePage() {
         newState[type] = updatedSet;
       }
     }
+    setSelectedMovies(newState[0].concat(newState[2]));
     setMovieLists(newState);
   };
 
@@ -335,7 +336,9 @@ function HomePage() {
       </Button>
 
       <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-        {selectedMovies && <h3>Recommendation based on Your Movie Preferences:</h3>}
+        {selectedMovies && (
+          <h3>Recommendation based on Your Movie Preferences:</h3>
+        )}
         <ul>
           {selectedMovies.map((movie) => (
             <li key={movie.id}>{movie.title}</li>
@@ -374,7 +377,9 @@ function HomePage() {
                             await actionButtonHandler(movie, 0)
                           }
                         >
-                          {Array.from(movieLists[0]).some((m) => m.id === movie.id) ? (
+                          {Array.from(movieLists[0]).some(
+                            (m) => m.id === movie.id
+                          ) ? (
                             <FavoriteBorderSharp color={"primary"} />
                           ) : (
                             <FavoriteBorderSharp />
@@ -388,7 +393,9 @@ function HomePage() {
                             await actionButtonHandler(movie, 1)
                           }
                         >
-                          {Array.from(movieLists[1]).some((m) => m.id === movie.id) ? (
+                          {Array.from(movieLists[1]).some(
+                            (m) => m.id === movie.id
+                          ) ? (
                             <SentimentDissatisfiedSharp color="primary" />
                           ) : (
                             <SentimentDissatisfiedSharp />
@@ -402,7 +409,9 @@ function HomePage() {
                             await actionButtonHandler(movie, 2)
                           }
                         >
-                          {Array.from(movieLists[2]).some((m) => m.id === movie.id) ? (
+                          {Array.from(movieLists[2]).some(
+                            (m) => m.id === movie.id
+                          ) ? (
                             <WatchLaterSharp color="primary" />
                           ) : (
                             <WatchLaterSharp />
