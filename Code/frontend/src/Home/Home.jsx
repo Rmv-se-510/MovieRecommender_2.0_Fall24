@@ -45,6 +45,7 @@ function HomePage() {
   useEffect(() => {
     fetchHomeInfo();
     getMovieLists();
+    // handleSearch();
   }, []);
 
   const fetchHomeInfo = async () => {
@@ -53,7 +54,7 @@ function HomePage() {
       console.log(response);
       // if (!response.ok) throw new Error('Network response was not ok');
       if (!response.ok) {
-        console.log('Network response was not ok');
+        console.log("Network response was not ok");
         return;
       }
       const data = await response.json();
@@ -67,20 +68,23 @@ function HomePage() {
 
   const getMovieLists = async () => {
     const user = localStorage.getItem("UID");
-    let newState = { ...movieLists }
+    let newState = { ...movieLists };
+    let newMovies = [];
     for (const type in Object.keys(movieLists)) {
-      const payload = { user, type }
-      const data = await getMoviesInList(payload)
-      const movieIds = data["movies"]
+      const payload = { user, type };
+      const data = await getMoviesInList(payload);
+      const movieIds = data["movies"];
       for (const idx in movieIds) {
+        newMovies.push(movieIds[idx]);
         newState[type].add(movieIds[idx]);
       }
     }
-    console.log(newState)
-    setMovieLists(newState)
-  }
+    setSelectedMovies(newMovies);
+    setMovieLists(newState);
+  };
 
   const handleSearch = async () => {
+    console.log(selectedMovies);
     if (selectedMovies.length === 0) {
       alert("Please select atleast one movie!!");
       return;
@@ -112,7 +116,7 @@ function HomePage() {
           //   data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
           // poster:
           //   data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
-          // rating: data.rating[`${baseKey}-r`] || "Rating not available",
+          rating: baseKey.vote_average,
           // url: data.rating[`${baseKey}-u`] || null,
           // cast: data.rating[`${baseKey}-c`] || " ",
           // director: data.rating[`${baseKey}-d`] || " ",
@@ -131,28 +135,28 @@ function HomePage() {
 
   const actionButtonHandler = async (movie, type) => {
     const user = localStorage.getItem("UID");
-  
+    console.log(movie);
     const payload = {
       user,
       movieId: movie.id,
       type,
       details: {
         title: movie.title,
-        poster: movie.poster,
+        poster: movie.poster_path,
         cast: movie.cast,
         director: movie.director,
         genre: movie.genre,
         rating: movie.rating,
       },
     };
-
+    console.log(payload);
     let resp;
     let newState = { ...movieLists };
-    console.log("action handler")
-    console.log(movieLists)
+    console.log("action handler");
+    console.log(movieLists);
 
-    if (Array.from(movieLists[type]).some(m => m.id === movie.id)) {
-      console.log("del")
+    if (Array.from(movieLists[type]).some((m) => m.id === movie.id)) {
+      console.log("del");
       resp = await deleteMovieFromList(payload);
       const updatedSet = new Set(movieLists[type]);
       updatedSet.delete(movie.id);
@@ -160,17 +164,15 @@ function HomePage() {
     } else {
       resp = await addMovieToList(payload);
       if (resp) {
-        console.log("add")
+        console.log("add");
         const updatedSet = new Set(movieLists[type]);
         updatedSet.add(movie.id);
         newState[type] = updatedSet;
       }
     }
-  
+
     setMovieLists(newState);
   };
-  
-  
 
   const fetchSuggestions = async (query) => {
     if (!query) return;
@@ -189,7 +191,7 @@ function HomePage() {
       const suggestions = response.data.results.map((movie) => ({
         label: `${movie.title} (${movie.release_date?.split("-")[0] || "N/A"})`,
         id: movie.id,
-        value: movie.title,
+        title: movie.title,
       }));
       setAutocompleteOptions(suggestions);
     } catch (error) {
@@ -262,7 +264,7 @@ function HomePage() {
             fetchSuggestions(newValue);
           }}
           onChange={(event, newValue) => {
-            if (newValue?.value) {
+            if (newValue?.title) {
               setSelectedMovies((prevMovies) => [...prevMovies, newValue]);
               setSearchQuery(""); // Clear search bar
             }
@@ -278,9 +280,6 @@ function HomePage() {
                   ...params.InputProps,
                   endAdornment: (
                     <>
-                      {loadingSuggestions ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
                       {loadingSuggestions ? (
                         <CircularProgress color="inherit" size={20} />
                       ) : null}
@@ -320,10 +319,10 @@ function HomePage() {
       </Button>
 
       <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-        {recommendations && <h3>Recommendation based on Selected Movies:</h3>}
+        {selectedMovies && <h3>Recommendation based on Your Movie Preferences:</h3>}
         <ul>
           {selectedMovies.map((movie) => (
-            <li key={movie.id}>{movie.value}</li>
+            <li key={movie.id}>{movie.title}</li>
           ))}
         </ul>
       </div>

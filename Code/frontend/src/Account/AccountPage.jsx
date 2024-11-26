@@ -20,6 +20,7 @@ const Account = () => {
         const payload = { user, type };
         const data = await getMovieInList(payload);
         const movies = data['movies'];
+        console.log(movies);
         newState[type] = movies;
       }
       setMovieLists(newState);
@@ -58,7 +59,7 @@ const Account = () => {
             <CardMedia
               component="img"
               className="movie-poster"
-              image={movie.poster || 'https://via.placeholder.com/250'}
+              image={`https://image.tmdb.org/t/p/w500/${movie.poster}` || 'https://via.placeholder.com/250'}
               alt={movie.title || 'Movie Poster'}
             />
             <CardContent>

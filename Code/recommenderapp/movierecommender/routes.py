@@ -329,7 +329,7 @@ def predict():
     fetched_movies = []
     movieData = []
     
-    for movie_id in data['movie_list']:
+    for movie_id in data['movie_id_list']:
         fetched_movies.append(movie_id)
         url = f"https://api.themoviedb.org/3/movie/{movie_id}/recommendations?language=en-US&page=1"
 
@@ -356,7 +356,7 @@ def predict():
 @app.route("/movie_details",methods=['POST'])
 def movie_details():
     movie_id = request.json['movie_id']
-    result = fetch_movie_details(movie_id)  # Use the function for the route
+    result = fetch_movie_details(movie_id)
     return jsonify(result)
 
 
@@ -407,7 +407,6 @@ def getMoviesInList(user, listType):
 
     # Fetch all movie details from the MovieList for the given user and listType
     rows = MovieList.query.filter_by(userId=user, listType=listType).all()
-
     # Format response with detailed movie information
     movieData = [
         {
