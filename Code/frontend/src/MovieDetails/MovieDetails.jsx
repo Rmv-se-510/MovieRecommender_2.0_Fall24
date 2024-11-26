@@ -22,7 +22,6 @@ const MovieDetails = () => {
   if (!movieInfo)
     return <div className="h-screen w-screen">{/* <Loading /> */}</div>;
 
-  console.log(movieInfo);
   const {
     id,
     poster_path,
