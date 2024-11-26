@@ -20,7 +20,7 @@ import {
 import { Link } from "react-router-dom";
 
 const Account = () => {
-  const [movieLists, setMovieLists] = useState({ 0: [], 1: [], 2: [] }); // { 0: liked, 1: disliked, 2: watch later }
+  const [movieLists, setMovieLists] = useState({ 0: [], 1: [], 2: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const Account = () => {
         updatedList = updatedList.filter((movie) => movie.id !== movieId);
       } else {
         await addMovieToList(payload);
-        updatedList.push({ id: movieId }); // Add a new movie placeholder with id
+        updatedList.push({ id: movieId });
       }
       setMovieLists((prevState) => ({ ...prevState, [type]: updatedList }));
     } catch (error) {

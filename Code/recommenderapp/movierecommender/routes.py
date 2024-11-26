@@ -49,7 +49,6 @@ def clean_movie_title(title):
 def get_genre_info():
     genre_url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}&language=en-US'
     response = requests.get(genre_url)
-    print(response.json())
     genres = response.json()['genres']
 
     genre_dict = {}
@@ -66,7 +65,6 @@ def get_movie_info2(title):
     new_title, year = clean_movie_title(title)
 
     url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={new_title}&year={year}'
-    print(url)
 
     response = requests.get(url)
     movie_data = response.json()
@@ -84,11 +82,6 @@ def get_movie_info2(title):
 
         poster_url = f'https://image.tmdb.org/t/p/w500{poster_path}' if poster_path else 'No poster available'
 
-        print(f"Movie ID: {movie_id}")
-        print(f"Title: {title}")
-        print(f"Rating: {vote_average}")
-        print(f"Poster URL: {poster_url}")
-        print(f"Genres: {genres}")
         genre_names = [genre_dict[genres] for genres in genres]
         vote_average = round(vote_average, 1) # round rating to 1 decimal pt
         info = { 'MovieID': movie_id, 'Title': title, 'rating':vote_average, 'Genre':genre_names, 'Poster':poster_url}
@@ -124,7 +117,7 @@ def get_poster(title):
 
     url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={new_title}&year={year}'
 
-    print(url)
+
 
     response = requests.get(url)
     movie_data = response.json()
@@ -139,8 +132,7 @@ def get_poster(title):
         poster_url = f'https://image.tmdb.org/t/p/w500{poster_path}' if poster_path else 'https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg'
 
 
-        print(f"Title: {title}")
-        print(f"Poster URL: {poster_url}")
+
     else:
         poster_url = "https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"
 
@@ -223,102 +215,102 @@ def account():
 # #     resp = {"recommendations": recommendations}
 # #     return resp
 # def predict():
-    data = json.loads(request.data)  # contains movies from the user
-    print("data ",data) #~
-    data1 = data["movie_list"]
-    training_data = []
-    for movie in data1:
-        movie_with_rating = {"title": movie, "rating": 5.0}
-        training_data.append(movie_with_rating)
-    print(training_data)
-    recommendations = recommendForNewUser(training_data)
-    recommendations = recommendations[:12] # Top 10 recommended
-    print("recommendations Top 12", recommendations) #~
-    for movie in recommendations:
-        movie_info = get_movie_info2(movie)
-        #print("movie_info", movie_info) #~
+#     data = json.loads(request.data)  # contains movies from the user
+#     print("data ",data) #~
+#     data1 = data["movie_list"]
+#     training_data = []
+#     for movie in data1:
+#         movie_with_rating = {"title": movie, "rating": 5.0}
+#         training_data.append(movie_with_rating)
+#     print(training_data)
+#     recommendations = recommendForNewUser(training_data)
+#     recommendations = recommendations[:12] # Top 10 recommended
+#     print("recommendations Top 12", recommendations) #~
+#     for movie in recommendations:
+#         movie_info = get_movie_info2(movie)
+#         #print("movie_info", movie_info) #~
 
-        # if(movie_info.get('imdbID')): # IMDB ID
-        if(movie_info['MovieID']): # IMDB ID
-            # imdb_id = movie_info['imdbID'] #~
-            imdb_id = movie_info['MovieID'] #~
-            #print("IMDB id = ", imdb_id)
-            # url = f'https://api.themoviedb.org/3/find/{imdb_id}?external_source=imdb_id&api_key={api_key}'
-            url = f'https://api.themoviedb.org/3/movie/{imdb_id}/videos?api_key={api_key}'
-            resp = requests.get(url)
-            if resp.status_code == 200:
-                res1=resp.json()
-                print('res1', res1)
+#         # if(movie_info.get('imdbID')): # IMDB ID
+#         if(movie_info['MovieID']): # IMDB ID
+#             # imdb_id = movie_info['imdbID'] #~
+#             imdb_id = movie_info['MovieID'] #~
+#             #print("IMDB id = ", imdb_id)
+#             # url = f'https://api.themoviedb.org/3/find/{imdb_id}?external_source=imdb_id&api_key={api_key}'
+#             url = f'https://api.themoviedb.org/3/movie/{imdb_id}/videos?api_key={api_key}'
+#             resp = requests.get(url)
+#             if resp.status_code == 200:
+#                 res1=resp.json()
+#                 print('res1', res1)
 
-                trailer = next((video for video in res1['results'] if video['type'] == 'Trailer'), None)
-                if trailer:
-                    url_vid = f"https://www.youtube.com/watch?v={trailer['key']}"
-                    print(f"Trailer URL: {url_vid}")
-                else:
-                    url_vid = None
-
-
-                # if(res1["movie_results"]):
-                #     movie_id = res1["movie_results"][0]['id']
-                #     print('movie id', movie_id)
-                #     url2 = f'https://api.themoviedb.org/3/movie/{movie_id}/videos?language=en-US&api_key={api_key}'
-                #     res_vid = requests.get(url2)
-                #     if res_vid.status_code == 200:
-                #         res_vid=res_vid.json()
-                #         #print("res_vid",res_vid)
-                #         if(res_vid['results']):
-                #             url_vid = f"https://www.youtube.com/watch?v={res_vid['results'][0]['key']}"
-                #             print('url_vid_________________',url_vid)
-                #         else:
-                #             print('empty video')
-                #             url_vid = None
-                #     else:
-                #         url_vid = None
-                # else:
-                #     movie_id = None
-                #     print('Empty list')
-                #     url_vid=None
-            else:
-                url_vid = None
-
-            credits_url = f'https://api.themoviedb.org/3/movie/{imdb_id}/credits?api_key={api_key}'
-            credits_response = requests.get(credits_url)
-            credits_data = credits_response.json()
-            # print("CREDITS", credits_data)
-
-            cast = credits_data.get('cast', [])
-
-            top_cast = []
-            for actor in cast[:3]:    # get top 3 actors
-                top_cast.append(actor['name'])
-            actors = ', '.join(top_cast)
-
-            crew = credits_data.get('crew', [])
-            director = ' '
-            for member in crew:
-                if member['job'] == 'Director':
-                    director = member['name']
-                    break
-
-        else:
-            imdb_id = None
-            url_vid = None
-            top_cast = None
-            director = None
+#                 trailer = next((video for video in res1['results'] if video['type'] == 'Trailer'), None)
+#                 if trailer:
+#                     url_vid = f"https://www.youtube.com/watch?v={trailer['key']}"
+#                     print(f"Trailer URL: {url_vid}")
+#                 else:
+#                     url_vid = None
 
 
-        if movie_info:
-            movie_with_rating[movie+"-i"]=imdb_id
-            movie_with_rating[movie+"-t"]=movie_info['Title']
-            movie_with_rating[movie+"-r"]=movie_info['rating']
-            movie_with_rating[movie+"-g"]=movie_info['Genre']
-            movie_with_rating[movie+"-p"]=movie_info['Poster']
-            movie_with_rating[movie+"-u"]=url_vid
-            movie_with_rating[movie+"-c"]=actors
-            movie_with_rating[movie+"-d"]=director
+#                 # if(res1["movie_results"]):
+#                 #     movie_id = res1["movie_results"][0]['id']
+#                 #     print('movie id', movie_id)
+#                 #     url2 = f'https://api.themoviedb.org/3/movie/{movie_id}/videos?language=en-US&api_key={api_key}'
+#                 #     res_vid = requests.get(url2)
+#                 #     if res_vid.status_code == 200:
+#                 #         res_vid=res_vid.json()
+#                 #         #print("res_vid",res_vid)
+#                 #         if(res_vid['results']):
+#                 #             url_vid = f"https://www.youtube.com/watch?v={res_vid['results'][0]['key']}"
+#                 #             print('url_vid_________________',url_vid)
+#                 #         else:
+#                 #             print('empty video')
+#                 #             url_vid = None
+#                 #     else:
+#                 #         url_vid = None
+#                 # else:
+#                 #     movie_id = None
+#                 #     print('Empty list')
+#                 #     url_vid=None
+#             else:
+#                 url_vid = None
 
-    resp = {"recommendations": recommendations, "rating":movie_with_rating}
-    return resp
+#             credits_url = f'https://api.themoviedb.org/3/movie/{imdb_id}/credits?api_key={api_key}'
+#             credits_response = requests.get(credits_url)
+#             credits_data = credits_response.json()
+#             # print("CREDITS", credits_data)
+
+#             cast = credits_data.get('cast', [])
+
+#             top_cast = []
+#             for actor in cast[:3]:    # get top 3 actors
+#                 top_cast.append(actor['name'])
+#             actors = ', '.join(top_cast)
+
+#             crew = credits_data.get('crew', [])
+#             director = ' '
+#             for member in crew:
+#                 if member['job'] == 'Director':
+#                     director = member['name']
+#                     break
+
+#         else:
+#             imdb_id = None
+#             url_vid = None
+#             top_cast = None
+#             director = None
+
+
+#         if movie_info:
+#             movie_with_rating[movie+"-i"]=imdb_id
+#             movie_with_rating[movie+"-t"]=movie_info['Title']
+#             movie_with_rating[movie+"-r"]=movie_info['rating']
+#             movie_with_rating[movie+"-g"]=movie_info['Genre']
+#             movie_with_rating[movie+"-p"]=movie_info['Poster']
+#             movie_with_rating[movie+"-u"]=url_vid
+#             movie_with_rating[movie+"-c"]=actors
+#             movie_with_rating[movie+"-d"]=director
+
+#     resp = {"recommendations": recommendations, "rating":movie_with_rating}
+#     return resp
 
 
 
@@ -502,3 +494,27 @@ def movie():
 @app.route("/success")
 def success():
     return render_template("success.html")
+
+@app.route("/cast",methods=["GET", "POST"])
+def get_cast():
+    movie_id = request.json['movie_id']
+    credits_url = f'https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={api_key}'
+    credits_response = requests.get(credits_url)
+    credits_data = credits_response.json()
+    print("CREDITS", credits_data)
+
+    cast = credits_data.get('cast', [])
+
+    top_cast = []
+    for actor in cast[:3]:    # get top 3 actors
+        top_cast.append(actor['name'])
+    actors = ', '.join(top_cast)
+
+    crew = credits_data.get('crew', [])
+    director = ' '
+    for member in crew:
+        if member['job'] == 'Director':
+            director = member['name']
+            break
+        
+    return jsonify({"cast": actors, "director": director})

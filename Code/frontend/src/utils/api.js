@@ -26,7 +26,6 @@ export async function login_api_call(payload){
 
 export async function getMovieInList(payload){
   const url = `/movie/${payload.user}/${payload.type}`;
-  console.log(url)
   let resp = await fetch(url, {
     method: 'GET',
   })
@@ -37,14 +36,13 @@ export async function getMovieInList(payload){
 
 export async function addMovieToList(payload) {
   const url = `/movie/${payload.user}/${payload.type}/${payload.movieId}`;
-  console.log(url);
 
   let resp = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(payload.details), // Send the additional movie details
+    body: JSON.stringify(payload.details), 
   });
 
   if (resp.status !== 200) {
@@ -58,7 +56,6 @@ export async function addMovieToList(payload) {
 
 export async function deleteMovieFromList(payload){
   const url = `/movie/${payload.user}/${payload.type}/${payload.movieId}`;
-  console.log(url)
   let resp = await fetch(url, {
     method: 'DELETE',
   })

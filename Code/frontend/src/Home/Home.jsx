@@ -50,11 +50,9 @@ function HomePage() {
 
   const fetchHomeInfo = async () => {
     try {
-      const response = await fetch("/testing"); // just a testing route I made in routes.py
-      console.log(response);
+      const response = await fetch("/testing");
       // if (!response.ok) throw new Error('Network response was not ok');
       if (!response.ok) {
-        console.log("Network response was not ok");
         return;
       }
       const data = await response.json();
@@ -72,28 +70,22 @@ function HomePage() {
     let newMovies = [];
     for (const type in Object.keys(movieLists)) {
       const payload = { user, type };
+      if(type!=='1'){
       const data = await getMoviesInList(payload);
       const movies = data["movies"];
-      newState[type] = movies
+      newState[type] = movies;
       for (const idx in movies) {
         newMovies.push(movies[idx]);
         //newState[type].add(movieIds[idx]);
       }
     }
-    console.log("new state ")
-    console.log(newState)
-
-    console.log("movies")
-    console.log(newMovies)
+    }
 
     setSelectedMovies(newMovies);
     setMovieLists(newState);
   };
 
   const handleSearch = async () => {
-    //console.log("here my friend")
-    console.log(selectedMovies)
-    console.log(selectedMovies);
     if (selectedMovies.length === 0) {
       alert("Please select atleast one movie!!");
       return;
@@ -105,13 +97,10 @@ function HomePage() {
       const response = await axios.post("/predict", {
         movie_id_list: selectedMovieIds,
       });
-      // console.log("Response", response);
       const data = response.data;
-      // console.log("Data", data);
 
       const transformedRecommendations = data.recommendations.map((title) => {
         const baseKey = title;
-        console.log(baseKey);
 
         return {
           id: baseKey.id,
@@ -119,19 +108,8 @@ function HomePage() {
           title: baseKey.title,
           poster_path: baseKey.poster_path,
           genres: baseKey.genres,
-          // id: data.rating[`${baseKey}-i`] || undefined,
-          // title: data.rating[`${baseKey}-t`] || "Title not available",
-          // genre:
-          //   data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
-          // poster:
-          //   data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
-          rating: baseKey.vote_average,
-          // url: data.rating[`${baseKey}-u`] || null,
-          // cast: data.rating[`${baseKey}-c`] || " ",
-          // director: data.rating[`${baseKey}-d`] || " ",
         };
       });
-      console.log(transformedRecommendations);
 
       setRecommendations(transformedRecommendations);
       setSearchQuery("");
@@ -144,7 +122,6 @@ function HomePage() {
 
   const actionButtonHandler = async (movie, type) => {
     const user = localStorage.getItem("UID");
-    //console.log(movie);
     const payload = {
       user,
       movieId: movie.id,
@@ -158,35 +135,28 @@ function HomePage() {
         rating: movie.rating,
       },
     };
-    console.log(payload);
     let resp;
     let newState = { ...movieLists };
-    console.log("action handler");
-    console.log(movieLists);
 
     if (Array.from(movieLists[type]).some((m) => m.id === movie.id)) {
-      console.log("del");
       resp = await deleteMovieFromList(payload);
-      // console.log("response on del" + resp)
-      // console.log(movieLists[type])
       let updatedSet = Array.from(movieLists[type]);
       updatedSet = updatedSet.filter((m) => m.id !== movie.id);
       newState[type] = updatedSet;
     } else {
       resp = await addMovieToList(payload);
       if (resp) {
-        console.log("add");
         let updatedSet = Array.from(movieLists[type]);
-        // console.log(movie)
-        // Construct the new movie object based on payload
         const newMovie = {
           id: payload.movieId,
-          ...payload.details, // Spread the details into the new object
+          ...payload.details,
         };
         updatedSet.push(newMovie);
         newState[type] = updatedSet;
       }
     }
+    let updatedMovies = newState[0].concat(newState[2]);
+    setSelectedMovies(updatedMovies);
     setMovieLists(newState);
   };
 
@@ -335,7 +305,9 @@ function HomePage() {
       </Button>
 
       <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-        {selectedMovies && <h3>Recommendation based on Your Movie Preferences:</h3>}
+        {selectedMovies && (
+          <h3>Recommendation based on Your Movie Preferences:</h3>
+        )}
         <ul>
           {selectedMovies.map((movie) => (
             <li key={movie.id}>{movie.title}</li>
@@ -374,7 +346,9 @@ function HomePage() {
                             await actionButtonHandler(movie, 0)
                           }
                         >
-                          {Array.from(movieLists[0]).some((m) => m.id === movie.id) ? (
+                          {Array.from(movieLists[0]).some(
+                            (m) => m.id === movie.id
+                          ) ? (
                             <FavoriteBorderSharp color={"primary"} />
                           ) : (
                             <FavoriteBorderSharp />
@@ -388,7 +362,9 @@ function HomePage() {
                             await actionButtonHandler(movie, 1)
                           }
                         >
-                          {Array.from(movieLists[1]).some((m) => m.id === movie.id) ? (
+                          {Array.from(movieLists[1]).some(
+                            (m) => m.id === movie.id
+                          ) ? (
                             <SentimentDissatisfiedSharp color="primary" />
                           ) : (
                             <SentimentDissatisfiedSharp />
@@ -402,7 +378,9 @@ function HomePage() {
                             await actionButtonHandler(movie, 2)
                           }
                         >
-                          {Array.from(movieLists[2]).some((m) => m.id === movie.id) ? (
+                          {Array.from(movieLists[2]).some(
+                            (m) => m.id === movie.id
+                          ) ? (
                             <WatchLaterSharp color="primary" />
                           ) : (
                             <WatchLaterSharp />
