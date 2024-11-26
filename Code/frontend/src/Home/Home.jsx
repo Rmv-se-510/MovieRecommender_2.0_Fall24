@@ -73,17 +73,26 @@ function HomePage() {
     for (const type in Object.keys(movieLists)) {
       const payload = { user, type };
       const data = await getMoviesInList(payload);
-      const movieIds = data["movies"];
-      for (const idx in movieIds) {
-        newMovies.push(movieIds[idx]);
-        newState[type].add(movieIds[idx]);
+      const movies = data["movies"];
+      newState[type] = movies
+      for (const idx in movies) {
+        newMovies.push(movies[idx]);
+        //newState[type].add(movieIds[idx]);
       }
     }
+    console.log("new state ")
+    console.log(newState)
+
+    console.log("movies")
+    console.log(newMovies)
+
     setSelectedMovies(newMovies);
     setMovieLists(newState);
   };
 
   const handleSearch = async () => {
+    //console.log("here my friend")
+    console.log(selectedMovies)
     console.log(selectedMovies);
     if (selectedMovies.length === 0) {
       alert("Please select atleast one movie!!");
@@ -96,9 +105,9 @@ function HomePage() {
       const response = await axios.post("/predict", {
         movie_id_list: selectedMovieIds,
       });
-      console.log("Response", response);
+      // console.log("Response", response);
       const data = response.data;
-      console.log("Data", data);
+      // console.log("Data", data);
 
       const transformedRecommendations = data.recommendations.map((title) => {
         const baseKey = title;
@@ -135,7 +144,7 @@ function HomePage() {
 
   const actionButtonHandler = async (movie, type) => {
     const user = localStorage.getItem("UID");
-    console.log(movie);
+    //console.log(movie);
     const payload = {
       user,
       movieId: movie.id,
@@ -158,19 +167,26 @@ function HomePage() {
     if (Array.from(movieLists[type]).some((m) => m.id === movie.id)) {
       console.log("del");
       resp = await deleteMovieFromList(payload);
-      const updatedSet = new Set(movieLists[type]);
-      updatedSet.delete(movie.id);
+      // console.log("response on del" + resp)
+      // console.log(movieLists[type])
+      let updatedSet = Array.from(movieLists[type]);
+      updatedSet = updatedSet.filter((m) => m.id !== movie.id);
       newState[type] = updatedSet;
     } else {
       resp = await addMovieToList(payload);
       if (resp) {
         console.log("add");
-        const updatedSet = new Set(movieLists[type]);
-        updatedSet.add(movie.id);
+        let updatedSet = Array.from(movieLists[type]);
+        // console.log(movie)
+        // Construct the new movie object based on payload
+        const newMovie = {
+          id: payload.movieId,
+          ...payload.details, // Spread the details into the new object
+        };
+        updatedSet.push(newMovie);
         newState[type] = updatedSet;
       }
     }
-
     setMovieLists(newState);
   };
 
@@ -358,7 +374,7 @@ function HomePage() {
                             await actionButtonHandler(movie, 0)
                           }
                         >
-                          {movieLists[0].has(movie.id) ? (
+                          {Array.from(movieLists[0]).some((m) => m.id === movie.id) ? (
                             <FavoriteBorderSharp color={"primary"} />
                           ) : (
                             <FavoriteBorderSharp />
@@ -372,7 +388,7 @@ function HomePage() {
                             await actionButtonHandler(movie, 1)
                           }
                         >
-                          {movieLists[1].has(movie.id) ? (
+                          {Array.from(movieLists[1]).some((m) => m.id === movie.id) ? (
                             <SentimentDissatisfiedSharp color="primary" />
                           ) : (
                             <SentimentDissatisfiedSharp />
@@ -386,7 +402,7 @@ function HomePage() {
                             await actionButtonHandler(movie, 2)
                           }
                         >
-                          {movieLists[2].has(movie.id) ? (
+                          {Array.from(movieLists[2]).some((m) => m.id === movie.id) ? (
                             <WatchLaterSharp color="primary" />
                           ) : (
                             <WatchLaterSharp />
