@@ -40,9 +40,7 @@ export default function RegisterPage() {
         setAlert({ ...alert, error: resp.error, visible: true })
       } else {
         setAlert({ ...alert, success: resp.message, visible: true })
-        // console.log("Registered user successfully")
       }
-      // setTimeout(() => setAlert({ ...alert, visible: false }), 2000)
     }
   }
 

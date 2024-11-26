@@ -2,9 +2,6 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import App from './App';
 import { userEvent } from '@testing-library/user-event';
 
-// FIXME Uncomment the lines below when the app library state problems are sorted out
-// import { setupServer } from 'msw/node'
-// import { rest } from 'msw';
 
 // const handlers=[
 //   rest.post("/register", (req, res, ctx) => res(ctx.status(200), ctx.json({"message": "Account created successfully"}))),
