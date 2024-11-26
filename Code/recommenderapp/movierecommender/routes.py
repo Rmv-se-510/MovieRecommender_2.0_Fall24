@@ -49,7 +49,6 @@ def clean_movie_title(title):
 def get_genre_info():
     genre_url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}&language=en-US'
     response = requests.get(genre_url)
-    print(response.json())
     genres = response.json()['genres']
 
     genre_dict = {}
@@ -66,7 +65,6 @@ def get_movie_info2(title):
     new_title, year = clean_movie_title(title)
 
     url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={new_title}&year={year}'
-    print(url)
 
     response = requests.get(url)
     movie_data = response.json()
@@ -84,11 +82,6 @@ def get_movie_info2(title):
 
         poster_url = f'https://image.tmdb.org/t/p/w500{poster_path}' if poster_path else 'No poster available'
 
-        print(f"Movie ID: {movie_id}")
-        print(f"Title: {title}")
-        print(f"Rating: {vote_average}")
-        print(f"Poster URL: {poster_url}")
-        print(f"Genres: {genres}")
         genre_names = [genre_dict[genres] for genres in genres]
         vote_average = round(vote_average, 1) # round rating to 1 decimal pt
         info = { 'MovieID': movie_id, 'Title': title, 'rating':vote_average, 'Genre':genre_names, 'Poster':poster_url}
@@ -124,7 +117,7 @@ def get_poster(title):
 
     url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={new_title}&year={year}'
 
-    print(url)
+
 
     response = requests.get(url)
     movie_data = response.json()
@@ -139,8 +132,7 @@ def get_poster(title):
         poster_url = f'https://image.tmdb.org/t/p/w500{poster_path}' if poster_path else 'https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg'
 
 
-        print(f"Title: {title}")
-        print(f"Poster URL: {poster_url}")
+
     else:
         poster_url = "https://www.creativefabrica.com/wp-content/uploads/2020/12/29/Line-Corrupted-File-Icon-Office-Graphics-7428407-1.jpg"
 
