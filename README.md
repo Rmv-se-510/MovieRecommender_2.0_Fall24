@@ -1,94 +1,96 @@
-# <i>Movie Recommendation 🎥 </i>
+<h3 align="center">
+Cineflix 2.0 🎥: An AI powered movie recommender system!
+</h3>
 
-    A collaborative filtering based recommendation engine!
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/blob/feature/readme-badges/app/static/logo-transformed.png">
+    <img alt="vLLM" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/blob/feature/readme-badges/app/static/logo-transformed.png" height=30% width=50%>
+  </picture>
+</p>
 
+<div align="center">
+   
+  ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+  ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=Flask&logoColor=white)
+  ![ReactJS](https://img.shields.io/badge/-ReactJs-61DAFB?logo=react&logoColor=white&style=for-the-badge)
+  
+ 
+</div>
 
-Discover Your Next Movie Night Gem!
+<div align="center">
 
-<!-- ![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg) -->
-
-
-
- ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/Joshi-Karan/MovieRecommender_Fall24/stableF24)
- ![GitHub issues](https://img.shields.io/github/issues/Joshi-Karan/MovieRecommender_Fall24)
- ![GitHub closed issues](https://img.shields.io/github/issues-closed/Joshi-Karan/MovieRecommender_Fall24)
- [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)  [![Code Coverage](https://github.com/Joshi-Karan/MovieRecommender_Fall24/actions/workflows/codecov.yml/badge.svg)](https://github.com/Joshi-Karan/MovieRecommender_Fall24/actions/workflows/codecov.yml) [![codecov](https://codecov.io/gh/Joshi-Karan/MovieRecommender_Fall24/branch/stableF24/graph/badge.svg?token=PI2TVYHBI1)](https://codecov.io/gh/Joshi-Karan/MovieRecommender_Fall24)  [![black](https://img.shields.io/badge/StyleChecker-black-purple.svg)](https://pypi.org/project/black/) [![DOI](https://zenodo.org/badge/874364925.svg)](https://doi.org/10.5281/zenodo.14020866) ![GitHub release (with filter)](https://img.shields.io/github/v/release/Joshi-Karan/MovieRecommender_Fall24) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Joshi-Karan/MovieRecommender_Fall24)
-
-
-<!-- <br>
-Tired of endless scrolling, trying to find the perfect movie? 🍿<br><br> -->
-<!-- ## Sneak peak! :wink: -->
-<!-- <img width="500" height="250" alt="color picker" src="asset/ui.jpeg" /><br><br>
-<img width="500" height="250" alt="color picker" src="asset/ezgif.com-video-to-gif-2.gif" /><br><br> -->
-
-![alt text](image.png)
-
-
-![alt text](image-3.png)
-
-# <b>Contents</b>
-
-- [Introduction](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#introduction-%EF%B8%8F)<br>
-- [What's New in Phase 4?](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#whats-new-in-phase-4)<br>
-- [Future Project Plan](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#future-project-plan-)<br>
-- [Video](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#video-%EF%B8%8F)<br>
-- [Working](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#working-)<br>
-- [Tech Stack](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#tech-stack-used-)<br>
-- [Requirements and Setup](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#requirements-and-setup-%EF%B8%8F)<br>
-- [Usage](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#usage)<br>
-- [Documentation](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#documentation-)<br>
-- [Bug](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#bug-)<br>
-- [License](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#bug-)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/Joshi-Karan/MovieRecommender_Fall24/stableF24)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![cov](https://img.shields.io/badge/coverage-98.6900%25-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
+  [![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/main/LICENSE)
+  [![Collaborators](https://img.shields.io/badge/Collaborators-3-orange.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/graphs/contributors)
+  [![Language](https://img.shields.io/badge/Language-Python-blue.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/search?l=python)
+  [![Open Issues](https://img.shields.io/github/issues/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/issues)
+  [![GitHub Repo Size](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
+[![Tests](https://img.shields.io/badge/tests-passing-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
+[![Radon](https://img.shields.io/badge/radon_cc-2.03-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/radon)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/Joshi-Karan/MovieRecommender_Fall24)
+[![Pylint](https://img.shields.io/badge/pylint-9.66-orange?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/pylint)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
+  ![Autopep8](https://img.shields.io/badge/autopep8-passing-brightgreen)
+  [![DOI](https://zenodo.org/badge/865713529.svg)](https://doi.org/10.5281/zenodo.14026618)
+  ![GitHub forks](https://img.shields.io/github/forks/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
 
 
+</div>
 
-## Introduction 👁️
 
-Say hello to our Movie Recommender! 🚀<br>
-Just tell us what type of movies you like, and we'll serve up a handpicked list of must-watch movies tailored to your taste. No more movie-night dilemmas! 🎬<br>
-Save time, ditch the hassle, and let Movie Recommender do the work for you. Movie night has never been this easy and exciting! 🌟<br>
-Your perfect movie is just a click away. Get started now and make every movie night a hit! 👏<br><br>
+
+
+<br>
+
+### Introduction
+
+**Cineflix 2.0** is an AI-powered movie recommendation application built with Flask.  Simply tell us the kind of movies you love, and we'll generate a personalized list of must-watch films tailored to your preferences. Say goodbye to endless scrolling and hello to effortless movie nights!  Save time, skip the stress, and let Cineflix 2.0 handle the recommendations. Your next favorite movie is just a click away. Get started today and make every movie night unforgettable!
 
 ![Hurray](https://media.giphy.com/media/jwY84621p1hhnG0ANK/giphy.gif)
 
 
+<br>
 
-## What's New in Phase 4?
-1. An all new React based Frontend for the entire site including new registration, login, home, and account pages!
-2. Fixes for the frequent issues of broken poster images and mismatching posters.
-3. Optimzied backend to utilize only 1 API ([The Movie Database](https://developer.themoviedb.org/reference/intro/getting-started)).
-4. Cast and Director information shown for each movie.
-5. Cleaned CSV data files to produce better recommendations and results on the frontend.
-6. 60 new Test cases (previously just 19)!
-7. Tested expansion of movies and ratings database (see #4 in [Future Project Plan](https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24?tab=readme-ov-file#future-project-plan-))
+### What's New in Phase 5?
+
+1. **Login and Signup:** Resolved the issue where users were signed out after a page reload.  
+2. **Enhanced Movie Filtering:** Added functionality to display movies by director, actor, or genre when their name is clicked.  
+3. **Improved User Profiles:** Redesigned the user profile page to showcase liked, disliked, and saved movies in an organized and visually appealing way.  
+4. **Refined Recommendations:** Removed the search bar and implemented automatic recommendations on the homepage based on user preferences.  
+5. **Bug Fixes in Recommendations:** Fixed incorrect suggestions and ensured recommendations align closely with user-selected movies.  
+6. **Faster Response Times:** Optimized recommendation engine speed, reducing response time from 30ms to 1 second.  
+7. **Latency Reduction:** Replaced the CSV file of 9k rows with session storage cache, significantly improving response time and system performance.  
+
 
 
 <img width="500" height="250" alt="color picker" src="asset/giphy.gif" /><br><br>
 
 
 
-## Future Project Plan 🔮
+### Future Project Plan 🔮
 
-The following changes can take this project to an even greater level:
+The following changes can take this project to an even greater level:  
 
-1. Create page to only display movies of each director, actor, or genre when the name is clicked on.
-2. Enhance the user profile page to display liked, disliked, and saved movies in a clean way.
-3. Remove search functionality and suggest recommendations on home page based off user likes and dislikes.
-4. Phase 4 tested an expansion of the movies.csv and ratings.csv file from 9k movies and 100k ratings to 87k movies and 32M ratings, but did not include because it would be a great opportunity for a future phase to pick up these files from [MovieLens](https://grouplens.org/datasets/movielens/32m/) and figure out the best sampling method to incorporate the new data into the existing code.
-5. Improve recommendations response speed.
-
-Note: Our system can be virtually tested through Github Actions inbuilt feature of build and test queries using python.
+1. **Integration with Streaming Platforms:** Allow users to connect their streaming accounts (e.g., Netflix, Hulu, Prime Video) to provide platform-specific recommendations and direct links to watch.  
+2. **Advanced Personalization:** Incorporate user feedback and advanced AI models to refine recommendations further, adapting to evolving preferences over time.  
+3. **Social Features:** Add a social layer where users can share recommendations, create watchlists with friends, and rate or review movies for the community.  
+4. **Mobile App Development:** Launch a dedicated mobile app for seamless access to recommendations on the go, with push notifications for new releases.  
+5. **Multilingual Support:** Expand the database to include movies from global cinemas and provide recommendations in multiple languages, catering to diverse audiences.  
 
 
-## Video ▶️ 
+
+### Video ▶️ 
 
 [Click here](https://youtu.be/FjBlkBwH2ss) Or click below:
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/FjBlkBwH2ss/0.jpg)](https://www.youtube.com/watch?v=FjBlkBwH2ss)
 
 
+<br>
 
-## Working 📱
+### Working 📱
 
 - Below working displays the system also evaluates movie attributes such as genre, cast, director, and user-generated reviews. 
 - By combining these user-specific data and film characteristics, the recommender system employs machine learning to generate tailored movie recommendations.
@@ -96,11 +98,9 @@ Note: Our system can be virtually tested through Github Actions inbuilt feature 
 - Furthermore, recommender systems often employ a feedback loop, where users' interactions and feedback help refine the recommendations over time, ensuring that the suggestions remain relevant.
 
 
+<br>
 
-
-
-
-## Tech stack used 👨‍💻
+### Tech stack used 👨‍💻
 <details>
 <summary>Python</summary>
 
@@ -149,8 +149,9 @@ JavaScript is a versatile and widely used programming language for adding intera
 ![JavaScript](https://media.giphy.com/media/SvFocn0wNMx0iv2rYz/giphy.gif)
 </details>
 
-## Requirements and Setup ⚙️
+<br>
 
+### Requirements and Setup ⚙️
 
 - python 3.5 +
 - pip
@@ -162,7 +163,9 @@ JavaScript is a versatile and widely used programming language for adding intera
 - Install all required python packages
     `pip install -r requirements.txt `
 
-## Usage
+<br>
+
+### Usage
 To run Flask backend:
 1. `cd Code/recommenderapp`
 2. `python3 app.py`
@@ -171,7 +174,9 @@ To run React frontend:
 1. cd Code/frontend
 2. npm start
 
-## Follow these steps to run our project on your system! 🔮
+<br>
+
+### Follow these steps to run our project on your system! 🔮
 1. Clone the project onto your system.
 2. Incluse an api_key.txt file with the api key for the movie API and store it in a .env file on your computer - Take a look at this link: (https://developer.themoviedb.org/reference/intro/getting-started).
 3. Install the following packages:
@@ -196,27 +201,35 @@ To run React frontend:
    
 7. Run the backend and frontend.
 
+<br>
 
-## Documentation 📚
+### Documentation 📚
 Refer to Wiki page [here](https://github.com/Joshi-Karan/MovieRecommender_Fall24/wiki)
 
-
-## Bug? 🐛
-Raise a issue on this repository, we would love to look at it ❤️
-You also have the option of contacting us:
-- avchundi@ncsu.edu
-- kjoshi5@ncsu.edu
-- rhosadu@ncsu.edu
+<br>
 
 
-## License 📃
+### License 📃
 This project is under MIT License.
 - The MIT license explicitly grants users the right to reuse code for various purposes,hence for improval of future scope of the code we have added MIT license.
 - They include the original MIT license when distributing it. Allowing users to customize or adapt the code to meet their specific requirements.
 
-## Need Help?
+<br>
+
+### Need Help?
 Contact us at helpcineflix@gmail.com for any query.
 
-## Preferred Citation
-Ajay, Karan, Ruthwik (2024, October 31). CINEFLIX: A movie recommendation system. GitHub. <https://github.com/Joshi-Karan/MovieRecommender_Fall24/tree/stableF24>
 
+### Contributors
+<h2></h2>
+
+We'd like to thank the following contributors for their valuable input and enhancements to this project:
+
+- [Meet Vora](https://github.com/your-profile)
+- [Raj Patel](https://github.com/contributor-profile)
+- [Vihar Shah](https://github.com/another-contributor-profile)
+
+
+#### Acknowledgements
+
+This project was forked from [NCSU CAMPUS JOBS REVIEW SYSTEM](https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system) and has been enhanced with additional features and improvements. Special thanks to the original authors for their foundational work.
