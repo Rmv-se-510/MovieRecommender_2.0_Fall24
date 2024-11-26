@@ -4,8 +4,8 @@ Cineflix 2.0 🎥: An AI powered movie recommender system!
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/blob/feature/readme-badges/app/static/logo-transformed.png">
-    <img alt="vLLM" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/blob/feature/readme-badges/app/static/logo-transformed.png" height=30% width=50%>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Rmv-se-510/MovieRecommender_2.0_Fall24/blob/feature/readme-badges/app/static/cineflix.png">
+    <img alt="cineflix" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/blob/feature/readme-badges/app/static/cineflix.png" height=30% width=50%>
   </picture>
 </p>
 
@@ -30,11 +30,11 @@ Cineflix 2.0 🎥: An AI powered movie recommender system!
   [![GitHub Repo Size](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
 [![Tests](https://img.shields.io/badge/tests-passing-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
 [![Radon](https://img.shields.io/badge/radon_cc-2.03-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/radon)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
-![GitHub release (with filter)](https://img.shields.io/github/v/release/Joshi-Karan/MovieRecommender_Fall24)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/Rmv-se-510/MovieRecommender_2.0_Fall24)
 [![Pylint](https://img.shields.io/badge/pylint-9.66-orange?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/pylint)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
   ![Autopep8](https://img.shields.io/badge/autopep8-passing-brightgreen)
   [![DOI](https://zenodo.org/badge/865713529.svg)](https://doi.org/10.5281/zenodo.14026618)
-  ![GitHub forks](https://img.shields.io/github/forks/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
+  ![GitHub forks](https://img.shields.io/github/forks/Rmv-se-510/MovieRecommender_2.0_Fall24.svg)
 
 
 </div>
@@ -80,12 +80,14 @@ The following changes can take this project to an even greater level:
 5. **Multilingual Support:** Expand the database to include movies from global cinemas and provide recommendations in multiple languages, catering to diverse audiences.  
 
 
+<br>
 
-### Video ▶️ 
+### Why choose us ?  
 
-[Click here](https://youtu.be/FjBlkBwH2ss) Or click below:
+Video ▶️: [Click here](https://youtu.be/Q0m-VC4h3dw)
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/FjBlkBwH2ss/0.jpg)](https://www.youtube.com/watch?v=FjBlkBwH2ss)
+
+### 
 
 
 <br>
@@ -232,4 +234,4 @@ We'd like to thank the following contributors for their valuable input and enhan
 
 #### Acknowledgements
 
-This project was forked from [NCSU CAMPUS JOBS REVIEW SYSTEM](https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system) and has been enhanced with additional features and improvements. Special thanks to the original authors for their foundational work.
+This project was forked from [MOVIE RECOMMENDER SYSTEM FALL 24](https://github.com/Joshi-Karan/MovieRecommender_Fall24) and has been enhanced with additional features and improvements. Special thanks to the original authors for their foundational work.
