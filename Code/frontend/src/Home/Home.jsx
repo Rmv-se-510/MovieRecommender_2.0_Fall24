@@ -1,9 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { TextField, Button, CircularProgress, Autocomplete, Card, CardContent, CardMedia, Typography, IconButton } from '@mui/material';
-import axios from 'axios';
-import './Home.css';
-import { FavoriteBorderSharp, SentimentDissatisfiedSharp, WatchLaterSharp } from '@mui/icons-material';
-import { addMovieToList, deleteMovieFromList, getMovieInList as getMoviesInList } from '../utils/api';
+import React, { useEffect, useState } from "react";
+import {
+  TextField,
+  Button,
+  CircularProgress,
+  Autocomplete,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import axios from "axios";
+import "./Home.css";
+import {
+  FavoriteBorderSharp,
+  SentimentDissatisfiedSharp,
+  WatchLaterSharp,
+} from "@mui/icons-material";
+import {
+  addMovieToList,
+  deleteMovieFromList,
+  getMovieInList as getMoviesInList,
+} from "../utils/api";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const [homeInfo, setHomeInfo] = useState(null);
@@ -14,23 +33,28 @@ function HomePage() {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [selectedMovies, setSelectedMovies] = useState([]);
   const [recommendations, setRecommendations] = useState(null);
-  const [movieLists, setMovieLists] = useState({ 0: new Set(), 1: new Set(), 2: new Set() })
+  const [movieLists, setMovieLists] = useState({
+    0: new Set(),
+    1: new Set(),
+    2: new Set(),
+  });
   const [loadingPersonDetails, setLoadingPersonDetails] = useState(false);
   const [personDetails, setPersonDetails] = useState(null); // To store person details
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
     fetchHomeInfo();
     getMovieLists();
+    // handleSearch();
   }, []);
- 
 
   const fetchHomeInfo = async () => {
     try {
-      const response = await fetch('/testing');           // just a testing route I made in routes.py
-      console.log(response)
+      const response = await fetch("/testing"); // just a testing route I made in routes.py
+      console.log(response);
       // if (!response.ok) throw new Error('Network response was not ok');
       if (!response.ok) {
-        console.log(':( Network response was not ok');
+        console.log("Network response was not ok");
         return;
       }
       const data = await response.json();
@@ -45,104 +69,126 @@ function HomePage() {
   const getMovieLists = async () => {
     const user = localStorage.getItem("UID");
     let newState = { ...movieLists };
-    //console.log(newState)
-    for (const type in movieLists) {
+    let newMovies = [];
+    for (const type in Object.keys(movieLists)) {
       const payload = { user, type };
       const data = await getMoviesInList(payload);
-      //console.log(data)
       const movies = data["movies"];
-      //console.log(movieIds)
-      // movieIds.forEach(id => newState[type].add(id));
-      newState[type].add(movies)
+      newState[type] = movies
+      for (const idx in movies) {
+        newMovies.push(movies[idx]);
+        //newState[type].add(movieIds[idx]);
+      }
     }
-    // console.log("Here bro")
-    // console.log(newState)
+    console.log("new state ")
+    console.log(newState)
+
+    console.log("movies")
+    console.log(newMovies)
+
+    setSelectedMovies(newMovies);
     setMovieLists(newState);
   };
-  
 
   const handleSearch = async () => {
+    //console.log("here my friend")
+    console.log(selectedMovies)
+    console.log(selectedMovies);
+    if (selectedMovies.length === 0) {
+      alert("Please select atleast one movie!!");
+      return;
+    }
+    setButtonDisabled(true);
+    setLoadingSuggestions(true);
     try {
+      let selectedMovieIds = selectedMovies.map((movie) => movie.id);
       const response = await axios.post("/predict", {
-        movie_list: selectedMovies,
+        movie_id_list: selectedMovieIds,
       });
-      console.log("Response", response);
+      // console.log("Response", response);
       const data = response.data;
-      console.log("Data", data);
+      // console.log("Data", data);
 
       const transformedRecommendations = data.recommendations.map((title) => {
         const baseKey = title;
         console.log(baseKey);
 
         return {
-          id: data.rating[`${baseKey}-i`] || undefined,
-          title: data.rating[`${baseKey}-t`] || "Title not available",
-          genre:
-            data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
-          poster:
-            data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
-          genre:
-            data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
-          poster:
-            data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
-          rating: data.rating[`${baseKey}-r`] || "Rating not available",
-          url: data.rating[`${baseKey}-u`] || null,
-          cast: data.rating[`${baseKey}-c`] || " ",
-          director: data.rating[`${baseKey}-d`] || " ",
+          id: baseKey.id,
+          imdb_id: baseKey.imdb_id,
+          title: baseKey.title,
+          poster_path: baseKey.poster_path,
+          genres: baseKey.genres,
+          // id: data.rating[`${baseKey}-i`] || undefined,
+          // title: data.rating[`${baseKey}-t`] || "Title not available",
+          // genre:
+          //   data.rating[`${baseKey}-g`]?.join(", ") || "Genre not available",
+          // poster:
+          //   data.rating[`${baseKey}-p`] || "https://via.placeholder.com/250",
+          rating: baseKey.vote_average,
+          // url: data.rating[`${baseKey}-u`] || null,
+          // cast: data.rating[`${baseKey}-c`] || " ",
+          // director: data.rating[`${baseKey}-d`] || " ",
         };
       });
-      console.log(transformedRecommendations)
+      console.log(transformedRecommendations);
 
       setRecommendations(transformedRecommendations);
       setSearchQuery("");
+      setLoadingSuggestions(false);
+      setButtonDisabled(false);
     } catch (error) {
       console.error("Error fetching recommendations:", error);
     }
   };
 
-
   const actionButtonHandler = async (movie, type) => {
     const user = localStorage.getItem("UID");
-  
+    //console.log(movie);
     const payload = {
       user,
       movieId: movie.id,
       type,
       details: {
         title: movie.title,
-        poster: movie.poster,
+        poster: movie.poster_path,
         cast: movie.cast,
         director: movie.director,
         genre: movie.genre,
         rating: movie.rating,
       },
     };
-  
+    console.log(payload);
     let resp;
     let newState = { ...movieLists };
-    console.log("action handler")
-    console.log(movieLists)
+    console.log("action handler");
+    console.log(movieLists);
 
-    if (Array.from(movieLists[type]).some(m => m.id === movie.id)) {
-      console.log("del")
+    if (Array.from(movieLists[type]).some((m) => m.id === movie.id)) {
+      console.log("del");
       resp = await deleteMovieFromList(payload);
-      const updatedSet = new Set(movieLists[type]);
-      updatedSet.delete(movie.id);
+      // console.log("response on del" + resp)
+      // console.log(movieLists[type])
+      let updatedSet = Array.from(movieLists[type]);
+      updatedSet = updatedSet.filter((m) => m.id !== movie.id);
       newState[type] = updatedSet;
     } else {
       resp = await addMovieToList(payload);
       if (resp) {
-        console.log("add")
-        const updatedSet = new Set(movieLists[type]);
-        updatedSet.add(movie.id);
+        console.log("add");
+        let updatedSet = Array.from(movieLists[type]);
+        // console.log(movie)
+        // Construct the new movie object based on payload
+        const newMovie = {
+          id: payload.movieId,
+          ...payload.details, // Spread the details into the new object
+        };
+        updatedSet.push(newMovie);
         newState[type] = updatedSet;
       }
     }
-  
     setMovieLists(newState);
   };
-  
-  
 
   const fetchSuggestions = async (query) => {
     if (!query) return;
@@ -161,7 +207,7 @@ function HomePage() {
       const suggestions = response.data.results.map((movie) => ({
         label: `${movie.title} (${movie.release_date?.split("-")[0] || "N/A"})`,
         id: movie.id,
-        value: movie.title,
+        title: movie.title,
       }));
       setAutocompleteOptions(suggestions);
     } catch (error) {
@@ -173,7 +219,7 @@ function HomePage() {
 
   const handlePersonClick = async (name) => {
     if (!name) return;
-  
+
     setRecommendations(null); // Clear recommendations
     setSelectedMovies([]);
     setLoadingPersonDetails(true);
@@ -191,7 +237,7 @@ function HomePage() {
           },
         }
       );
-  
+
       if (response.data.results && response.data.results.length > 0) {
         const person = response.data.results[0]; // Get the first result
         const personDetails = {
@@ -217,7 +263,6 @@ function HomePage() {
       setLoadingPersonDetails(false); // Optional: Stop loading indicator
     }
   };
-  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -235,8 +280,8 @@ function HomePage() {
             fetchSuggestions(newValue);
           }}
           onChange={(event, newValue) => {
-            if (newValue?.value) {
-              setSelectedMovies(prevMovies => [...prevMovies, newValue.value]);
+            if (newValue?.title) {
+              setSelectedMovies((prevMovies) => [...prevMovies, newValue]);
               setSearchQuery(""); // Clear search bar
             }
           }}
@@ -251,9 +296,6 @@ function HomePage() {
                   ...params.InputProps,
                   endAdornment: (
                     <>
-                      {loadingSuggestions ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
                       {loadingSuggestions ? (
                         <CircularProgress color="inherit" size={20} />
                       ) : null}
@@ -273,58 +315,123 @@ function HomePage() {
         color="primary"
         onClick={handleSearch}
         style={{ margin: "10px" }}
+        disabled={buttonDisabled}
       >
         Get Recommendations
       </Button>
 
-      {/* <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-        <h3>Selected Movies:</h3>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          setRecommendations(null);
+          setSelectedMovies([]);
+          setButtonDisabled(false);
+          setLoadingSuggestions(false);
+        }}
+        style={{ margin: "10px" }}
+      >
+        Reset Search
+      </Button>
+
+      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+        {selectedMovies && <h3>Recommendation based on Your Movie Preferences:</h3>}
         <ul>
-          {selectedMovies.map((movie, index) => (
-            <li key={index}>{movie}</li>
+          {selectedMovies.map((movie) => (
+            <li key={movie.id}>{movie.title}</li>
           ))}
         </ul>
-      </div> */}
+      </div>
 
-      {recommendations && (
-        <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-          <h3>Recommended Movies:</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-            {recommendations.map((movie, index) => (
-              <Card key={index} style={{ width: '250px' }}>
-                <CardMedia
-                  component="img"
-                  height="350px"
-                  image={movie.poster || "https://via.placeholder.com/250"}  // Check if movie has poster property
-                  alt={movie.title}     // Check if movie has title property
-                />
-                <CardContent>
-                  <div className='actionButtons'>
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 0)}>
-                      {Array.from(movieLists[0]).some(m => m.id === movie.id) ? (<FavoriteBorderSharp color='primary' />) : (<FavoriteBorderSharp />)}
-                    </IconButton>}
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 1)}>
-                      {Array.from(movieLists[1]).some(m => m.id === movie.id) ? (<SentimentDissatisfiedSharp color='primary' />) : (<SentimentDissatisfiedSharp />)}
-                    </IconButton>}
-                    {<IconButton size='medium' onClick={async () => await actionButtonHandler(movie, 2)}>
-                      {Array.from(movieLists[2]).some(m => m.id === movie.id) ? (<WatchLaterSharp color='primary' />) : (<WatchLaterSharp />)}
-                    </IconButton>}
-                  </div>
-                  <Typography variant="h6">{movie.title || "Title not available"}</Typography>
-                  <Typography variant="body2">Rating: {movie.rating || "N/A"}/10</Typography>
-                  <Typography variant="body2">
-                    <strong>Director:</strong>{" "}
-                    {movie.director && (
-                      <Button
-                        size="small"
-                        onClick={() => handlePersonClick(movie.director)}
-                        style={{ textTransform: "none", padding: 0 }}
+      {!loadingSuggestions ? (
+        recommendations && (
+          <div
+            style={{
+              marginTop: "20px",
+              marginBottom: "20px",
+              paddingBottom: "20px",
+            }}
+          >
+            <h3>Recommended Movies:</h3>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+              {recommendations.map((movie, index) => (
+                <Card key={index} style={{ width: "250px" }}>
+                  <CardMedia
+                    component="img"
+                    height="350px"
+                    image={
+                      `https://image.tmdb.org/t/p/original/${movie.poster_path}` ||
+                      "https://via.placeholder.com/250"
+                    } // Check if movie has poster property
+                    alt={movie.title} // Check if movie has title property
+                  />
+                  <CardContent>
+                    <div className="actionButtons">
+                      {
+                        <IconButton
+                          size="medium"
+                          onClick={async () =>
+                            await actionButtonHandler(movie, 0)
+                          }
+                        >
+                          {Array.from(movieLists[0]).some((m) => m.id === movie.id) ? (
+                            <FavoriteBorderSharp color={"primary"} />
+                          ) : (
+                            <FavoriteBorderSharp />
+                          )}
+                        </IconButton>
+                      }
+                      {
+                        <IconButton
+                          size="medium"
+                          onClick={async () =>
+                            await actionButtonHandler(movie, 1)
+                          }
+                        >
+                          {Array.from(movieLists[1]).some((m) => m.id === movie.id) ? (
+                            <SentimentDissatisfiedSharp color="primary" />
+                          ) : (
+                            <SentimentDissatisfiedSharp />
+                          )}
+                        </IconButton>
+                      }
+                      {
+                        <IconButton
+                          size="medium"
+                          onClick={async () =>
+                            await actionButtonHandler(movie, 2)
+                          }
+                        >
+                          {Array.from(movieLists[2]).some((m) => m.id === movie.id) ? (
+                            <WatchLaterSharp color="primary" />
+                          ) : (
+                            <WatchLaterSharp />
+                          )}
+                        </IconButton>
+                      }
+                    </div>
+                    <Typography variant="h6">
+                      <Link
+                        to={`/movie/${movie.id}`}
+                        className="hover:underline"
                       >
-                        {movie.director}
-                      </Button>
-                    )}
-                  </Typography>
-                  <Typography variant="body2">
+                        {movie.title || "Title not available"}
+                      </Link>
+                    </Typography>
+                    {/* <Typography variant="body2">Rating: {movie.rating || "N/A"}/10</Typography> */}
+                    {/* <Typography variant="body2">
+                      <strong>Director:</strong>{" "}
+                      {movie.director && (
+                        <Button
+                          size="small"
+                          onClick={() => handlePersonClick(movie.director)}
+                          style={{ textTransform: "none", padding: 0 }}
+                        >
+                          {movie.director}
+                        </Button>
+                      )}
+                    </Typography> */}
+                    {/* <Typography variant="body2">
                     <strong>Cast:</strong>{" "}
                     {movie.cast.split(", ").map((actor, index) => (
                       <React.Fragment key={index}>
@@ -338,57 +445,33 @@ function HomePage() {
                         {index < movie.cast.split(", ").length - 1 && ", "}
                       </React.Fragment>
                     ))}
-                  </Typography>
-                  <Typography variant="body2">Genres: {movie.genre || "N/A"}</Typography>
-                  {movie.url && (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      href={movie.url}
-                      target="_blank"
-                      style={{ marginTop: "10px", marginRight: "10px" }}
-                    >
-                      Watch Trailer
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+                  </Typography> */}
+                    {/* <Typography variant="body2">Genres: {movie.genres || "N/A"}</Typography> */}
+                    {movie.url && (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        href={movie.url}
+                        target="_blank"
+                        style={{ marginTop: "10px", marginRight: "10px" }}
+                      >
+                        Watch Trailer
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
+        )
+      ) : (
+        <div>
+          <h1>
+            Hold tight!! We are searching for recommendations!! Thanks for being
+            patient..
+          </h1>
         </div>
       )}
-
-      {personDetails && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>{personDetails.name}</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-            {personDetails.knownFor.map((work, index) => (
-              <Card key={index} style={{ width: "250px" }}>
-                <CardMedia
-                  component="img"
-                  height="350px"
-                  image={work.posterPath}
-                  alt={work.title}
-                />
-                <CardContent>
-                  <Typography variant="h6">{work.title}</Typography>
-                  <Typography variant="body2">
-                    <strong>Type:</strong> {work.mediaType}
-                  </Typography>
-                  <Typography variant="body2">
-                    <strong>Release Date:</strong> {work.releaseDate}
-                  </Typography>
-                  <Typography variant="body2">
-                    <strong>Rating:</strong> {work.voteAverage}/10
-                  </Typography>
-                  <Typography variant="body2">{work.overview}</Typography>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
-
     </main>
   );
 }
